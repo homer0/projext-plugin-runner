@@ -44,6 +44,8 @@ class WoopackRunner extends Jimple {
     this.register(targets);
 
     this.register(asPlugin);
+
+    this._addErrorHandler();
   }
 
   plugin(woopack) {
@@ -72,6 +74,10 @@ class WoopackRunner extends Jimple {
       this.get('cliSHRunCommand'),
       this.get('cliSHValidateCommand'),
     ]);
+  }
+
+  _addErrorHandler() {
+    this.get('errorHandler').listen();
   }
 }
 
