@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-const runner = require('../..');
+const runner = require('../../index');
 
 runner.cli();

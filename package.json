@@ -1,5 +1,6 @@
 {
     "name": "woopack-plugin-runner",
+    "cliName": "woopack-runner",
     "description": "...",
     "version": "0.0.1",
     "repository": "homer0/woopack-plugin-runner",

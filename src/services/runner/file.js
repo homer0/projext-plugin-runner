@@ -12,6 +12,7 @@ class RunnerFile {
     this.fileTemplate = {
       runnerVersion: info.version,
       version: 'unknown',
+      directory: '',
       targets: {},
     };
   }
@@ -31,6 +32,9 @@ class RunnerFile {
       targetPath = './';
     } else {
       targetPath = build.substr(directory.length);
+      if (targetPath.startsWith('/')) {
+        targetPath = targetPath.substr(1);
+      }
     }
 
     const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;
@@ -49,10 +53,10 @@ class RunnerFile {
   read() {
     let result;
     if (this.exists()) {
-      result = fs.writeJson(this.fileTemplate)
-      .then(() => extend(true, {}, this.fileTemplate));
+      result = fs.readJsonSync(this.filepath);
     } else {
-      result = fs.readJson(this.filepath);
+      fs.writeJsonSync(this.filepath, this.fileTemplate);
+      result = extend(true, {}, this.fileTemplate);
     }
 
     return result;

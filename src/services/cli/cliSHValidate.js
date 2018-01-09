@@ -16,6 +16,12 @@ class CLISHValidateCommand extends CLICommand {
       'Force the runner to use a production build even if Woopack is present',
       false
     );
+    this.addOption(
+      'ready',
+      '-r, --ready',
+      'Private flag to indicate that a production build was made',
+      false
+    );
     this.hidden = true;
   }
 
@@ -26,7 +32,7 @@ class CLISHValidateCommand extends CLICommand {
 }
 
 const cliSHValidateCommand = provider((app) => {
-  app.set('cliSHValidate', () => new CLISHValidateCommand(
+  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(
     app.get('appLogger'),
     app.get('runnerFile'),
     app.get('targets')

@@ -1,30 +1,54 @@
 const { provider } = require('jimple');
 
 class Runner {
-  constructor(asPlugin, runnerFile, targets) {
+  constructor(asPlugin, pathUtils, runnerFile, targets) {
     this.asPlugin = asPlugin;
+    this.pathUtils = pathUtils;
     this.runnerFile = runnerFile;
     this.targets = targets;
   }
 
-  getCommands(targetName, production) {
+  getCommands(targetName, production, runAsPluginCommand) {
     const target = this.targets.getTarget(targetName);
     const commands = this.asPlugin ?
-      this.getCommandsForWoopack(target, production) :
+      this.getCommandsForWoopack(target, production, runAsPluginCommand) :
       this.getCommandsForProduction(target);
 
     return commands.join(';');
   }
 
-  getCommandsForWoopack(target, production) {
-    const type = production ? 'production' : 'development';
-    const command = `woopack run ${target.name} --type ${type}`;
-    return [command];
+  getPluginCommandsForProduction(targetName) {
+    const target = this.targets.getTarget(targetName);
+    const commands = this.getCommandsForProduction(target, true);
+
+    return commands.join(';');
+  }
+
+  getCommandsForWoopack(target, production, runAsPluginCommand) {
+    const commands = [];
+    if (production) {
+      commands.push(`woopack build ${target.name} --type production`);
+      commands.push(runAsPluginCommand);
+    } else {
+      commands.push(`woopack run ${target.name}`);
+    }
+
+    return commands;
   }
 
   getCommandsForProduction(target) {
     const runWith = target.options.runWith || 'node';
-    const command = `${runWith} ${target.exec}`;
+    let execPath;
+    if (this.asPlugin) {
+      execPath = this.pathUtils.join(
+        this.runnerFile.read().directory,
+        target.path
+      );
+    } else {
+      execPath = target.exec;
+    }
+
+    const command = `${runWith} ${execPath}`;
     return [command];
   }
 }
@@ -32,6 +56,7 @@ class Runner {
 const runner = provider((app) => {
   app.set('runner', () => new Runner(
     app.get('asPlugin'),
+    app.get('pathUtils'),
     app.get('runnerFile'),
     app.get('targets')
   ));
