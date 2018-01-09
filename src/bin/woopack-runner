@@ -1,0 +1,21 @@
+#!/bin/sh -e
+target=$1
+disableSHTask=false
+if [ "$target" = "" ]; then
+  woopack-runner-cli --help
+else
+  if echo "$*" | grep -q "\(\s\-\-\?\(help\|h\|version\|v\)\(\s\|$\)\)"; then
+    disableSHTask=true
+  fi
+
+  if [ "$disableSHTasks" = false ]; then
+      eval "woopack-runner-cli sh-validate $*"
+      command=$(eval "woopack-runner-cli sh-run $*")
+      if [ "$command" != "" ]; then
+        # echo "> $command"
+        eval "$command"
+      fi
+  else
+    woopack-runner-cli "$@"
+  fi
+fi

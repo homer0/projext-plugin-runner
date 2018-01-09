@@ -6,7 +6,10 @@
     "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
     "license": "MIT",
     "dependencies": {
-      "jimple": "homer0/jimple"
+      "jimple": "homer0/jimple",
+      "fs-extra": "5.0.0",
+      "commander": "2.12.2",
+      "wootils": "0.0.2"
     },
     "peerDependencies": {
 
@@ -27,6 +30,10 @@
       "npm": ">=3.0.0"
     },
     "main": "src/index.js",
+    "bin": {
+      "woopack-runner": "./src/bin/woopack-runner",
+      "woopack-runner-cli": "./src/bin/woopack-runner-cli"
+    },
     "scripts": {
       "install-hooks": "./utils/hooks/install",
       "test": "",
