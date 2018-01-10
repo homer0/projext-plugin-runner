@@ -38,7 +38,7 @@
     },
     "scripts": {
       "install-hooks": "./utils/hooks/install",
-      "test": "",
+      "test": "./utils/scripts/test",
       "lint": "./utils/scripts/lint",
       "docs": ""
     }
