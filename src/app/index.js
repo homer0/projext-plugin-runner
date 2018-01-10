@@ -67,6 +67,11 @@ class WoopackRunner extends Jimple {
       this.get('runnerFile').update(target, version, build);
       return commands;
     });
+
+    events.once('project-files-to-copy', (list) => [
+      ...list,
+      this.get('runnerFile').getFilename(),
+    ]);
   }
 
   cli() {

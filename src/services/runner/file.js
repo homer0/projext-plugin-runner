@@ -17,6 +17,14 @@ class RunnerFile {
     };
   }
 
+  setFilename(newName) {
+    this.filename = newName;
+  }
+
+  getFilename() {
+    return this.filename;
+  }
+
   exists() {
     return fs.pathExistsSync(this.filepath);
   }
