@@ -24,7 +24,7 @@ class Targets {
   validate(name) {
     if (!this.asPlugin) {
       if (!this.runnerFile.exists()) {
-        throw new Error('The runner file doesn\'t exist, you first need to build the target');
+        throw new Error('The runner file doesn\'t exist, you first need to build a target');
       }
 
       const target = this.getTarget(name);

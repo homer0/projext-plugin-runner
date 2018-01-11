@@ -39,10 +39,8 @@ class RunnerFile {
     if (build === directory) {
       targetPath = './';
     } else {
-      targetPath = build.substr(directory.length);
-      if (targetPath.startsWith('/')) {
-        targetPath = targetPath.substr(1);
-      }
+      // +1 to replace the leading `/`
+      targetPath = build.substr(directory.length + 1);
     }
 
     const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;
@@ -55,7 +53,7 @@ class RunnerFile {
       options: target.runnerOptions || {},
     };
 
-    return fs.writeJson(this.filepath, file);
+    return fs.writeJsonSync(this.filepath, file);
   }
 
   read() {
@@ -63,7 +61,6 @@ class RunnerFile {
     if (this.exists()) {
       result = fs.readJsonSync(this.filepath);
     } else {
-      fs.writeJsonSync(this.filepath, this.fileTemplate);
       result = extend(true, {}, this.fileTemplate);
     }
 
@@ -72,7 +69,7 @@ class RunnerFile {
 
   validate() {
     if (!this.asPlugin && !this.exists()) {
-      throw new Error('The runner file doesnt exist and Woopack is not present');
+      throw new Error('The runner file doesn\'t exist and Woopack is not present');
     }
   }
 }

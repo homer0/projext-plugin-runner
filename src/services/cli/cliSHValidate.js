@@ -2,9 +2,8 @@ const { provider } = require('jimple');
 const CLICommand = require('../../interfaces/cliCommand');
 
 class CLISHValidateCommand extends CLICommand {
-  constructor(appLogger, runnerFile, targets) {
+  constructor(runnerFile, targets) {
     super();
-    this.appLogger = appLogger;
     this.runnerFile = runnerFile;
     this.targets = targets;
 
@@ -33,7 +32,6 @@ class CLISHValidateCommand extends CLICommand {
 
 const cliSHValidateCommand = provider((app) => {
   app.set('cliSHValidateCommand', () => new CLISHValidateCommand(
-    app.get('appLogger'),
     app.get('runnerFile'),
     app.get('targets')
   ));

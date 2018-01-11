@@ -20,6 +20,7 @@ class CLICommandMock {
     this.constructorMock(...args);
     this.addOption = mocks.addOption;
     this.output = mocks.output;
+    this.cliName = 'mock';
   }
 
   getConfig(...args) {

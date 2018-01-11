@@ -56,13 +56,13 @@ class WoopackRunner extends Jimple {
 
       const {
         version: {
-          revisionFilename,
+          filename,
         },
         paths: {
           build,
         },
       } = projectConfiguration;
-      const version = versionUtils.getVersion(revisionFilename);
+      const version = versionUtils.getVersion(filename);
 
       this.get('runnerFile').update(target, version, build);
       return commands;
