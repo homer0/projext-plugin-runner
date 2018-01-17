@@ -33,26 +33,39 @@ class Runner {
       commands.push(`woopack build ${targetName} --type production`);
       commands.push(runAsPluginCommand);
     } else {
-      commands.push(`woopack run ${targetName}`);
+      const variables = this.getEnvironmentVariables(this.runnerFile.read());
+      commands.push(`${variables} woopack run ${targetName}`);
     }
 
     return commands;
   }
 
   getCommandsForProduction(target) {
+    const runnerFileContents = this.runnerFile.read();
+    const variables = this.getEnvironmentVariables(runnerFileContents);
     const runWith = target.options.runWith || 'node';
     let execPath;
     if (this.asPlugin) {
       execPath = this.pathUtils.join(
-        this.runnerFile.read().directory,
+        runnerFileContents.directory,
         target.path
       );
     } else {
       execPath = target.exec;
     }
 
-    const command = `${runWith} ${execPath}`;
+    const command = `${variables} ${runWith} ${execPath}`;
     return [command];
+  }
+
+  getEnvironmentVariables(runnerFileContents) {
+    const names = {
+      version: 'APP_VERSION',
+    };
+
+    return Object.keys(names)
+    .map((name) => `${names[name]}=${runnerFileContents[name]}`)
+    .join(' ');
   }
 }
 

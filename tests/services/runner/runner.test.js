@@ -32,7 +32,12 @@ describe('services/runner:runner', () => {
     // Given
     const asPlugin = false;
     const pathUtils = 'pathUtils';
-    const runnerFile = 'runnerFile';
+    const file = {
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
     const targetName = 'charito';
     const target = {
       name: targetName,
@@ -46,7 +51,8 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
-    const expectedCommand = `node ${target.exec}`;
+    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} node ${target.exec}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
@@ -54,13 +60,19 @@ describe('services/runner:runner', () => {
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
     expect(targets.getTarget).toHaveBeenCalledWith(targetName);
+    expect(runnerFile.read).toHaveBeenCalledTimes(1);
   });
 
   it('should return the command to run a target on production with a custom program', () => {
     // Given
     const asPlugin = false;
     const pathUtils = 'pathUtils';
-    const runnerFile = 'runnerFile';
+    const file = {
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
     const targetName = 'charito';
     const target = {
       name: targetName,
@@ -76,7 +88,8 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
-    const expectedCommand = `${target.options.runWith} ${target.exec}`;
+    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} ${target.options.runWith} ${target.exec}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
@@ -84,13 +97,19 @@ describe('services/runner:runner', () => {
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
     expect(targets.getTarget).toHaveBeenCalledWith(targetName);
+    expect(runnerFile.read).toHaveBeenCalledTimes(1);
   });
 
   it('should return the command to run a target with Woopack on development', () => {
     // Given
     const asPlugin = true;
     const pathUtils = 'pathUtils';
-    const runnerFile = 'runnerFile';
+    const file = {
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
     const targetName = 'charito';
     const target = {
       name: targetName,
@@ -104,7 +123,8 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = 'run-as-plugin';
     let sut = null;
     let result = null;
-    const expectedCommand = `woopack run ${targetName}`;
+    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} woopack run ${targetName}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
@@ -150,8 +170,12 @@ describe('services/runner:runner', () => {
       join: jest.fn((base, rest) => path.join(base, rest)),
     };
     const directory = 'dist';
+    const file = {
+      directory,
+      version: 'latest',
+    };
     const runnerFile = {
-      read: jest.fn(() => ({ directory })),
+      read: jest.fn(() => file),
     };
     const targetName = 'charito';
     const target = {
@@ -164,7 +188,8 @@ describe('services/runner:runner', () => {
     };
     let sut = null;
     let result = null;
-    const expectedCommand = `node ${directory}/${target.path}`;
+    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} node ${directory}/${target.path}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
     result = sut.getPluginCommandsForProduction(targetName);
