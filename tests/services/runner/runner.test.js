@@ -110,8 +110,7 @@ describe('services/runner:runner', () => {
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
-    expect(targets.getTarget).toHaveBeenCalledTimes(1);
-    expect(targets.getTarget).toHaveBeenCalledWith(targetName);
+    expect(targets.getTarget).toHaveBeenCalledTimes(0);
   });
 
   it('should return the command to run a target with Woopack on production', () => {
@@ -141,8 +140,7 @@ describe('services/runner:runner', () => {
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
-    expect(targets.getTarget).toHaveBeenCalledTimes(1);
-    expect(targets.getTarget).toHaveBeenCalledWith(targetName);
+    expect(targets.getTarget).toHaveBeenCalledTimes(0);
   });
 
   it('should return the command to run a builded target on production', () => {

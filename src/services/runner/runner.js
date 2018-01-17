@@ -9,10 +9,13 @@ class Runner {
   }
 
   getCommands(targetName, production, runAsPluginCommand) {
-    const target = this.targets.getTarget(targetName);
-    const commands = this.asPlugin ?
-      this.getCommandsForWoopack(target, production, runAsPluginCommand) :
-      this.getCommandsForProduction(target);
+    let commands;
+    if (this.asPlugin) {
+      commands = this.getCommandsForWoopack(targetName, production, runAsPluginCommand);
+    } else {
+      const target = this.targets.getTarget(targetName);
+      commands = this.getCommandsForProduction(target);
+    }
 
     return commands.join(';');
   }
@@ -24,13 +27,13 @@ class Runner {
     return commands.join(';');
   }
 
-  getCommandsForWoopack(target, production, runAsPluginCommand) {
+  getCommandsForWoopack(targetName, production, runAsPluginCommand) {
     const commands = [];
     if (production) {
-      commands.push(`woopack build ${target.name} --type production`);
+      commands.push(`woopack build ${targetName} --type production`);
       commands.push(runAsPluginCommand);
     } else {
-      commands.push(`woopack run ${target.name}`);
+      commands.push(`woopack run ${targetName}`);
     }
 
     return commands;
