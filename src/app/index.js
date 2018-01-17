@@ -56,7 +56,9 @@ class WoopackRunner extends Jimple {
 
       const {
         version: {
-          filename,
+          revision: {
+            filename,
+          },
         },
         paths: {
           build,
