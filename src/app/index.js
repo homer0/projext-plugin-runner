@@ -74,6 +74,10 @@ class WoopackRunner extends Jimple {
       ...list,
       this.get('runnerFile').getFilename(),
     ]);
+
+    events.once('revision-file-created', (version) => {
+      this.get('runnerFile').updateVersion(version);
+    });
   }
 
   cli() {

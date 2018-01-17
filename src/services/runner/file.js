@@ -56,6 +56,12 @@ class RunnerFile {
     return fs.writeJsonSync(this.filepath, file);
   }
 
+  updateVersion(version) {
+    const file = this.read();
+    file.version = version;
+    return fs.writeJsonSync(this.filepath, file);
+  }
+
   read() {
     let result;
     if (this.exists()) {

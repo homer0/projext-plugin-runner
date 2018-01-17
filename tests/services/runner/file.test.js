@@ -292,6 +292,39 @@ describe('services/runner:runnerFile', () => {
     // Then
   });
 
+  it('should update the app version on the file', () => {
+    // Given
+    fs.pathExistsSync.mockImplementationOnce(() => false);
+    const writeResult = 'done!';
+    fs.writeJsonSync.mockImplementationOnce(() => writeResult);
+    const asPlugin = 'asPlugin';
+    const info = {
+      version: '25092015',
+    };
+    const filename = '.randomrunner';
+    const pathUtils = {
+      join: jest.fn(() => filename),
+    };
+    const version = 'latest';
+    let sut = null;
+    let result = null;
+    const expectedFile = {
+      runnerVersion: expect.any(String),
+      version,
+      directory: '',
+      targets: {},
+    };
+    // When
+    sut = new RunnerFile(asPlugin, info, pathUtils);
+    result = sut.updateVersion(version);
+    // Then
+    expect(result).toBe(writeResult);
+    expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
+    expect(fs.pathExistsSync).toHaveBeenCalledWith(filename);
+    expect(fs.writeJsonSync).toHaveBeenCalledTimes(1);
+    expect(fs.writeJsonSync).toHaveBeenCalledWith(filename, expectedFile);
+  });
+
   it('should include a provider for the DIC', () => {
     // Given
     const pathUtils = {

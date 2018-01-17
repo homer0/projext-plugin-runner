@@ -63,7 +63,9 @@ describe('app:WoopackRunner', () => {
     };
     const woopackProjectConfig = {
       version: {
-        filename: 'revision',
+        revision: {
+          filename: 'revision',
+        },
       },
       paths: {
         build: 'dist',
@@ -107,7 +109,8 @@ describe('app:WoopackRunner', () => {
     });
     expect(woopackEvents.once).toHaveBeenCalledTimes([
       expectedEventName,
-      'the-event-of-the-next-test',
+      'an-event-for-another test',
+      'an-event-for-another test',
     ].length);
     expect(woopackEvents.once).toHaveBeenCalledWith(
       expectedEventName,
@@ -116,7 +119,7 @@ describe('app:WoopackRunner', () => {
     expect(woopackProjectConfiguration.getConfig).toHaveBeenCalledTimes(1);
     expect(woopackVersionUtils.getVersion).toHaveBeenCalledTimes(1);
     expect(woopackVersionUtils.getVersion).toHaveBeenCalledWith(
-      woopackProjectConfig.version.filename
+      woopackProjectConfig.version.revision.filename
     );
     expect(updateRunnerFile).toHaveBeenCalledTimes(1);
     expect(updateRunnerFile).toHaveBeenCalledWith(
@@ -164,8 +167,9 @@ describe('app:WoopackRunner', () => {
       expect(woopack.get).toHaveBeenCalledWith(service);
     });
     expect(woopackEvents.once).toHaveBeenCalledTimes([
-      'the-event-from-the-previous-test',
+      'an-event-for-another test',
       expectedEventName,
+      'an-event-for-another test',
     ].length);
     expect(woopackEvents.once).toHaveBeenCalledWith(
       expect.any(String),
@@ -175,8 +179,63 @@ describe('app:WoopackRunner', () => {
       expectedEventName,
       expect.any(Function)
     );
+    expect(woopackEvents.once).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Function)
+    );
     expect(getRunnerFileName).toHaveBeenCalledTimes(1);
     expect(result).toEqual(expectedItems);
+  });
+
+  it('should update runner file when Woopack creates a revision file', () => {
+    // Given
+    const updateRunnerFileVersion = jest.fn();
+    const get = jest.fn(() => ({
+      listen: () => {},
+      updateVersion: updateRunnerFileVersion,
+    }));
+    JimpleMock.mock('get', get);
+    const woopackEvents = {
+      once: jest.fn(),
+    };
+    const woopack = {
+      events: woopackEvents,
+      get: jest.fn((service) => woopack[service]),
+    };
+    const version = 'latest';
+    let sut = null;
+    let eventListener = null;
+    const expectedEventName = 'revision-file-created';
+    const expectedServices = ['events'];
+    // When
+    sut = new WoopackRunner();
+    sut.plugin(woopack);
+    [,, [, eventListener]] = woopackEvents.once.mock.calls;
+    eventListener(version);
+    // Then
+    expect(woopack.get).toHaveBeenCalledTimes(expectedServices.length);
+    expectedServices.forEach((service) => {
+      expect(woopack.get).toHaveBeenCalledWith(service);
+    });
+    expect(woopackEvents.once).toHaveBeenCalledTimes([
+      'an-event-for-another test',
+      'an-event-for-another test',
+      expectedEventName,
+    ].length);
+    expect(woopackEvents.once).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Function)
+    );
+    expect(woopackEvents.once).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Function)
+    );
+    expect(woopackEvents.once).toHaveBeenCalledWith(
+      expectedEventName,
+      expect.any(Function)
+    );
+    expect(updateRunnerFileVersion).toHaveBeenCalledTimes(1);
+    expect(updateRunnerFileVersion).toHaveBeenCalledWith(version);
   });
 
   it('should start the CLI the interface', () => {
