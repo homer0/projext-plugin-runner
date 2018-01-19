@@ -1,26 +1,41 @@
 #!/bin/sh -e
+# Get the name of the target that needs to run
 target=$1
+# If this flags gets to be true, the execution will be handled by the Node CLI
 disableSHTasks=false
+# Determine whether the task is a private helper task or not
 isSHTask=true
+
+# If no target was specified
 if [ "$target" = "" ]; then
+  # ...show the Node CLI help information
   woopack-runner-cli --help
 else
+  # ...otherwise, check if the task is a private helper task
   if echo "$task" | grep -q "^sh\-$"; then
     isSHTask=false
   fi
 
+  # check if the task was used with a 'help' or 'version' option
   if echo "$*" | grep -q "\(\s\-\-\?\(help\|h\|version\|v\)\(\s\|$\)\)"; then
     disableSHTasks=true
   fi
 
+  # If the task is a shell task that needs commands...
   if [ "$isSHTask" = true ] && [ "$disableSHTasks" = false ]; then
+      # ...execute a validation command to avoid any error being thrown on the
+      # command that returns the list.
       eval "woopack-runner-cli sh-validate $*"
+      # Capture the commands that need to run
       command=$(eval "woopack-runner-cli sh-run $*")
+      # If there are commands to run...
       if [ "$command" != "" ]; then
+        # ...execute them
         # echo "> $command"
         eval "$command"
       fi
   else
+    # ...otherwise, delegate everything to the Node CLI
     woopack-runner-cli "$@"
   fi
 fi

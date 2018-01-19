@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+/**
+ * Get an instance of WoopackRunner to use.
+ * @type {WoopackRunner}
+ */
 const runner = require('../../index');
-
+// Start the CLI interface.
 runner.cli();

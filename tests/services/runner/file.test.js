@@ -31,7 +31,7 @@ describe('services/runner:runnerFile', () => {
     const expectedFilename = '.woopackrunner';
     const expectedFileTemplate = {
       runnerVersion: info.version,
-      version: 'unknown',
+      version: 'development',
       directory: '',
       targets: {},
     };
@@ -40,7 +40,6 @@ describe('services/runner:runnerFile', () => {
     // Then
     expect(sut).toBeInstanceOf(RunnerFile);
     expect(sut.asPlugin).toBe(asPlugin);
-    expect(sut.pathUtils).toEqual(pathUtils);
     expect(sut.filename).toBe(expectedFilename);
     expect(sut.filepath).toBe(expectedFilename);
     expect(sut.fileTemplate).toEqual(expectedFileTemplate);
@@ -348,6 +347,5 @@ describe('services/runner:runnerFile', () => {
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(RunnerFile);
     expect(sut.asPlugin).toBe('asPlugin');
-    expect(sut.pathUtils).toEqual(pathUtils);
   });
 });
