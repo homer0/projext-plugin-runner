@@ -155,7 +155,7 @@ class Runner {
  * The service provider that once registered on the app container will set an instance of
  * `Runner` as the `runner` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(runner);
  * // Getting access to the service instance
  * const runner = container.get('runner');

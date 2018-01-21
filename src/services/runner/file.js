@@ -144,7 +144,7 @@ class RunnerFile {
  * The service provider that once registered on the app container will set an instance of
  * `RunnerFile` as the `runnerFile` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(runnerFile);
  * // Getting access to the service instance
  * const runnerFile = container.get('runnerFile');

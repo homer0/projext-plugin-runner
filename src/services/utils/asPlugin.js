@@ -18,7 +18,7 @@ const asPlugin = () => {
  * The service provider that once registered on the app container will set the result of
  * `asPlugin()` as the `asPlugin` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(asPluginProvider);
  * // Getting access to the service value
  * const asPlugin = container.get('asPlugin');
