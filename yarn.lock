@@ -4015,9 +4015,9 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wootils@^0.0.4:
-  version "0.0.4"
-  resolved "http://local.npm/wootils/-/wootils-0.0.4.tgz#17f0ab7423325920ab46f9f8f20cb0d48b562479"
+wootils@^1.0.2:
+  version "1.0.2"
+  resolved "http://local.npm/wootils/-/wootils-1.0.2.tgz#70de151c3c14ef2bb1abbed75c5fb822ca0c30ef"
   dependencies:
     colors "1.1.2"
     fs-extra "5.0.0"
