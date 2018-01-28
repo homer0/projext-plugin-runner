@@ -62,11 +62,6 @@ describe('app:WoopackRunner', () => {
       once: jest.fn(),
     };
     const woopackProjectConfig = {
-      version: {
-        revision: {
-          filename: 'revision',
-        },
-      },
       paths: {
         build: 'dist',
       },
@@ -75,13 +70,13 @@ describe('app:WoopackRunner', () => {
       getConfig: jest.fn(() => woopackProjectConfig),
     };
     const woopackVersion = 'latest';
-    const woopackVersionUtils = {
+    const woopackBuildVersion = {
       getVersion: jest.fn(() => woopackVersion),
     };
     const woopack = {
       events: woopackEvents,
       projectConfiguration: woopackProjectConfiguration,
-      versionUtils: woopackVersionUtils,
+      buildVersion: woopackBuildVersion,
       get: jest.fn((service) => woopack[service]),
     };
     const target = {
@@ -95,7 +90,7 @@ describe('app:WoopackRunner', () => {
     const expectedServices = [
       'events',
       'projectConfiguration',
-      'versionUtils',
+      'buildVersion',
     ];
     // When
     sut = new WoopackRunner();
@@ -117,10 +112,7 @@ describe('app:WoopackRunner', () => {
       expect.any(Function)
     );
     expect(woopackProjectConfiguration.getConfig).toHaveBeenCalledTimes(1);
-    expect(woopackVersionUtils.getVersion).toHaveBeenCalledTimes(1);
-    expect(woopackVersionUtils.getVersion).toHaveBeenCalledWith(
-      woopackProjectConfig.version.revision.filename
-    );
+    expect(woopackBuildVersion.getVersion).toHaveBeenCalledTimes(1);
     expect(updateRunnerFile).toHaveBeenCalledTimes(1);
     expect(updateRunnerFile).toHaveBeenCalledWith(
       target,

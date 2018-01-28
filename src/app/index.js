@@ -68,27 +68,15 @@ class WoopackRunner extends Jimple {
     const events = woopack.get('events');
     // Adds the listener for when targets are built.
     events.once('build-target-commands-list', (commands, target) => {
-      // Get the project configuration.
-      const projectConfiguration = woopack.get('projectConfiguration').getConfig();
-      // Get the version utility service.
-      const versionUtils = woopack.get('versionUtils');
+      // Get the distribution directory path.
+      const distPath = woopack.get('projectConfiguration').getConfig().paths.build;
+      // Get the project version.
+      const version = woopack.get('buildVersion').getVersion();
 
-      const {
-        version: {
-          revision: {
-            filename,
-          },
-        },
-        paths: {
-          build,
-        },
-      } = projectConfiguration;
-      // Get the current project version
-      const version = versionUtils.getVersion(filename);
       // Update the runner file.
-      this.get('runnerFile').update(target, version, build);
+      this.get('runnerFile').update(target, version, distPath);
       /**
-       * Return the received commands. This is an event reducer, but there is no need for any
+       * Return the received commands. This is an reducer event, but there is no need for any
        * update.
        */
       return commands;
