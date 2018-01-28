@@ -2,7 +2,7 @@
     "name": "woopack-plugin-runner",
     "cliName": "woopack-runner",
     "description": "...",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "repository": "homer0/woopack-plugin-runner",
     "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
     "license": "MIT",
