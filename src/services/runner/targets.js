@@ -6,14 +6,14 @@ const { provider } = require('jimple');
 class Targets {
   /**
    * Class constructor.
-   * @param {Boolean}    asPlugin   To check if Woopack is present or not
+   * @param {boolean}    asPlugin   To check if Woopack is present or not
    * @param {PathUtils}  pathUtils  To create the targets exeuction paths.
    * @param {RunnerFile} runnerFile To get the targets information.
    */
   constructor(asPlugin, pathUtils, runnerFile) {
     /**
      * Whether Woopack is present or not.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.asPlugin = asPlugin;
     /**
@@ -29,7 +29,7 @@ class Targets {
   }
   /**
    * Get a target information by its name.
-   * @param  {String} name The target name.
+   * @param {string} name The target name.
    * @return {Target}
    * @throws {Error} If the target information is not on the runner file.
    */
@@ -47,8 +47,8 @@ class Targets {
   }
   /**
    * Validate a target information.
-   * @param  {String} name The target name.
-   * @return {Boolean}
+   * @param  {string} name The target name.
+   * @return {boolean}
    * @throws {Error} If the runner file doesn't exist.
    * @throws {Error} If the target type is not Node.
    * @throws {Error} If the target executable doesn't exist.

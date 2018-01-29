@@ -6,7 +6,7 @@ const { provider } = require('jimple');
 class Runner {
   /**
    * Class constructor.
-   * @param {Boolean}    asPlugin   To check if Woopack is present or not
+   * @param {boolean}    asPlugin   To check if Woopack is present or not
    * @param {PathUtils}  pathUtils  To create the path for the targets executables.
    * @param {RunnerFile} runnerFile To read the required information to run targets.
    * @param {Targets}    targets    To get the targets information.
@@ -14,7 +14,7 @@ class Runner {
   constructor(asPlugin, pathUtils, runnerFile, targets) {
     /**
      * Whether Woopack is present or not.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.asPlugin = asPlugin;
     /**
@@ -35,15 +35,15 @@ class Runner {
   }
   /**
    * Get the shell execution commands for running a target.
-   * @param {String}  targetName         The name of the target to run.
-   * @param {Boolean} production         In case Woopack is present, this flag forces the runner
+   * @param {string}  targetName         The name of the target to run.
+   * @param {boolean} production         In case Woopack is present, this flag forces the runner
    *                                     to build the target for production and run that build.
-   * @param {String}  runAsPluginCommand In case `production` is `true`, the plugin will first run
+   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
    *                                     the latest information and then it will run this command,
    *                                     to inform the plugin that the build is ready and that just
    *                                     needs to execute it.
-   * @return {String}
+   * @return {string}
    */
   getCommands(targetName, production, runAsPluginCommand) {
     let commands;
@@ -63,8 +63,8 @@ class Runner {
   /**
    * Get the commands to run a target production build. This needs to be called after a build is
    * made.
-   * @param {String} targetName The name of the target to run.
-   * @return {String}
+   * @param {string} targetName The name of the target to run.
+   * @return {string}
    */
   getPluginCommandsForProduction(targetName) {
     // Get the target information.
@@ -76,9 +76,9 @@ class Runner {
   }
   /**
    * Get the list of comands to run a target with Woopack.
-   * @param {String}  targetName         The name of the target to run.
-   * @param {Boolean} production         Forces Woopack to use the production build.
-   * @param {String}  runAsPluginCommand In case `production` is `true`, the plugin will first run
+   * @param {string}  targetName         The name of the target to run.
+   * @param {boolean} production         Forces Woopack to use the production build.
+   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
    *                                     the latest information and then it will run this command,
    *                                     to inform the plugin that the build is ready and that just
@@ -104,7 +104,7 @@ class Runner {
   }
   /**
    * Get the list of commands to run a target without Woopack present.
-   * @param  {Target} target The target information.
+   * @param {Target} target The target information.
    * @return {Array}
    */
   getCommandsForProduction(target) {
@@ -137,13 +137,13 @@ class Runner {
   /**
    * Get a set of environment variables that will be sent to the executables.
    * For now is just the version of the project.
-   * @param {Object} runnerFileContents The contents of the runner file.
-   * @return {String}
+   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.
+   * @return {string}
    * @todo Refactor this. The variables should be configurable.
    */
   getEnvironmentVariables(runnerFileContents) {
     const names = {
-      version: 'APP_VERSION',
+      version: 'VERSION',
     };
 
     return Object.keys(names)

@@ -1,7 +1,7 @@
 const { provider } = require('jimple');
 /**
  * Checks whether or not Woopack is preent on the environment.
- * @return {Boolean}
+ * @return {boolean}
  */
 const asPlugin = () => {
   let woopackExists = true;

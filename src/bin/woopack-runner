@@ -1,13 +1,20 @@
 #!/bin/sh -e
 # Get the name of the target that needs to run
 target=$1
-# If this flags gets to be true, the execution will be handled by the Node CLI
+# To validate if the target parameter is a real name or an option
+isAValidTarget=true
+# If this flag gets to be true, the execution will be handled by the Node CLI
 disableSHTasks=false
 # Determine whether the task is a private helper task or not
 isSHTask=true
 
+# Check if the target is a valid target name or an option
+if echo "$1" | grep -q "^\(\-\)"; then
+  isAValidTarget=false
+fi
+
 # If no target was specified
-if [ "$target" = "" ]; then
+if [ "$target" = "" ] || [ "$isAValidTarget" = false ]; then
   # ...show the Node CLI help information
   woopack-runner-cli --help
 else

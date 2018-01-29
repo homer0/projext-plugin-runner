@@ -26,7 +26,6 @@ const { asPlugin } = require('../services/utils');
  * This is the plugin own dependency injection cotainer. Different from most of the other plugins,
  * this one is a little bit more complex as it is prepare to run with and without Woopack present.
  * @extends {Jimple}
- * @see https://yarnpkg.com/en/package/jimple
  */
 class WoopackRunner extends Jimple {
   /**

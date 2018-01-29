@@ -19,13 +19,13 @@ class CLISHRunCommand extends CLICommand {
     this.runner = runner;
     /**
      * The instruction needed to trigger the command.
-     * @type {String}
+     * @type {string}
      */
     this.command = 'sh-run [target]';
     /**
      * A description of the command, just to follow the interface as the command won't show up on
      * the help interface.
-     * @type {String}
+     * @type {string}
      */
     this.description = 'Get the commands for the shell program to execute';
     this.addOption(
@@ -42,18 +42,18 @@ class CLISHRunCommand extends CLICommand {
     );
     /**
      * Hide the command from the help interface.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.hidden = true;
   }
   /**
    * Handle the execution of the command and outputs the list of commands to run.
-   * @param {String}  target             The name of the target to run.
+   * @param {string}  target             The name of the target to run.
    * @param {Command} command            The executed command (sent by `commander`).
    * @param {Object}  options            The command options.
-   * @param {String}  options.production If the user wants to run a production build, even with
+   * @param {string}  options.production If the user wants to run a production build, even with
    *                                     Woopack preset.
-   * @param {Boolean} options.ready      If the user used the `production` option, then the list
+   * @param {boolean} options.ready      If the user used the `production` option, then the list
    *                                     of commands will be: one to build the target for
    *                                     production and one to run this command again, because if
    *                                     a build is going to happen, there's no way to be sure

@@ -9,7 +9,7 @@ const { provider } = require('jimple');
 class RunnerFile {
   /**
    * Class constructor.
-   * @param {Boolean}   asPlugin  To check if Woopack is present or not.
+   * @param {boolean}   asPlugin  To check if Woopack is present or not.
    * @param {Object}    info      The plugin `package.json` information, to use the plugin version
    *                              on the file.
    * @param {PathUtils} pathUtils To build the paths to the file.
@@ -17,32 +17,22 @@ class RunnerFile {
   constructor(asPlugin, info, pathUtils) {
     /**
      * Whether Woopack is present or not.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.asPlugin = asPlugin;
     /**
      * The name of the runner file.
-     * @type {String}
+     * @type {string}
      */
     this.filename = '.woopackrunner';
     /**
      * The path to the runner file.
-     * @type {String}
+     * @type {string}
      */
     this.filepath = pathUtils.join(this.filename);
     /**
      * The file default template.
-     * @type {Object}
-     * @property {String} runnerVersion The version of the plugin that generated the file.
-     * @property {String} version       The version of the project.
-     * @property {String} directory     The project distribution directory.
-     * @property {Object} targets       A dictionary with the targets information:
-     *                                  - `name`: The target name.
-     *                                  - `path`: The path to the target execution file.
-     *                                  - `node`: A flag to know if its a Node target.
-     *                                  - `options`: An object with custom options for running the
-     *                                  taret. Those options can be defined on the target
-     *                                  `runnerOptions` setting.
+     * @type {RunnerFileContents}
      */
     this.fileTemplate = {
       runnerVersion: info.version,
@@ -53,7 +43,7 @@ class RunnerFile {
   }
   /**
    * Set the name of the runner file.
-   * @param {String} newName The new name.
+   * @param {string} newName The new name.
    * @todo Update the `filepath`
    */
   setFilename(newName) {
@@ -61,14 +51,14 @@ class RunnerFile {
   }
   /**
    * Get the name of the runner file.
-   * @return {String}
+   * @return {string}
    */
   getFilename() {
     return this.filename;
   }
   /**
    * Checks whether the file exists or not.
-   * @return {Boolean}
+   * @return {boolean}
    */
   exists() {
     return fs.pathExistsSync(this.filepath);
@@ -76,8 +66,8 @@ class RunnerFile {
   /**
    * Updates the runner file with a new build information.
    * @param {Target} target    The target information.
-   * @param {String} version   The project version.
-   * @param {String} directory The project distribution directory.
+   * @param {string} version   The project version.
+   * @param {string} directory The project distribution directory.
    */
   update(target, version, directory) {
     const file = this.read();
@@ -107,7 +97,7 @@ class RunnerFile {
   }
   /**
    * Updates the runner file with a new version of the project.
-   * @param {String} version The project version.
+   * @param {string} version The project version.
    */
   updateVersion(version) {
     const file = this.read();
@@ -117,7 +107,7 @@ class RunnerFile {
   /**
    * Read the contents of the runner file. If the file doesn't exist, it will create it with
    * the default template (`this.fileTemplate`).
-   * @return {Object}
+   * @return {RunnerFileContents}
    */
   read() {
     let result;

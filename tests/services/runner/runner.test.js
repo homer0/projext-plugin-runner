@@ -51,7 +51,7 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
-    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} node ${target.exec}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
@@ -88,7 +88,7 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
-    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} ${target.options.runWith} ${target.exec}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
@@ -123,7 +123,7 @@ describe('services/runner:runner', () => {
     const runAsPluginCommand = 'run-as-plugin';
     let sut = null;
     let result = null;
-    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} woopack run ${targetName}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
@@ -188,7 +188,7 @@ describe('services/runner:runner', () => {
     };
     let sut = null;
     let result = null;
-    const expectedVariables = `APP_VERSION=${file.version}`;
+    const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} node ${directory}/${target.path}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);

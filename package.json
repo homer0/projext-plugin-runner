@@ -1,7 +1,7 @@
 {
     "name": "woopack-plugin-runner",
     "cliName": "woopack-runner",
-    "description": "...",
+    "description": "A woopack plugin to run Node targets with a simple command no matter the environment.",
     "version": "0.0.10",
     "repository": "homer0/woopack-plugin-runner",
     "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
@@ -27,7 +27,8 @@
       "jasmine-expect": "3.8.1",
       "esdoc": "1.0.4",
       "esdoc-standard-plugin": "1.0.0",
-      "esdoc-node": "homer0/esdoc-node"
+      "esdoc-node": "homer0/esdoc-node",
+      "leasot": "4.13.0"
     },
     "engine-strict": true,
     "engines": {
@@ -43,6 +44,8 @@
       "install-hooks": "./utils/hooks/install",
       "test": "./utils/scripts/test",
       "lint": "./utils/scripts/lint",
-      "docs": "./utils/scripts/docs"
+      "lint:full": "./utils/scripts/lint-full",
+      "docs": "./utils/scripts/docs",
+      "todo": "./utils/scripts/todo"
     }
 }

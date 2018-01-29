@@ -28,13 +28,13 @@ class CLISHValidateCommand extends CLICommand {
     this.targets = targets;
     /**
      * The instruction needed to trigger the command.
-     * @type {String}
+     * @type {string}
      */
     this.command = 'sh-validate [target]';
     /**
      * A description of the command, just to follow the interface as the command won't show up on
      * the help interface.
-     * @type {String}
+     * @type {string}
      */
     this.description = 'Validate the arguments before the shelll executes the task';
     this.addOption(
@@ -57,7 +57,7 @@ class CLISHValidateCommand extends CLICommand {
   }
   /**
    * Handle the execution of the command and validate all the arguments.
-   * @param {String} target The name of the target.
+   * @param {string} target The name of the target.
    */
   handle(target) {
     // First let the service make its own validation.
