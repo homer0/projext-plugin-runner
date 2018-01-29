@@ -1,9 +1,8 @@
 const { provider } = require('jimple');
-const CLICommand = require('../../interfaces/cliCommand');
+const CLICommand = require('../../abstracts/cliCommand');
 /**
  * This is private command the shell script executes in order to get a list of commands to run.
  * @extends {CLICommand}
- * @implements {CLICommand}
  */
 class CLISHRunCommand extends CLICommand {
   /**
