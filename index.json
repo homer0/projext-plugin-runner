@@ -1,0 +1,3122 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "src/abstracts/cliCommand.js",
+    "content": "/**\n * A helper class for creating commands for the CLI interface.\n * @abstract\n */\nclass CLICommand {\n  /**\n   * Class constructor.\n   * @throws {TypeError} If instantiated directly.\n   * @abstract\n   */\n  constructor() {\n    if (new.target === CLICommand) {\n      throw new TypeError(\n        'CLICommand is an abstract class, it can\\'t be instantiated directly'\n      );\n    }\n    /**\n     * The CLI command instruction. For example `my-command [target]`.\n     * @type {string}\n     */\n    this.command = '';\n    /**\n     * A description of the command for the help interface.\n     * @type {string}\n     */\n    this.description = '';\n    /**\n     * A list with the name of the options the command supports. New options can be added using\n     * the `addOption` method.\n     * @type {Array}\n     */\n    this.options = [];\n    /**\n     * A dictionary of command options settings by their option name. New options can be added\n     * using the `addOption` method.\n     * @type {Object}\n     */\n    this.optionsByName = {};\n    /**\n     * This is a useful flag for when the command is ran as a result of another command. It lets\n     * the interface know that it can search for option values on a parent command, if there's one.\n     * @type {boolean}\n     */\n    this.checkOptionsOnParent = true;\n    /**\n     * Whether the command and its description should be shown on the CLI interface list of\n     * commands.\n     * @type {boolean}\n     */\n    this.hidden = false;\n    /**\n     * Whether or not a sub program should be executed for this command. Take for example the case\n     * of `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\n     * sub program. If this is `true`, then a binary with the name of the command should be\n     * exported on the `package.json`.\n     * @type {boolean}\n     */\n    this.subProgram = false;\n    /**\n     * This is the name of the program that runs the command. It will be added when the command\n     * is registered on the program.\n     * @type {string}\n     */\n    this.cliName = '';\n  }\n  /**\n   * Add a new option for the command.\n   * @example\n   * // To capture an option\n   * this.addOption(\n   *   'type',\n   *   '-t, --type [type]',\n   *   'The type of thingy you want to use?',\n   * );\n   *\n   * // As a simple flag\n   * this.addOption(\n   *   'ready',\n   *   '-r, --ready',\n   *   'Is it read?',\n   *   false\n   * );\n   *\n   * @param {string} name              The option name.\n   * @param {string} instruction       The option instruction, for example: `-t, --type [type]`.\n   * @param {string} [description='']  The option description.\n   * @param {string} [defaultValue=''] The option default value, in case is not used on execution.\n   */\n  addOption(name, instruction, description = '', defaultValue = '') {\n    this.optionsByName[name] = {\n      name,\n      instruction,\n      description,\n      defaultValue,\n    };\n\n    this.options.push(name);\n  }\n  /**\n   * Register this command on a CLI program.\n   * @param {Command} program  A Commander instance.\n   * @param {Object}  cli      The main CLI interface, just for the name.\n   * @param {string}  cli.name The CLI interface name.\n   * @see https://yarnpkg.com/en/package/commander\n   */\n  register(program, cli) {\n    // Get the name of the program\n    this.cliName = cli.name;\n    const options = {};\n    // If the command should be hidden...\n    if (this.hidden) {\n      // ...remove it from the help interface.\n      options.noHelp = true;\n    }\n\n    let command;\n    // If the command is a sub program...\n    if (this.subProgram) {\n      /**\n       * ...it gets added without the `.description` property. That's how Commander differentiates\n       * a main program command and a sub program command.\n       */\n      command = program.command(this.command, this.description, options);\n    } else {\n      // ...otherwise, it gets added as a sub command of the main program.\n      command = program\n      .command(this.command, '', options)\n      .description(this.description);\n    }\n    // Register all the command options.\n    this.options.forEach((name) => {\n      const option = this.optionsByName[name];\n      command = command.option(\n        option.instruction,\n        option.description\n      );\n    });\n    // Add the handler for when the command gets executed.\n    command.action(this._handle.bind(this));\n  }\n  /**\n   * Generate an instruction for this command.\n   * @example\n   * // Let's say this command is `destroy [target] [--once]`\n   *\n   * this.generate({ target: 'pluto' });\n   * // Will return `destroy pluto`\n   *\n   * this.generate({ target: 'moon', once: true });\n   * // Will return `destroy moon --once`\n   * @param  {Object} [args={}] A dictionary with the arguments and options for the command. If the\n   *                            command includes an argument on its `command` property, that\n   *                            argument is required.\n   * @return {string} The command instruction to run on the CLI interface.\n   */\n  generate(args = {}) {\n    let cmd = this.command;\n    const cmdOptions = [];\n    // Loop all the `args`...\n    Object.keys(args).forEach((name) => {\n      const value = args[name];\n      const asPlaceholder = `[${name}]`;\n      // Check if the current argument should be used on the command instruction...\n      if (cmd.includes(asPlaceholder)) {\n        // ...if so, replace it on the main command.\n        cmd = cmd.replace(asPlaceholder, value);\n      } else if (this.optionsByName[name]) {\n        // ...otherwise, check if there's an option with the same name as the argument.\n        const option = this.optionsByName[name];\n        /**\n         * Remove the shorthand version of the option instruction, if there's one. For example:\n         * `-t, --type [type]` -> `--type [type]`.\n         */\n        let instruction = option.instruction.split(',').pop().trim();\n        // If the option instruction includes the argument as a value (`[argument-name]`)...\n        if (instruction.includes(asPlaceholder)) {\n          // ...replace it on the option instruction.\n          instruction = instruction.replace(asPlaceholder, value);\n        } else if (value === false) {\n          /**\n           * ...but if the value is `false`, then we clear the instruction as it won't be included\n           * on the generated string.\n           */\n          instruction = '';\n        }\n\n        // If there's an option instruction...\n        if (instruction) {\n          // ...add it to the list.\n          cmdOptions.push(instruction);\n        }\n      }\n    });\n\n    let options = '';\n    // If after the loop, there are option instructions to add...\n    if (cmdOptions.length) {\n      // ...put them all together on a single string, separated by a space\n      options = ['', ...cmdOptions].join(' ');\n    }\n\n    // Return the complete command instruction\n    return `${this.cliName} ${cmd}${options}`;\n  }\n  /**\n   * Handle the command execution.\n   * This method will receive first the captured arguments, then the executed command information\n   * from Commander and finally, a dictionary with the options and their values.\n   * @example\n   * // Let's say the command is `run [target] [--production]`.\n   * // And now, it was executed with `run my-target`\n   * handle(target, command, options) {\n   *   console.log(target);\n   *   // Will output `my-target`\n   *   console.log(options.production)\n   *   // Will output `false`\n   * }\n   * @throws {Error} if not overwritten.\n   * @abstract\n   */\n  handle() {\n    throw new Error('This method must to be overwritten');\n  }\n  /**\n   * A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.\n   * @param {string} text The text to output.\n   */\n  output(text) {\n    // eslint-disable-next-line no-console\n    console.log(text);\n  }\n  /**\n   * This is the real method that receives the execution of the command and parses it in order to\n   * create the options dictionary that the `handle` method receives.\n   * @param {Array} args The list of arguments sent by Commander.\n   * @ignore\n   * @access protected\n   */\n  _handle(...args) {\n    // The actual command is always the last argument.\n    const command = args[args.length - 1];\n    const options = {};\n    // Loop all the known options the command can receive\n    Object.keys(this.optionsByName).forEach((name) => {\n      const option = this.optionsByName[name];\n      let value = '';\n      // If the option is on the command...\n      if (command[name]) {\n        // ...then that's the value that will be used.\n        value = command[name];\n      }\n\n      /**\n       * If no value was found yet, the flag to check on the parent is `true`, there's a parent\n       * command and it has an option with that name...\n       */\n      if (\n        !value &&\n        this.checkOptionsOnParent &&\n        command.parent &&\n        command.parent[name]\n      ) {\n        // ...then that's the value that will be used.\n        value = command.parent[name];\n      }\n      // If no value was found and there's a default value registered for the option...\n      if (!value && typeof option.defaultValue !== 'undefined') {\n        // ...then that's the value that will be used.\n        value = option.defaultValue;\n      }\n\n      // Set the option on the dictionary with the value found.\n      options[name] = value;\n    });\n\n    // Copy the arguments list.\n    const newArgs = args.slice();\n    // Add the new options dictionary at the end.\n    newArgs.push(options);\n    // Call the abstract method that handles the execution.\n    this.handle(...newArgs);\n  }\n}\n\nmodule.exports = CLICommand;\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/abstracts/cliCommand.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "CLICommand",
+    "memberof": "src/abstracts/cliCommand.js",
+    "static": true,
+    "longname": "src/abstracts/cliCommand.js~CLICommand",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/abstracts/cliCommand.js",
+    "importStyle": "CLICommand",
+    "description": "A helper class for creating commands for the CLI interface.",
+    "lineNumber": 5,
+    "abstract": true,
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 11,
+    "abstract": true,
+    "throws": [
+      {
+        "types": [
+          "TypeError"
+        ],
+        "description": "If instantiated directly."
+      }
+    ]
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "command",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#command",
+    "access": "public",
+    "description": "The CLI command instruction. For example `my-command [target]`.",
+    "lineNumber": 21,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "description",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#description",
+    "access": "public",
+    "description": "A description of the command for the help interface.",
+    "lineNumber": 26,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "options",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#options",
+    "access": "public",
+    "description": "A list with the name of the options the command supports. New options can be added using\nthe `addOption` method.",
+    "lineNumber": 32,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "member",
+    "name": "optionsByName",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#optionsByName",
+    "access": "public",
+    "description": "A dictionary of command options settings by their option name. New options can be added\nusing the `addOption` method.",
+    "lineNumber": 38,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "member",
+    "name": "checkOptionsOnParent",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#checkOptionsOnParent",
+    "access": "public",
+    "description": "This is a useful flag for when the command is ran as a result of another command. It lets\nthe interface know that it can search for option values on a parent command, if there's one.",
+    "lineNumber": 44,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "member",
+    "name": "hidden",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#hidden",
+    "access": "public",
+    "description": "Whether the command and its description should be shown on the CLI interface list of\ncommands.",
+    "lineNumber": 50,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "member",
+    "name": "subProgram",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#subProgram",
+    "access": "public",
+    "description": "Whether or not a sub program should be executed for this command. Take for example the case\nof `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\nsub program. If this is `true`, then a binary with the name of the command should be\nexported on the `package.json`.",
+    "lineNumber": 58,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "member",
+    "name": "cliName",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#cliName",
+    "access": "public",
+    "description": "This is the name of the program that runs the command. It will be added when the command\nis registered on the program.",
+    "lineNumber": 64,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "method",
+    "name": "addOption",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#addOption",
+    "access": "public",
+    "description": "Add a new option for the command.",
+    "examples": [
+      "// To capture an option\nthis.addOption(\n  'type',\n  '-t, --type [type]',\n  'The type of thingy you want to use?',\n);\n\n// As a simple flag\nthis.addOption(\n  'ready',\n  '-r, --ready',\n  'Is it read?',\n  false\n);"
+    ],
+    "lineNumber": 89,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The option name."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "instruction",
+        "description": "The option instruction, for example: `-t, --type [type]`."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "''",
+        "defaultRaw": "''",
+        "name": "description",
+        "description": "The option description."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "''",
+        "defaultRaw": "''",
+        "name": "defaultValue",
+        "description": "The option default value, in case is not used on execution."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 60,
+    "kind": "method",
+    "name": "register",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#register",
+    "access": "public",
+    "description": "Register this command on a CLI program.",
+    "see": [
+      "https://yarnpkg.com/en/package/commander"
+    ],
+    "lineNumber": 106,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Command"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "program",
+        "description": "A Commander instance."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "cli",
+        "description": "The main CLI interface, just for the name."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "cli.name",
+        "description": "The CLI interface name."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "name": "generate",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#generate",
+    "access": "public",
+    "description": "Generate an instruction for this command.",
+    "examples": [
+      "// Let's say this command is `destroy [target] [--once]`\n\nthis.generate({ target: 'pluto' });\n// Will return `destroy pluto`\n\nthis.generate({ target: 'moon', once: true });\n// Will return `destroy moon --once`"
+    ],
+    "lineNumber": 156,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "args",
+        "description": "A dictionary with the arguments and options for the command. If the\n                           command includes an argument on its `command` property, that\n                           argument is required."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "The command instruction to run on the CLI interface."
+    }
+  },
+  {
+    "__docId__": 63,
+    "kind": "method",
+    "name": "handle",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#handle",
+    "access": "public",
+    "description": "Handle the command execution.\nThis method will receive first the captured arguments, then the executed command information\nfrom Commander and finally, a dictionary with the options and their values.",
+    "examples": [
+      "// Let's say the command is `run [target] [--production]`.\n// And now, it was executed with `run my-target`\nhandle(target, command, options) {\n  console.log(target);\n  // Will output `my-target`\n  console.log(options.production)\n  // Will output `false`\n}"
+    ],
+    "lineNumber": 221,
+    "abstract": true,
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "if not overwritten."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "name": "output",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#output",
+    "access": "public",
+    "description": "A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.",
+    "lineNumber": 228,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "text",
+        "description": "The text to output."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 65,
+    "kind": "method",
+    "name": "_handle",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_handle",
+    "access": "protected",
+    "description": "This is the real method that receives the execution of the command and parses it in order to\ncreate the options dictionary that the `handle` method receives.",
+    "lineNumber": 239,
+    "ignore": true,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "args",
+        "description": "The list of arguments sent by Commander."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 66,
+    "kind": "file",
+    "name": "src/app/index.js",
+    "content": "const Jimple = require('jimple');\nconst appPackage = require('../../package.json');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { asPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n */\nclass WoopackRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(asPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   */\n  plugin(woopack) {\n    // Get the events service.\n    const events = woopack.get('events');\n    // Adds the listener for when targets are built.\n    events.once('build-target-commands-list', (commands, target) => {\n      // Get the distribution directory path.\n      const distPath = woopack.get('projectConfiguration').getConfig().paths.build;\n      // Get the project version.\n      const version = woopack.get('buildVersion').getVersion();\n\n      // Update the runner file.\n      this.get('runnerFile').update(target, version, distPath);\n      /**\n       * Return the received commands. This is an reducer event, but there is no need for any\n       * update.\n       */\n      return commands;\n    });\n    // Adds the listener that includes the runner file on the list of files Woopack copies.\n    events.once('project-files-to-copy', (list) => [\n      ...list,\n      this.get('runnerFile').getFilename(),\n    ]);\n    /**\n     * Adds the listner that updates the version on the runner file when the revision file\n     * is created\n     */\n    events.once('revision-file-created', (version) => {\n      this.get('runnerFile').updateVersion(version);\n    });\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { WoopackRunner };\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/app/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 67,
+    "kind": "class",
+    "name": "WoopackRunner",
+    "memberof": "src/app/index.js",
+    "static": true,
+    "longname": "src/app/index.js~WoopackRunner",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/app/index.js",
+    "importStyle": "{WoopackRunner}",
+    "description": "This is the plugin own dependency injection cotainer. Different from most of the other plugins,\nthis one is a little bit more complex as it is prepare to run with and without Woopack present.",
+    "lineNumber": 30,
+    "interface": false,
+    "extends": [
+      "Jimple"
+    ]
+  },
+  {
+    "__docId__": 68,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/app/index.js~WoopackRunner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/app/index.js~WoopackRunner#constructor",
+    "access": "public",
+    "description": "Registers all the known services and add an error handler.",
+    "lineNumber": 35,
+    "ignore": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "method",
+    "name": "plugin",
+    "memberof": "src/app/index.js~WoopackRunner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/app/index.js~WoopackRunner#plugin",
+    "access": "public",
+    "description": "This is called when Woopack is present and tries to load the plugin. It will add events\nlisteners so every time Woopack builds a target or creates a revision file, the runner file\nwill be updated. It also adds a listener for when Woopack copies the projects files so it\nwill include the runner file.",
+    "lineNumber": 65,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Woopack"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "woopack",
+        "description": "The Woopack main container."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 70,
+    "kind": "method",
+    "name": "cli",
+    "memberof": "src/app/index.js~WoopackRunner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/app/index.js~WoopackRunner#cli",
+    "access": "public",
+    "description": "Starts the plugin CLI interface.",
+    "lineNumber": 99,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 71,
+    "kind": "method",
+    "name": "_addErrorHandler",
+    "memberof": "src/app/index.js~WoopackRunner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/app/index.js~WoopackRunner#_addErrorHandler",
+    "access": "protected",
+    "description": "Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.",
+    "lineNumber": 110,
+    "ignore": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 72,
+    "kind": "file",
+    "name": "src/index.js",
+    "content": "const runner = require('../index');\n/**\n * This is the method called by Woopack when loading the plugin and it takes care of calling\n * the instance of the runner and using it to register on Woopack.\n * @param {Woopack} app The Woopack main container.\n * @ignore\n */\nconst loadPlugin = (app) => runner.plugin(app);\n\nmodule.exports = loadPlugin;\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 73,
+    "kind": "function",
+    "name": "loadPlugin",
+    "memberof": "src/index.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/index.js~loadPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner",
+    "importStyle": "loadPlugin",
+    "description": "This is the method called by Woopack when loading the plugin and it takes care of calling\nthe instance of the runner and using it to register on Woopack.",
+    "lineNumber": 8,
+    "ignore": true,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Woopack"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "app",
+        "description": "The Woopack main container."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 74,
+    "kind": "file",
+    "name": "src/services/cli/cli.js",
+    "content": "const commander = require('commander');\nconst { provider } = require('jimple');\n/**\n * The main CLI program interface where all the commands are registered and that works as a bridge\n * between the app and `commander`.\n */\nclass CLI {\n  /**\n   * Class constructor.\n   * @param {Object} info      This app `package.json` information.\n   * @param {string} [name=''] The name of the program. If not specified, it will use the one on\n   *                           `info` object.\n   */\n  constructor(info, name = '') {\n    /**\n     * This app `package.json` information.\n     * @type {Object}\n     */\n    this.info = info;\n    /**\n     * The name of the CLI program.\n     * @type {string}\n     */\n    this.name = name || this.info.name;\n  }\n  /**\n   * Start the interface with a list of commands.\n   * @param {Array<CLICommand>} commands A list of commands to register.\n   */\n  start(commands) {\n    // eslint-disable-next-line no-underscore-dangle\n    commander._name = this.name;\n    // Set the version and the description of the program.\n    commander.version(this.info.version, '-v, --version');\n    commander.description(this.info.description);\n    // Loop all the commands and register them.\n    commands.forEach((command) => {\n      command.register(commander, this);\n    });\n    // Tell commander to parse the arguments.\n    commander.parse(process.argv);\n  }\n}\n/**\n * Generates a `Provider` with an already defined name for the program.\n * @example\n * // Generate the provider\n * const provider = cliWithName('my-program');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @param {string} name The name of the program.\n * @return {Provider}\n */\nconst cliWithName = (name) => provider((app) => {\n  app.set('cli', () => new CLI(\n    app.get('info'),\n    name\n  ));\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLI` as the `cli` service.\n * @example\n * // Register it on the container\n * container.register(cli);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @type {Provider}\n */\nconst cli = cliWithName();\n\nmodule.exports = {\n  CLI,\n  cliWithName,\n  cli,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cli.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 75,
+    "kind": "class",
+    "name": "CLI",
+    "memberof": "src/services/cli/cli.js",
+    "static": true,
+    "longname": "src/services/cli/cli.js~CLI",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importStyle": "{CLI}",
+    "description": "The main CLI program interface where all the commands are registered and that works as a bridge\nbetween the app and `commander`.",
+    "lineNumber": 7,
+    "interface": false
+  },
+  {
+    "__docId__": 76,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/cli/cli.js~CLI",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cli.js~CLI#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "info",
+        "description": "This app `package.json` information."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "''",
+        "defaultRaw": "''",
+        "name": "name",
+        "description": "The name of the program. If not specified, it will use the one on\n                          `info` object."
+      }
+    ]
+  },
+  {
+    "__docId__": 77,
+    "kind": "member",
+    "name": "info",
+    "memberof": "src/services/cli/cli.js~CLI",
+    "static": false,
+    "longname": "src/services/cli/cli.js~CLI#info",
+    "access": "public",
+    "description": "This app `package.json` information.",
+    "lineNumber": 19,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 78,
+    "kind": "member",
+    "name": "name",
+    "memberof": "src/services/cli/cli.js~CLI",
+    "static": false,
+    "longname": "src/services/cli/cli.js~CLI#name",
+    "access": "public",
+    "description": "The name of the CLI program.",
+    "lineNumber": 24,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "start",
+    "memberof": "src/services/cli/cli.js~CLI",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cli.js~CLI#start",
+    "access": "public",
+    "description": "Start the interface with a list of commands.",
+    "lineNumber": 30,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array<CLICommand>"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "commands",
+        "description": "A list of commands to register."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 80,
+    "kind": "function",
+    "name": "cliWithName",
+    "memberof": "src/services/cli/cli.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/services/cli/cli.js~cliWithName",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importStyle": "{cliWithName}",
+    "description": "Generates a `Provider` with an already defined name for the program.",
+    "examples": [
+      "// Generate the provider\nconst provider = cliWithName('my-program');\n// Register it on the container\ncontainer.register(provider);\n// Getting access to the service instance\nconst cli = container.get('cli');"
+    ],
+    "lineNumber": 56,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The name of the program."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "variable",
+    "name": "cli",
+    "memberof": "src/services/cli/cli.js",
+    "static": true,
+    "longname": "src/services/cli/cli.js~cli",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importStyle": "{cli}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`CLI` as the `cli` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(cli);\n// Getting access to the service instance\nconst cli = container.get('cli');"
+    ],
+    "lineNumber": 72,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 82,
+    "kind": "file",
+    "name": "src/services/cli/cliSHRun.js",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if Woopack is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const runPluginProduction = `${this.cliName} ${target} --production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 83,
+    "kind": "class",
+    "name": "CLISHRunCommand",
+    "memberof": "src/services/cli/cliSHRun.js",
+    "static": true,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "importStyle": "{CLISHRunCommand}",
+    "description": "This is private command the shell script executes in order to get a list of commands to run.",
+    "lineNumber": 7,
+    "interface": false,
+    "extends": [
+      "CLICommand"
+    ]
+  },
+  {
+    "__docId__": 84,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 12,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Runner"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runner",
+        "description": "The service tha provides the commands to run."
+      }
+    ]
+  },
+  {
+    "__docId__": 85,
+    "kind": "member",
+    "name": "runner",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#runner",
+    "access": "public",
+    "description": "A local reference for the `runner` service.",
+    "lineNumber": 18,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Runner"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 86,
+    "kind": "member",
+    "name": "command",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#command",
+    "access": "public",
+    "description": "The instruction needed to trigger the command.",
+    "lineNumber": 23,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 87,
+    "kind": "member",
+    "name": "description",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#description",
+    "access": "public",
+    "description": "A description of the command, just to follow the interface as the command won't show up on\nthe help interface.",
+    "lineNumber": 29,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "member",
+    "name": "hidden",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#hidden",
+    "access": "public",
+    "description": "Hide the command from the help interface.",
+    "lineNumber": 46,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 89,
+    "kind": "method",
+    "name": "handle",
+    "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand#handle",
+    "access": "public",
+    "description": "Handle the execution of the command and outputs the list of commands to run.",
+    "lineNumber": 63,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The name of the target to run."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Command"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "command",
+        "description": "The executed command (sent by `commander`)."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "The command options."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.production",
+        "description": "If the user wants to run a production build, even with\n                                    Woopack preset."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.ready",
+        "description": "If the user used the `production` option, then the list\n                                    of commands will be: one to build the target for\n                                    production and one to run this command again, because if\n                                    a build is going to happen, there's no way to be sure\n                                    the runner file is up to date.\n                                    This option basically says 'The production build is ready\n                                    and the runner file is updated, now is ok to execute it'."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 90,
+    "kind": "variable",
+    "name": "cliSHRunCommand",
+    "memberof": "src/services/cli/cliSHRun.js",
+    "static": true,
+    "longname": "src/services/cli/cliSHRun.js~cliSHRunCommand",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "importStyle": "{cliSHRunCommand}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`CLISHRunCommand` as the `cliSHRunCommand` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(cliSHRunCommand);\n// Getting access to the service instance\nconst cliSHRunCommand = container.get('cliSHRunCommand');"
+    ],
+    "lineNumber": 95,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 91,
+    "kind": "file",
+    "name": "src/services/cli/cliSHValidate.js",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile} runnerFile To validate if the file exists or not.\n   * @param {Targets}    targets    To validate if a target exists or not.\n   */\n  constructor(runnerFile, targets) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if Woopack is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {string} target The name of the target.\n   */\n  handle(target) {\n    // First let the service make its own validation.\n    this.runnerFile.validate();\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     */\n    return !this.runnerFile.exists() || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 92,
+    "kind": "class",
+    "name": "CLISHValidateCommand",
+    "memberof": "src/services/cli/cliSHValidate.js",
+    "static": true,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "importStyle": "{CLISHValidateCommand}",
+    "description": "This is a private command the shell script executes before running the run command in order to\nvalidate the arguments and throw any necessary error. The reason we do this in two separated\ncommands is that the shell script takes all the output of the run command and tries to execute\nit, so we can't include execptions in there.",
+    "lineNumber": 10,
+    "interface": false,
+    "extends": [
+      "CLICommand"
+    ]
+  },
+  {
+    "__docId__": 93,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 16,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "RunnerFile"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerFile",
+        "description": "To validate if the file exists or not."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Targets"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targets",
+        "description": "To validate if a target exists or not."
+      }
+    ]
+  },
+  {
+    "__docId__": 94,
+    "kind": "member",
+    "name": "runnerFile",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#runnerFile",
+    "access": "public",
+    "description": "A local reference for the `runnerFile` service.",
+    "lineNumber": 22,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RunnerFile"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 95,
+    "kind": "member",
+    "name": "targets",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#targets",
+    "access": "public",
+    "description": "A local reference for the `targets` service.",
+    "lineNumber": 27,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Targets"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 96,
+    "kind": "member",
+    "name": "command",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#command",
+    "access": "public",
+    "description": "The instruction needed to trigger the command.",
+    "lineNumber": 32,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 97,
+    "kind": "member",
+    "name": "description",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#description",
+    "access": "public",
+    "description": "A description of the command, just to follow the interface as the command won't show up on\nthe help interface.",
+    "lineNumber": 38,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 98,
+    "kind": "member",
+    "name": "hidden",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#hidden",
+    "access": "public",
+    "description": "Hide the command from the help interface.",
+    "lineNumber": 55,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "name": "handle",
+    "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand#handle",
+    "access": "public",
+    "description": "Handle the execution of the command and validate all the arguments.",
+    "lineNumber": 61,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The name of the target."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 100,
+    "kind": "variable",
+    "name": "cliSHValidateCommand",
+    "memberof": "src/services/cli/cliSHValidate.js",
+    "static": true,
+    "longname": "src/services/cli/cliSHValidate.js~cliSHValidateCommand",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "importStyle": "{cliSHValidateCommand}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`CLISHValidateCommand` as the `cliSHValidateCommand` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(cliSHValidateCommand);\n// Getting access to the service instance\nconst cliSHValidateCommand = container.get('cliSHValidateCommand');"
+    ],
+    "lineNumber": 81,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 101,
+    "kind": "file",
+    "name": "src/services/cli/index.js",
+    "content": "const { cli, cliWithName } = require('./cli');\nconst { cliSHRunCommand } = require('./cliSHRun');\nconst { cliSHValidateCommand } = require('./cliSHValidate');\n\nmodule.exports = {\n  cli,\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 102,
+    "kind": "file",
+    "name": "src/services/runner/file.js",
+    "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {boolean}   asPlugin  To check if Woopack is present or not.\n   * @param {Object}    info      The plugin `package.json` information, to use the plugin version\n   *                              on the file.\n   * @param {PathUtils} pathUtils To build the paths to the file.\n   */\n  constructor(asPlugin, info, pathUtils) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = '.woopackrunner';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   */\n  update(target, version, directory) {\n    const file = this.read();\n    file.version = version;\n    file.directory = directory;\n\n    let targetPath = '';\n    const { build } = target.folders;\n    if (build === directory) {\n      targetPath = './';\n    } else {\n      // +1 to replace the leading `/`\n      targetPath = build.substr(directory.length + 1);\n    }\n\n    const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;\n    const targetExecPath = path.join(targetPath, targetExec);\n\n    file.targets[target.name] = {\n      name: target.name,\n      path: targetExecPath,\n      node: target.is.node,\n      options: target.runnerOptions || {},\n    };\n\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n  /**\n   * Validate the runner file.\n   * @throws {Error} If the runner file doesn't exist and Woopack is not present, which means the\n   *                 project was deployed to production without the runner file.\n   */\n  validate() {\n    if (!this.asPlugin && !this.exists()) {\n      throw new Error('The runner file doesn\\'t exist and Woopack is not present');\n    }\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('asPlugin'),\n    app.get('info'),\n    app.get('pathUtils')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/file.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 103,
+    "kind": "class",
+    "name": "RunnerFile",
+    "memberof": "src/services/runner/file.js",
+    "static": true,
+    "longname": "src/services/runner/file.js~RunnerFile",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/file.js",
+    "importStyle": "{RunnerFile}",
+    "description": "This service is in charge of creating, validating and updating the runner file this plugin\nuses to store the information about the builded targets and how to execute them.",
+    "lineNumber": 9,
+    "interface": false
+  },
+  {
+    "__docId__": 104,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 17,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "asPlugin",
+        "description": "To check if Woopack is present or not."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "info",
+        "description": "The plugin `package.json` information, to use the plugin version\n                             on the file."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "PathUtils"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "pathUtils",
+        "description": "To build the paths to the file."
+      }
+    ]
+  },
+  {
+    "__docId__": 105,
+    "kind": "member",
+    "name": "asPlugin",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#asPlugin",
+    "access": "public",
+    "description": "Whether Woopack is present or not.",
+    "lineNumber": 22,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 106,
+    "kind": "member",
+    "name": "filename",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#filename",
+    "access": "public",
+    "description": "The name of the runner file.",
+    "lineNumber": 27,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 107,
+    "kind": "member",
+    "name": "filepath",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#filepath",
+    "access": "public",
+    "description": "The path to the runner file.",
+    "lineNumber": 32,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 108,
+    "kind": "member",
+    "name": "fileTemplate",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#fileTemplate",
+    "access": "public",
+    "description": "The file default template.",
+    "lineNumber": 37,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RunnerFileContents"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 109,
+    "kind": "method",
+    "name": "setFilename",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#setFilename",
+    "access": "public",
+    "description": "Set the name of the runner file.",
+    "lineNumber": 49,
+    "todo": [
+      "Update the `filepath`"
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "newName",
+        "description": "The new name."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 111,
+    "kind": "method",
+    "name": "getFilename",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#getFilename",
+    "access": "public",
+    "description": "Get the name of the runner file.",
+    "lineNumber": 56,
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 112,
+    "kind": "method",
+    "name": "exists",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#exists",
+    "access": "public",
+    "description": "Checks whether the file exists or not.",
+    "lineNumber": 63,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 113,
+    "kind": "method",
+    "name": "update",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#update",
+    "access": "public",
+    "description": "Updates the runner file with a new build information.",
+    "lineNumber": 72,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Target"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The target information."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "version",
+        "description": "The project version."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "directory",
+        "description": "The project distribution directory."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 114,
+    "kind": "method",
+    "name": "updateVersion",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#updateVersion",
+    "access": "public",
+    "description": "Updates the runner file with a new version of the project.",
+    "lineNumber": 102,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "version",
+        "description": "The project version."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 115,
+    "kind": "method",
+    "name": "read",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#read",
+    "access": "public",
+    "description": "Read the contents of the runner file. If the file doesn't exist, it will create it with\nthe default template (`this.fileTemplate`).",
+    "lineNumber": 112,
+    "return": {
+      "nullable": null,
+      "types": [
+        "RunnerFileContents"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 116,
+    "kind": "method",
+    "name": "validate",
+    "memberof": "src/services/runner/file.js~RunnerFile",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/file.js~RunnerFile#validate",
+    "access": "public",
+    "description": "Validate the runner file.",
+    "lineNumber": 127,
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the runner file doesn't exist and Woopack is not present, which means the\n                project was deployed to production without the runner file."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 117,
+    "kind": "variable",
+    "name": "runnerFile",
+    "memberof": "src/services/runner/file.js",
+    "static": true,
+    "longname": "src/services/runner/file.js~runnerFile",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/file.js",
+    "importStyle": "{runnerFile}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`RunnerFile` as the `runnerFile` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(runnerFile);\n// Getting access to the service instance\nconst runnerFile = container.get('runnerFile');"
+    ],
+    "lineNumber": 143,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 118,
+    "kind": "file",
+    "name": "src/services/runner/index.js",
+    "content": "const { runnerFile } = require('./file');\nconst { runner } = require('./runner');\nconst { targets } = require('./targets');\n\nmodule.exports = {\n  runnerFile,\n  runner,\n  targets,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 119,
+    "kind": "file",
+    "name": "src/services/runner/runner.js",
+    "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile, targets) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, runAsPluginCommand) {\n    let commands;\n    // If Woopack is present...\n    if (this.asPlugin) {\n      // ..get the commands to run with Woopack.\n      commands = this.getCommandsForWoopack(targetName, production, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = this.targets.getTarget(targetName);\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = this.targets.getTarget(targetName);\n    // Get the commands to run without Woopack.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForWoopack(targetName, production, runAsPluginCommand) {\n    const commands = [];\n    // If the target needs to use the production build...\n    if (production) {\n      // ...push the command to create a production build.\n      commands.push(`woopack build ${targetName} --type production`);\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      // ...otherwise, get the environment variables to send.\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      // Push the command to the target with Woopack.\n      commands.push(`${variables} woopack run ${targetName}`);\n    }\n    // Return the list of commands.\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If Woopack is present...\n    if (this.asPlugin) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/runner.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 120,
+    "kind": "class",
+    "name": "Runner",
+    "memberof": "src/services/runner/runner.js",
+    "static": true,
+    "longname": "src/services/runner/runner.js~Runner",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/runner.js",
+    "importStyle": "{Runner}",
+    "description": "This service is the one that knows how to run a target, so it's in charge of generating the\nshell commands for it.",
+    "lineNumber": 6,
+    "interface": false
+  },
+  {
+    "__docId__": 121,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "asPlugin",
+        "description": "To check if Woopack is present or not"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "PathUtils"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "pathUtils",
+        "description": "To create the path for the targets executables."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "RunnerFile"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerFile",
+        "description": "To read the required information to run targets."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Targets"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targets",
+        "description": "To get the targets information."
+      }
+    ]
+  },
+  {
+    "__docId__": 122,
+    "kind": "member",
+    "name": "asPlugin",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#asPlugin",
+    "access": "public",
+    "description": "Whether Woopack is present or not.",
+    "lineNumber": 19,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 123,
+    "kind": "member",
+    "name": "pathUtils",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#pathUtils",
+    "access": "public",
+    "description": "A local reference for the `pathUtils` service.",
+    "lineNumber": 24,
+    "type": {
+      "nullable": null,
+      "types": [
+        "PathUtils"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 124,
+    "kind": "member",
+    "name": "runnerFile",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#runnerFile",
+    "access": "public",
+    "description": "A local reference for the `runnerFile` service.",
+    "lineNumber": 29,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RunnerFile"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 125,
+    "kind": "member",
+    "name": "targets",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#targets",
+    "access": "public",
+    "description": "A local reference for the `targets` service.",
+    "lineNumber": 34,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Targets"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 126,
+    "kind": "method",
+    "name": "getCommands",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#getCommands",
+    "access": "public",
+    "description": "Get the shell execution commands for running a target.",
+    "lineNumber": 48,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targetName",
+        "description": "The name of the target to run."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "production",
+        "description": "In case Woopack is present, this flag forces the runner\n                                    to build the target for production and run that build."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runAsPluginCommand",
+        "description": "In case `production` is `true`, the plugin will first run\n                                    a build command in order to update the runner file with\n                                    the latest information and then it will run this command,\n                                    to inform the plugin that the build is ready and that just\n                                    needs to execute it."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 127,
+    "kind": "method",
+    "name": "getPluginCommandsForProduction",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#getPluginCommandsForProduction",
+    "access": "public",
+    "description": "Get the commands to run a target production build. This needs to be called after a build is\nmade.",
+    "lineNumber": 69,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targetName",
+        "description": "The name of the target to run."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 128,
+    "kind": "method",
+    "name": "getCommandsForWoopack",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#getCommandsForWoopack",
+    "access": "public",
+    "description": "Get the list of comands to run a target with Woopack.",
+    "lineNumber": 88,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targetName",
+        "description": "The name of the target to run."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "production",
+        "description": "Forces Woopack to use the production build."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runAsPluginCommand",
+        "description": "In case `production` is `true`, the plugin will first run\n                                    a build command in order to update the runner file with\n                                    the latest information and then it will run this command,\n                                    to inform the plugin that the build is ready and that just\n                                    needs to execute it."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 129,
+    "kind": "method",
+    "name": "getCommandsForProduction",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#getCommandsForProduction",
+    "access": "public",
+    "description": "Get the list of commands to run a target without Woopack present.",
+    "lineNumber": 110,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Target"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The target information."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 130,
+    "kind": "method",
+    "name": "getEnvironmentVariables",
+    "memberof": "src/services/runner/runner.js~Runner",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/runner.js~Runner#getEnvironmentVariables",
+    "access": "public",
+    "description": "Get a set of environment variables that will be sent to the executables.\nFor now is just the version of the project.",
+    "lineNumber": 144,
+    "todo": [
+      "Refactor this. The variables should be configurable."
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "RunnerFileContents"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerFileContents",
+        "description": "The contents of the runner file."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 131,
+    "kind": "variable",
+    "name": "runner",
+    "memberof": "src/services/runner/runner.js",
+    "static": true,
+    "longname": "src/services/runner/runner.js~runner",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/runner.js",
+    "importStyle": "{runner}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`Runner` as the `runner` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(runner);\n// Getting access to the service instance\nconst runner = container.get('runner');"
+    ],
+    "lineNumber": 164,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 132,
+    "kind": "file",
+    "name": "src/services/runner/targets.js",
+    "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target type is not Node.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.asPlugin) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = this.getTarget(name);\n      // Check if the target type is Node.\n      if (!target.node) {\n        throw new Error(`${name} is not a Node target, it can't be used with the runner`);\n      }\n\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/targets.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 133,
+    "kind": "class",
+    "name": "Targets",
+    "memberof": "src/services/runner/targets.js",
+    "static": true,
+    "longname": "src/services/runner/targets.js~Targets",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/targets.js",
+    "importStyle": "{Targets}",
+    "description": "This service is in charge of providing and validating the targets stored on the runner file.",
+    "lineNumber": 6,
+    "interface": false
+  },
+  {
+    "__docId__": 134,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 13,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "asPlugin",
+        "description": "To check if Woopack is present or not"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "PathUtils"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "pathUtils",
+        "description": "To create the targets exeuction paths."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "RunnerFile"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerFile",
+        "description": "To get the targets information."
+      }
+    ]
+  },
+  {
+    "__docId__": 135,
+    "kind": "member",
+    "name": "asPlugin",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#asPlugin",
+    "access": "public",
+    "description": "Whether Woopack is present or not.",
+    "lineNumber": 18,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 136,
+    "kind": "member",
+    "name": "pathUtils",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#pathUtils",
+    "access": "public",
+    "description": "A local reference for the `pathUtils` service.",
+    "lineNumber": 23,
+    "type": {
+      "nullable": null,
+      "types": [
+        "PathUtils"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 137,
+    "kind": "member",
+    "name": "runnerFile",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#runnerFile",
+    "access": "public",
+    "description": "A local reference for the `runnerFile` service.",
+    "lineNumber": 28,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RunnerFile"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 138,
+    "kind": "method",
+    "name": "getTarget",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#getTarget",
+    "access": "public",
+    "description": "Get a target information by its name.",
+    "lineNumber": 36,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The target name."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Target"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the target information is not on the runner file."
+      }
+    ]
+  },
+  {
+    "__docId__": 139,
+    "kind": "method",
+    "name": "validate",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#validate",
+    "access": "public",
+    "description": "Validate a target information.",
+    "lineNumber": 56,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The target name."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the runner file doesn't exist."
+      },
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the target type is not Node."
+      },
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the target executable doesn't exist."
+      }
+    ]
+  },
+  {
+    "__docId__": 140,
+    "kind": "variable",
+    "name": "targets",
+    "memberof": "src/services/runner/targets.js",
+    "static": true,
+    "longname": "src/services/runner/targets.js~targets",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/runner/targets.js",
+    "importStyle": "{targets}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`Targets` as the `targets` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(targets);\n// Getting access to the service instance\nconst targets = container.get('targets');"
+    ],
+    "lineNumber": 89,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 141,
+    "kind": "file",
+    "name": "src/services/utils/asPlugin.js",
+    "content": "const { provider } = require('jimple');\n/**\n * Checks whether or not Woopack is preent on the environment.\n * @return {boolean}\n */\nconst asPlugin = () => {\n  let woopackExists = true;\n  try {\n    // eslint-disable-next-line global-require\n    require('woopack');\n  } catch (ignore) {\n    woopackExists = false;\n  }\n\n  return woopackExists;\n};\n/**\n * The service provider that once registered on the app container will set the result of\n * `asPlugin()` as the `asPlugin` service.\n * @example\n * // Register it on the container\n * container.register(asPluginProvider);\n * // Getting access to the service value\n * const asPlugin = container.get('asPlugin');\n * @type {Provider}\n */\nconst asPluginProvider = provider((app) => {\n  app.set('asPlugin', () => asPlugin());\n});\n\nmodule.exports = {\n  asPlugin,\n  asPluginProvider,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/utils/asPlugin.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 142,
+    "kind": "function",
+    "name": "asPlugin",
+    "memberof": "src/services/utils/asPlugin.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/services/utils/asPlugin.js~asPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/utils/asPlugin.js",
+    "importStyle": "{asPlugin}",
+    "description": "Checks whether or not Woopack is preent on the environment.",
+    "lineNumber": 6,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 143,
+    "kind": "variable",
+    "name": "asPluginProvider",
+    "memberof": "src/services/utils/asPlugin.js",
+    "static": true,
+    "longname": "src/services/utils/asPlugin.js~asPluginProvider",
+    "access": "public",
+    "export": true,
+    "importPath": "woopack-plugin-runner/src/services/utils/asPlugin.js",
+    "importStyle": "{asPluginProvider}",
+    "description": "The service provider that once registered on the app container will set the result of\n`asPlugin()` as the `asPlugin` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(asPluginProvider);\n// Getting access to the service value\nconst asPlugin = container.get('asPlugin');"
+    ],
+    "lineNumber": 27,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 144,
+    "kind": "file",
+    "name": "src/services/utils/index.js",
+    "content": "const { asPluginProvider } = require('./asPlugin');\n\nmodule.exports = {\n  asPlugin: asPluginProvider,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/utils/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 145,
+    "kind": "file",
+    "name": "src/typedef.js",
+    "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Woopack}\n * https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the woopack target `runnerOptions`\n * setting.\n * @property {string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/typedef.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 146,
+    "kind": "external",
+    "name": "Jimple",
+    "externalLink": "https://yarnpkg.com/en/package/jimple",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~Jimple",
+    "access": "public",
+    "description": ""
+  },
+  {
+    "__docId__": 147,
+    "kind": "external",
+    "name": "Woopack",
+    "externalLink": "https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~Woopack",
+    "access": "public",
+    "description": ""
+  },
+  {
+    "__docId__": 148,
+    "kind": "external",
+    "name": "Command",
+    "externalLink": "https://tj.github.io/commander.js/#Command",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~Command",
+    "access": "public",
+    "description": ""
+  },
+  {
+    "__docId__": 149,
+    "kind": "external",
+    "name": "PathUtils",
+    "externalLink": "https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~PathUtils",
+    "access": "public",
+    "description": ""
+  },
+  {
+    "__docId__": 150,
+    "kind": "typedef",
+    "name": "Target",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~Target",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The target name."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "path",
+        "description": "The path to the target execution file."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "node",
+        "description": "Whether the target type is `node` or not."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "The options to customize the target that will be taken from the woopack target `runnerOptions`\nsetting."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "exec",
+        "description": "The absolute path to the executable file. This is generated on runtime when the file is loaded,\nnot before."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "Target"
+    }
+  },
+  {
+    "__docId__": 151,
+    "kind": "typedef",
+    "name": "RunnerFileContents",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~RunnerFileContents",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerVersion",
+        "description": "The version of the plugin that generated the file."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "version",
+        "description": "The project version."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "diretory",
+        "description": "The project distribution directory."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "targets",
+        "description": "A dictionary with the {@link Target}s information."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "RunnerFileContents"
+    }
+  },
+  {
+    "__docId__": 152,
+    "kind": "typedef",
+    "name": "ProviderRegisterMethod",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~ProviderRegisterMethod",
+    "access": "public",
+    "description": "",
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Jimple"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "app",
+        "description": "A reference to the dependency injection container."
+      }
+    ],
+    "type": {
+      "types": [
+        "function"
+      ],
+      "optional": false,
+      "name": "ProviderRegisterMethod"
+    }
+  },
+  {
+    "__docId__": 153,
+    "kind": "typedef",
+    "name": "Provider",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~Provider",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "ProviderRegisterMethod"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "register",
+        "description": "The method that gets called when registering the provider."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "Provider"
+    }
+  },
+  {
+    "kind": "index",
+    "content": "# woopack runner\n\nA woopack plugin to run Node targets with a simple command no matter the environment, even if woopack is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When woopack present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If woopack is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when woopack is not present; and you can install on a production environment since it doesn't depend on any of the other woopack tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | woopack-plugin-runner                                                                 |\n| Description  | A woopack plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `.woopackrunner` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nwoopack-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if woopack is present. If the option is not specified, it will check if woopack is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `woopack run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customizing the execution\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\nFor now, there's only one available option.\n\n- `runWith`: The name of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike woopack, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `woopack.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// woopack.runner.js\n\n// Get the main class\nconst { WoopackRunner } = require('woopack-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new WoopackRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because woopack doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by woopack to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run install-hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `npm run install-hooks` | Install the GIT repository hooks.   |\n| `npm test`              | Run the project unit tests.         |\n| `npm run lint`          | Lint the modified files.            |\n| `npm run lint:full`     | Lint the project code.              |\n| `npm run docs`          | Generate the project documentation. |\n| `npm run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.",
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n    \"name\": \"woopack-plugin-runner\",\n    \"cliName\": \"woopack-runner\",\n    \"description\": \"A woopack plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/woopack-plugin-runner/\",\n    \"version\": \"1.0.0\",\n    \"repository\": \"homer0/woopack-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"homer0/jimple\",\n      \"fs-extra\": \"5.0.0\",\n      \"extend\": \"3.0.1\",\n      \"commander\": \"2.13.0\",\n      \"wootils\": \"^1.0.5\"\n    },\n    \"peerDependencies\": {\n\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.16.0\",\n      \"eslint-config-airbnb-base\": \"12.1.0\",\n      \"eslint-plugin-import\": \"2.8.0\",\n      \"eslint-plugin-node\": \"5.2.1\",\n      \"babel-preset-env\": \"1.6.1\",\n      \"jest-ex\": \"4.0.0\",\n      \"jest-cli\": \"22.1.4\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.0.4\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"4.13.0\",\n      \"coveralls\": \"3.0.0\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"woopack-runner\": \"./src/bin/woopack-runner\",\n      \"woopack-runner-cli\": \"./src/bin/woopack-runner-cli\"\n    },\n    \"scripts\": {\n      \"install-hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
+    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]

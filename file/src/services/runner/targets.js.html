@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/services/runner/targets.js | woopack-plugin-runner</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ProviderRegisterMethod">ProviderRegisterMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RunnerFileContents">RunnerFileContents</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Target">Target</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cliWithName">cliWithName</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cli">cli</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHRunCommand">cliSHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHValidateCommand">cliSHValidateCommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-runner">services/runner</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html">Runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/services/runner/targets.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const fs = require(&apos;fs-extra&apos;);
+const { provider } = require(&apos;jimple&apos;);
+/**
+ * This service is in charge of providing and validating the targets stored on the runner file.
+ */
+class Targets {
+  /**
+   * Class constructor.
+   * @param {boolean}    asPlugin   To check if Woopack is present or not
+   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.
+   * @param {RunnerFile} runnerFile To get the targets information.
+   */
+  constructor(asPlugin, pathUtils, runnerFile) {
+    /**
+     * Whether Woopack is present or not.
+     * @type {boolean}
+     */
+    this.asPlugin = asPlugin;
+    /**
+     * A local reference for the `pathUtils` service.
+     * @type {PathUtils}
+     */
+    this.pathUtils = pathUtils;
+    /**
+     * A local reference for the `runnerFile` service.
+     * @type {RunnerFile}
+     */
+    this.runnerFile = runnerFile;
+  }
+  /**
+   * Get a target information by its name.
+   * @param {string} name The target name.
+   * @return {Target}
+   * @throws {Error} If the target information is not on the runner file.
+   */
+  getTarget(name) {
+    const target = this.runnerFile.read().targets[name];
+    if (!target) {
+      throw new Error(
+        &apos;The target information is not on the runner file, you first ned to build it&apos;
+      );
+    }
+
+    return Object.assign({
+      exec: this.pathUtils.join(target.path),
+    }, target);
+  }
+  /**
+   * Validate a target information.
+   * @param  {string} name The target name.
+   * @return {boolean}
+   * @throws {Error} If the runner file doesn&apos;t exist.
+   * @throws {Error} If the target type is not Node.
+   * @throws {Error} If the target executable doesn&apos;t exist.
+   */
+  validate(name) {
+    // Only validate the target if the plugin is on a production environment.
+    if (!this.asPlugin) {
+      // Check if the runner file exists.
+      if (!this.runnerFile.exists()) {
+        throw new Error(&apos;The runner file doesn\&apos;t exist, you first need to build a target&apos;);
+      }
+
+      const target = this.getTarget(name);
+      // Check if the target type is Node.
+      if (!target.node) {
+        throw new Error(`${name} is not a Node target, it can&apos;t be used with the runner`);
+      }
+
+      // Check if the target executable exists.
+      if (!fs.pathExistsSync(target.exec)) {
+        throw new Error(`The target executable doesn&apos;t exist: ${target.exec}`);
+      }
+    }
+
+    return true;
+  }
+}
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `Targets` as the `targets` service.
+ * @example
+ * // Register it on the container
+ * container.register(targets);
+ * // Getting access to the service instance
+ * const targets = container.get(&apos;targets&apos;);
+ * @type {Provider}
+ */
+const targets = provider((app) =&gt; {
+  app.set(&apos;targets&apos;, () =&gt; new Targets(
+    app.get(&apos;asPlugin&apos;),
+    app.get(&apos;pathUtils&apos;),
+    app.get(&apos;runnerFile&apos;)
+  ));
+});
+
+module.exports = {
+  Targets,
+  targets,
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

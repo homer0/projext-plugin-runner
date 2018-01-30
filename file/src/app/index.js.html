@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/app/index.js | woopack-plugin-runner</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ProviderRegisterMethod">ProviderRegisterMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RunnerFileContents">RunnerFileContents</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Target">Target</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cliWithName">cliWithName</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cli">cli</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHRunCommand">cliSHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHValidateCommand">cliSHValidateCommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-runner">services/runner</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html">Runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/app/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const Jimple = require(&apos;jimple&apos;);
+const appPackage = require(&apos;../../package.json&apos;);
+
+const {
+  environmentUtils,
+  errorHandler,
+  appLogger,
+  packageInfo,
+  pathUtils,
+} = require(&apos;wootils/node/providers&apos;);
+
+const {
+  cliWithName,
+  cliSHRunCommand,
+  cliSHValidateCommand,
+} = require(&apos;../services/cli&apos;);
+
+const {
+  runnerFile,
+  runner,
+  targets,
+} = require(&apos;../services/runner&apos;);
+
+const { asPlugin } = require(&apos;../services/utils&apos;);
+/**
+ * This is the plugin own dependency injection cotainer. Different from most of the other plugins,
+ * this one is a little bit more complex as it is prepare to run with and without Woopack present.
+ * @extends {Jimple}
+ */
+class WoopackRunner extends Jimple {
+  /**
+   * Registers all the known services and add an error handler.
+   * @ignore
+   */
+  constructor() {
+    super();
+
+    this.set(&apos;info&apos;, () =&gt; appPackage);
+
+    this.register(environmentUtils);
+    this.register(errorHandler);
+    this.register(appLogger);
+    this.register(packageInfo);
+    this.register(pathUtils);
+
+    this.register(cliWithName(appPackage.cliName));
+    this.register(cliSHRunCommand);
+    this.register(cliSHValidateCommand);
+
+    this.register(runnerFile);
+    this.register(runner);
+    this.register(targets);
+
+    this.register(asPlugin);
+
+    this._addErrorHandler();
+  }
+  /**
+   * This is called when Woopack is present and tries to load the plugin. It will add events
+   * listeners so every time Woopack builds a target or creates a revision file, the runner file
+   * will be updated. It also adds a listener for when Woopack copies the projects files so it
+   * will include the runner file.
+   * @param {Woopack} woopack The Woopack main container.
+   */
+  plugin(woopack) {
+    // Get the events service.
+    const events = woopack.get(&apos;events&apos;);
+    // Adds the listener for when targets are built.
+    events.once(&apos;build-target-commands-list&apos;, (commands, target) =&gt; {
+      // Get the distribution directory path.
+      const distPath = woopack.get(&apos;projectConfiguration&apos;).getConfig().paths.build;
+      // Get the project version.
+      const version = woopack.get(&apos;buildVersion&apos;).getVersion();
+
+      // Update the runner file.
+      this.get(&apos;runnerFile&apos;).update(target, version, distPath);
+      /**
+       * Return the received commands. This is an reducer event, but there is no need for any
+       * update.
+       */
+      return commands;
+    });
+    // Adds the listener that includes the runner file on the list of files Woopack copies.
+    events.once(&apos;project-files-to-copy&apos;, (list) =&gt; [
+      ...list,
+      this.get(&apos;runnerFile&apos;).getFilename(),
+    ]);
+    /**
+     * Adds the listner that updates the version on the runner file when the revision file
+     * is created
+     */
+    events.once(&apos;revision-file-created&apos;, (version) =&gt; {
+      this.get(&apos;runnerFile&apos;).updateVersion(version);
+    });
+  }
+  /**
+   * Starts the plugin CLI interface.
+   */
+  cli() {
+    this.get(&apos;cli&apos;).start([
+      this.get(&apos;cliSHRunCommand&apos;),
+      this.get(&apos;cliSHValidateCommand&apos;),
+    ]);
+  }
+  /**
+   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.
+   * @ignore
+   * @access protected
+   */
+  _addErrorHandler() {
+    this.get(&apos;errorHandler&apos;).listen();
+  }
+}
+
+module.exports = { WoopackRunner };
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

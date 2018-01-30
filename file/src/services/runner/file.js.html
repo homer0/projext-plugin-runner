@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/services/runner/file.js | woopack-plugin-runner</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ProviderRegisterMethod">ProviderRegisterMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RunnerFileContents">RunnerFileContents</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Target">Target</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cliWithName">cliWithName</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cli">cli</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHRunCommand">cliSHRunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-cliSHValidateCommand">cliSHValidateCommand</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-runner">services/runner</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html">Runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/services/runner/file.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;path&apos;);
+const extend = require(&apos;extend&apos;);
+const fs = require(&apos;fs-extra&apos;);
+const { provider } = require(&apos;jimple&apos;);
+/**
+ * This service is in charge of creating, validating and updating the runner file this plugin
+ * uses to store the information about the builded targets and how to execute them.
+ */
+class RunnerFile {
+  /**
+   * Class constructor.
+   * @param {boolean}   asPlugin  To check if Woopack is present or not.
+   * @param {Object}    info      The plugin `package.json` information, to use the plugin version
+   *                              on the file.
+   * @param {PathUtils} pathUtils To build the paths to the file.
+   */
+  constructor(asPlugin, info, pathUtils) {
+    /**
+     * Whether Woopack is present or not.
+     * @type {boolean}
+     */
+    this.asPlugin = asPlugin;
+    /**
+     * The name of the runner file.
+     * @type {string}
+     */
+    this.filename = &apos;.woopackrunner&apos;;
+    /**
+     * The path to the runner file.
+     * @type {string}
+     */
+    this.filepath = pathUtils.join(this.filename);
+    /**
+     * The file default template.
+     * @type {RunnerFileContents}
+     */
+    this.fileTemplate = {
+      runnerVersion: info.version,
+      version: &apos;development&apos;,
+      directory: &apos;&apos;,
+      targets: {},
+    };
+  }
+  /**
+   * Set the name of the runner file.
+   * @param {string} newName The new name.
+   * @todo Update the `filepath`
+   */
+  setFilename(newName) {
+    this.filename = newName;
+  }
+  /**
+   * Get the name of the runner file.
+   * @return {string}
+   */
+  getFilename() {
+    return this.filename;
+  }
+  /**
+   * Checks whether the file exists or not.
+   * @return {boolean}
+   */
+  exists() {
+    return fs.pathExistsSync(this.filepath);
+  }
+  /**
+   * Updates the runner file with a new build information.
+   * @param {Target} target    The target information.
+   * @param {string} version   The project version.
+   * @param {string} directory The project distribution directory.
+   */
+  update(target, version, directory) {
+    const file = this.read();
+    file.version = version;
+    file.directory = directory;
+
+    let targetPath = &apos;&apos;;
+    const { build } = target.folders;
+    if (build === directory) {
+      targetPath = &apos;./&apos;;
+    } else {
+      // +1 to replace the leading `/`
+      targetPath = build.substr(directory.length + 1);
+    }
+
+    const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;
+    const targetExecPath = path.join(targetPath, targetExec);
+
+    file.targets[target.name] = {
+      name: target.name,
+      path: targetExecPath,
+      node: target.is.node,
+      options: target.runnerOptions || {},
+    };
+
+    return fs.writeJsonSync(this.filepath, file);
+  }
+  /**
+   * Updates the runner file with a new version of the project.
+   * @param {string} version The project version.
+   */
+  updateVersion(version) {
+    const file = this.read();
+    file.version = version;
+    return fs.writeJsonSync(this.filepath, file);
+  }
+  /**
+   * Read the contents of the runner file. If the file doesn&apos;t exist, it will create it with
+   * the default template (`this.fileTemplate`).
+   * @return {RunnerFileContents}
+   */
+  read() {
+    let result;
+    if (this.exists()) {
+      result = fs.readJsonSync(this.filepath);
+    } else {
+      result = extend(true, {}, this.fileTemplate);
+    }
+
+    return result;
+  }
+  /**
+   * Validate the runner file.
+   * @throws {Error} If the runner file doesn&apos;t exist and Woopack is not present, which means the
+   *                 project was deployed to production without the runner file.
+   */
+  validate() {
+    if (!this.asPlugin &amp;&amp; !this.exists()) {
+      throw new Error(&apos;The runner file doesn\&apos;t exist and Woopack is not present&apos;);
+    }
+  }
+}
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `RunnerFile` as the `runnerFile` service.
+ * @example
+ * // Register it on the container
+ * container.register(runnerFile);
+ * // Getting access to the service instance
+ * const runnerFile = container.get(&apos;runnerFile&apos;);
+ * @type {Provider}
+ */
+const runnerFile = provider((app) =&gt; {
+  app.set(&apos;runnerFile&apos;, () =&gt; new RunnerFile(
+    app.get(&apos;asPlugin&apos;),
+    app.get(&apos;info&apos;),
+    app.get(&apos;pathUtils&apos;)
+  ));
+});
+
+module.exports = {
+  RunnerFile,
+  runnerFile,
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
