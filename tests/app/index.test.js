@@ -124,7 +124,7 @@ describe('app:WoopackRunner', () => {
 
   it('should copy runner file when Woopack copies the project files', () => {
     // Given
-    const runnerFileName = '.woopackrunner';
+    const runnerFileName = 'woopackrunner.json';
     const getRunnerFileName = jest.fn(() => runnerFileName);
     const get = jest.fn(() => ({
       listen: () => {},

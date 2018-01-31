@@ -28,7 +28,7 @@ describe('services/runner:runnerFile', () => {
       join: jest.fn((rest) => rest),
     };
     let sut = null;
-    const expectedFilename = '.woopackrunner';
+    const expectedFilename = 'woopackrunner.json';
     const expectedFileTemplate = {
       runnerVersion: info.version,
       version: 'development',
@@ -60,7 +60,7 @@ describe('services/runner:runnerFile', () => {
     let sut = null;
     let defaultName = null;
     let nameAfterChange = null;
-    const expectedDefaultFilename = '.woopackrunner';
+    const expectedDefaultFilename = 'woopackrunner.json';
     // When
     sut = new RunnerFile(asPlugin, info, pathUtils);
     defaultName = sut.getFilename();

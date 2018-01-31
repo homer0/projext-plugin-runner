@@ -24,7 +24,7 @@ class RunnerFile {
      * The name of the runner file.
      * @type {string}
      */
-    this.filename = '.woopackrunner';
+    this.filename = 'woopackrunner.json';
     /**
      * The path to the runner file.
      * @type {string}

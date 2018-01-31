@@ -25,7 +25,7 @@ The idea behind this plugin-tool is that you don't have to hard code the instruc
 
 The most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.
 
-The runner file is called `.woopackrunner` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.
+The runner file is called `woopackrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.
 
 If the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).
 
