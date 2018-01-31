@@ -3,7 +3,7 @@
     "cliName": "woopack-runner",
     "description": "A woopack plugin to run Node targets with a simple command no matter the environment.",
     "homepage": "https://homer0.github.io/woopack-plugin-runner/",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "repository": "homer0/woopack-plugin-runner",
     "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
     "license": "MIT",
