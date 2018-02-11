@@ -70,30 +70,34 @@ class RunnerFile {
    * @param {string} directory The project distribution directory.
    */
   update(target, version, directory) {
-    const file = this.read();
-    file.version = version;
-    file.directory = directory;
+    let result;
+    if (target.is.node) {
+      const file = this.read();
+      file.version = version;
+      file.directory = directory;
 
-    let targetPath = '';
-    const { build } = target.folders;
-    if (build === directory) {
-      targetPath = './';
-    } else {
-      // +1 to replace the leading `/`
-      targetPath = build.substr(directory.length + 1);
+      let targetPath = '';
+      const { build } = target.folders;
+      if (build === directory) {
+        targetPath = './';
+      } else {
+        // +1 to replace the leading `/`
+        targetPath = build.substr(directory.length + 1);
+      }
+
+      const targetExec = target.output.production;
+      const targetExecPath = path.join(targetPath, targetExec);
+
+      file.targets[target.name] = {
+        name: target.name,
+        path: targetExecPath,
+        options: target.runnerOptions || {},
+      };
+
+      result = fs.writeJsonSync(this.filepath, file);
     }
 
-    const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;
-    const targetExecPath = path.join(targetPath, targetExec);
-
-    file.targets[target.name] = {
-      name: target.name,
-      path: targetExecPath,
-      node: target.is.node,
-      options: target.runnerOptions || {},
-    };
-
-    return fs.writeJsonSync(this.filepath, file);
+    return result;
   }
   /**
    * Updates the runner file with a new version of the project.
@@ -126,7 +130,7 @@ class RunnerFile {
    */
   validate() {
     if (!this.asPlugin && !this.exists()) {
-      throw new Error('The runner file doesn\'t exist and Woopack is not present');
+      throw new Error('The runner file doesn\'t exist and woopack is not present');
     }
   }
 }
