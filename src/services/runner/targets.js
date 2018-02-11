@@ -6,13 +6,13 @@ const { provider } = require('jimple');
 class Targets {
   /**
    * Class constructor.
-   * @param {boolean}    asPlugin   To check if Woopack is present or not
+   * @param {boolean}    asPlugin   To check if projext is present or not
    * @param {PathUtils}  pathUtils  To create the targets exeuction paths.
    * @param {RunnerFile} runnerFile To get the targets information.
    */
   constructor(asPlugin, pathUtils, runnerFile) {
     /**
-     * Whether Woopack is present or not.
+     * Whether projext is present or not.
      * @type {boolean}
      */
     this.asPlugin = asPlugin;

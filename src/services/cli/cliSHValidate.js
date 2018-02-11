@@ -39,7 +39,7 @@ class CLISHValidateCommand extends CLICommand {
     this.addOption(
       'production',
       '-p, --production',
-      'Force the runner to use a production build even if Woopack is present',
+      'Force the runner to use a production build even if projext is present',
       false
     );
     this.addOption(
@@ -63,7 +63,7 @@ class CLISHValidateCommand extends CLICommand {
     this.runnerFile.validate();
     /**
      * Then, if the runner file exists, validate the target, otherwise, we'll assume this is
-     * running with Woopack present and the file is going to be generated on build.
+     * running with projext present and the file is going to be generated on build.
      */
     return !this.runnerFile.exists() || this.targets.validate(target);
   }
