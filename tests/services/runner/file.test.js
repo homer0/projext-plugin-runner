@@ -28,7 +28,7 @@ describe('services/runner:runnerFile', () => {
       join: jest.fn((rest) => rest),
     };
     let sut = null;
-    const expectedFilename = 'woopackrunner.json';
+    const expectedFilename = 'projextrunner.json';
     const expectedFileTemplate = {
       runnerVersion: info.version,
       version: 'development',
@@ -60,7 +60,7 @@ describe('services/runner:runnerFile', () => {
     let sut = null;
     let defaultName = null;
     let nameAfterChange = null;
-    const expectedDefaultFilename = 'woopackrunner.json';
+    const expectedDefaultFilename = 'projextrunner.json';
     // When
     sut = new RunnerFile(asPlugin, info, pathUtils);
     defaultName = sut.getFilename();
@@ -108,7 +108,7 @@ describe('services/runner:runnerFile', () => {
     };
     const target = {
       name: 'backend',
-      entry: {
+      output: {
         production: 'start.js',
       },
       folders: {
@@ -130,8 +130,7 @@ describe('services/runner:runnerFile', () => {
       targets: {
         [target.name]: {
           name: target.name,
-          path: target.entry.production,
-          node: target.is.node,
+          path: target.output.production,
           options: {},
         },
       },
@@ -147,7 +146,91 @@ describe('services/runner:runnerFile', () => {
     expect(fs.writeJsonSync).toHaveBeenCalledWith(filename, expectedFile);
   });
 
-  it('should update the file with a bundled target information', () => {
+  it('shouldn\'t update the file if the target type is browser', () => {
+    // Given
+    const asPlugin = 'asPlugin';
+    const info = {
+      version: '25092015',
+    };
+    const filename = '.randomrunner';
+    const pathUtils = {
+      join: jest.fn(() => filename),
+    };
+    const target = {
+      is: {
+        node: false,
+      },
+    };
+    const version = 'latest';
+    const directory = 'some-dir';
+    let sut = null;
+    let result = null;
+    // When
+    sut = new RunnerFile(asPlugin, info, pathUtils);
+    result = sut.update(target, version, directory);
+    // Then
+    expect(result).toBeUndefined();
+    expect(fs.pathExistsSync).toHaveBeenCalledTimes(0);
+    expect(fs.writeJsonSync).toHaveBeenCalledTimes(0);
+  });
+
+  it('should update the file with a target information and include custom runner options', () => {
+    // Given
+    fs.pathExistsSync.mockImplementationOnce(() => false);
+    const writeResult = 'done!';
+    fs.writeJsonSync.mockImplementationOnce(() => writeResult);
+    const asPlugin = 'asPlugin';
+    const info = {
+      version: '25092015',
+    };
+    const filename = '.randomrunner';
+    const pathUtils = {
+      join: jest.fn(() => filename),
+    };
+    const target = {
+      name: 'backend',
+      output: {
+        production: 'start.js',
+      },
+      folders: {
+        build: 'dist',
+      },
+      bundle: false,
+      is: {
+        node: true,
+      },
+      runnerOptions: {
+        a: 'b',
+      },
+    };
+    const version = 'latest';
+    const directory = target.folders.build;
+    let sut = null;
+    let result = null;
+    const expectedFile = {
+      runnerVersion: expect.any(String),
+      version,
+      directory,
+      targets: {
+        [target.name]: {
+          name: target.name,
+          path: target.output.production,
+          options: target.runnerOptions,
+        },
+      },
+    };
+    // When
+    sut = new RunnerFile(asPlugin, info, pathUtils);
+    result = sut.update(target, version, directory);
+    // Then
+    expect(result).toBe(writeResult);
+    expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
+    expect(fs.pathExistsSync).toHaveBeenCalledWith(filename);
+    expect(fs.writeJsonSync).toHaveBeenCalledTimes(1);
+    expect(fs.writeJsonSync).toHaveBeenCalledWith(filename, expectedFile);
+  });
+
+  it('should update the file with a target information that has a custom sub directory', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
     const writeResult = 'done!';
@@ -161,16 +244,16 @@ describe('services/runner:runnerFile', () => {
       join: jest.fn(() => filename),
     };
     const directory = 'dist';
-    const targetFolder = 'backend';
+    const targetDirectory = 'backend';
     const target = {
       name: 'backend',
-      entry: {
+      output: {
         production: 'start.js',
       },
       folders: {
-        build: `${directory}/${targetFolder}`,
+        build: `${directory}/${targetDirectory}`,
       },
-      bundle: true,
+      bundle: false,
       is: {
         node: true,
       },
@@ -188,8 +271,7 @@ describe('services/runner:runnerFile', () => {
       targets: {
         [target.name]: {
           name: target.name,
-          path: `${targetFolder}/${target.name}.js`,
-          node: target.is.node,
+          path: `${targetDirectory}/${target.output.production}`,
           options: target.runnerOptions,
         },
       },
@@ -254,7 +336,7 @@ describe('services/runner:runnerFile', () => {
     expect(fs.readJsonSync).toHaveBeenCalledTimes(0);
   });
 
-  it('should throw an error if the file doesn\'t exists and Woopack is not present', () => {
+  it('should throw an error if the file doesn\'t exists and projext is not present', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
     const asPlugin = false;
@@ -270,10 +352,10 @@ describe('services/runner:runnerFile', () => {
     sut = new RunnerFile(asPlugin, info, pathUtils);
     // Then
     expect(() => sut.validate())
-    .toThrow(/The runner file doesn't exist and Woopack is not present/i);
+    .toThrow(/The runner file doesn't exist and projext is not present/i);
   });
 
-  it('shouldn\'t throw an error if the file doesn\'t exists but Woopack is present', () => {
+  it('shouldn\'t throw an error if the file doesn\'t exists but projext is present', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
     const asPlugin = true;
@@ -285,10 +367,9 @@ describe('services/runner:runnerFile', () => {
       join: jest.fn(() => filename),
     };
     let sut = null;
-    // When
+    // When/Then
     sut = new RunnerFile(asPlugin, info, pathUtils);
     sut.validate();
-    // Then
   });
 
   it('should update the app version on the file', () => {

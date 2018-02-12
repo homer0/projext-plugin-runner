@@ -30,7 +30,7 @@ class CLISHRunCommand extends CLICommand {
     this.addOption(
       'production',
       '-p, --production',
-      'Force the runner to use a production build even if Woopack is present',
+      'Force the runner to use a production build even if projext is present',
       false
     );
     this.addOption(
@@ -51,7 +51,7 @@ class CLISHRunCommand extends CLICommand {
    * @param {Command} command            The executed command (sent by `commander`).
    * @param {Object}  options            The command options.
    * @param {string}  options.production If the user wants to run a production build, even with
-   *                                     Woopack preset.
+   *                                     projext preset.
    * @param {boolean} options.ready      If the user used the `production` option, then the list
    *                                     of commands will be: one to build the target for
    *                                     production and one to run this command again, because if

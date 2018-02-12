@@ -24,10 +24,10 @@ const {
 const { asPlugin } = require('../services/utils');
 /**
  * This is the plugin own dependency injection cotainer. Different from most of the other plugins,
- * this one is a little bit more complex as it is prepare to run with and without Woopack present.
+ * this one is a little bit more complex as it is prepare to run with and without projext present.
  * @extends {Jimple}
  */
-class WoopackRunner extends Jimple {
+class ProjextRunner extends Jimple {
   /**
    * Registers all the known services and add an error handler.
    * @ignore
@@ -56,21 +56,21 @@ class WoopackRunner extends Jimple {
     this._addErrorHandler();
   }
   /**
-   * This is called when Woopack is present and tries to load the plugin. It will add events
-   * listeners so every time Woopack builds a target or creates a revision file, the runner file
-   * will be updated. It also adds a listener for when Woopack copies the projects files so it
+   * This is called when projext is present and tries to load the plugin. It will add events
+   * listeners so every time projext builds a target or creates a revision file, the runner file
+   * will be updated. It also adds a listener for when projext copies the projects files so it
    * will include the runner file.
-   * @param {Woopack} woopack The Woopack main container.
+   * @param {Projext} projext The projext main container.
    */
-  plugin(woopack) {
+  plugin(projext) {
     // Get the events service.
-    const events = woopack.get('events');
+    const events = projext.get('events');
     // Adds the listener for when targets are built.
     events.once('build-target-commands-list', (commands, target) => {
       // Get the distribution directory path.
-      const distPath = woopack.get('projectConfiguration').getConfig().paths.build;
+      const distPath = projext.get('projectConfiguration').getConfig().paths.build;
       // Get the project version.
-      const version = woopack.get('buildVersion').getVersion();
+      const version = projext.get('buildVersion').getVersion();
 
       // Update the runner file.
       this.get('runnerFile').update(target, version, distPath);
@@ -80,7 +80,7 @@ class WoopackRunner extends Jimple {
        */
       return commands;
     });
-    // Adds the listener that includes the runner file on the list of files Woopack copies.
+    // Adds the listener that includes the runner file on the list of files projext copies.
     events.once('project-files-to-copy', (list) => [
       ...list,
       this.get('runnerFile').getFilename(),
@@ -112,4 +112,4 @@ class WoopackRunner extends Jimple {
   }
 }
 
-module.exports = { WoopackRunner };
+module.exports = { ProjextRunner };

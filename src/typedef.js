@@ -4,8 +4,8 @@
  */
 
 /**
- * @external {Woopack}
- * https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html
+ * @external {Projext}
+ * https://homer0.github.io/projext/class/src/app/index.js~Projext.html
  */
 
 /**
@@ -27,7 +27,7 @@
  * @property {boolean} node
  * Whether the target type is `node` or not.
  * @property {Object} options
- * The options to customize the target that will be taken from the woopack target `runnerOptions`
+ * The options to customize the target that will be taken from the projext target `runnerOptions`
  * setting.
  * @property {string} exec
  * The absolute path to the executable file. This is generated on runtime when the file is loaded,

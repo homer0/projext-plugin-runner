@@ -9,14 +9,14 @@ const { provider } = require('jimple');
 class RunnerFile {
   /**
    * Class constructor.
-   * @param {boolean}   asPlugin  To check if Woopack is present or not.
+   * @param {boolean}   asPlugin  To check if projext is present or not.
    * @param {Object}    info      The plugin `package.json` information, to use the plugin version
    *                              on the file.
    * @param {PathUtils} pathUtils To build the paths to the file.
    */
   constructor(asPlugin, info, pathUtils) {
     /**
-     * Whether Woopack is present or not.
+     * Whether projext is present or not.
      * @type {boolean}
      */
     this.asPlugin = asPlugin;
@@ -24,7 +24,7 @@ class RunnerFile {
      * The name of the runner file.
      * @type {string}
      */
-    this.filename = 'woopackrunner.json';
+    this.filename = 'projextrunner.json';
     /**
      * The path to the runner file.
      * @type {string}
@@ -70,30 +70,34 @@ class RunnerFile {
    * @param {string} directory The project distribution directory.
    */
   update(target, version, directory) {
-    const file = this.read();
-    file.version = version;
-    file.directory = directory;
+    let result;
+    if (target.is.node) {
+      const file = this.read();
+      file.version = version;
+      file.directory = directory;
 
-    let targetPath = '';
-    const { build } = target.folders;
-    if (build === directory) {
-      targetPath = './';
-    } else {
-      // +1 to replace the leading `/`
-      targetPath = build.substr(directory.length + 1);
+      let targetPath = '';
+      const { build } = target.folders;
+      if (build === directory) {
+        targetPath = './';
+      } else {
+        // +1 to replace the leading `/`
+        targetPath = build.substr(directory.length + 1);
+      }
+
+      const targetExec = target.output.production;
+      const targetExecPath = path.join(targetPath, targetExec);
+
+      file.targets[target.name] = {
+        name: target.name,
+        path: targetExecPath,
+        options: target.runnerOptions || {},
+      };
+
+      result = fs.writeJsonSync(this.filepath, file);
     }
 
-    const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;
-    const targetExecPath = path.join(targetPath, targetExec);
-
-    file.targets[target.name] = {
-      name: target.name,
-      path: targetExecPath,
-      node: target.is.node,
-      options: target.runnerOptions || {},
-    };
-
-    return fs.writeJsonSync(this.filepath, file);
+    return result;
   }
   /**
    * Updates the runner file with a new version of the project.
@@ -121,12 +125,12 @@ class RunnerFile {
   }
   /**
    * Validate the runner file.
-   * @throws {Error} If the runner file doesn't exist and Woopack is not present, which means the
+   * @throws {Error} If the runner file doesn't exist and projext is not present, which means the
    *                 project was deployed to production without the runner file.
    */
   validate() {
     if (!this.asPlugin && !this.exists()) {
-      throw new Error('The runner file doesn\'t exist and Woopack is not present');
+      throw new Error('The runner file doesn\'t exist and projext is not present');
     }
   }
 }

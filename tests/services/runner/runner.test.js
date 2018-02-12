@@ -100,7 +100,7 @@ describe('services/runner:runner', () => {
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
   });
 
-  it('should return the command to run a target with Woopack on development', () => {
+  it('should return the command to run a target with projext on development', () => {
     // Given
     const asPlugin = true;
     const pathUtils = 'pathUtils';
@@ -124,7 +124,7 @@ describe('services/runner:runner', () => {
     let sut = null;
     let result = null;
     const expectedVariables = `VERSION=${file.version}`;
-    const expectedCommand = `${expectedVariables} woopack run ${targetName}`;
+    const expectedCommand = `${expectedVariables} projext run ${targetName}`;
     // When
     sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
@@ -133,7 +133,7 @@ describe('services/runner:runner', () => {
     expect(targets.getTarget).toHaveBeenCalledTimes(0);
   });
 
-  it('should return the command to run a target with Woopack on production', () => {
+  it('should return the command to run a target with projext on production', () => {
     // Given
     const asPlugin = true;
     const pathUtils = 'pathUtils';
@@ -152,7 +152,7 @@ describe('services/runner:runner', () => {
     let sut = null;
     let result = null;
     const expectedCommand = [
-      `woopack build ${targetName} --type production`,
+      `projext build ${targetName} --type production`,
       runAsPluginCommand,
     ].join(';');
     // When
