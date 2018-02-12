@@ -904,7 +904,7 @@
         "trailingComments": [
           {
             "type": "CommentBlock",
-            "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n ",
+            "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n ",
             "start": 409,
             "end": 635,
             "loc": {
@@ -947,9 +947,9 @@
               "line": 30,
               "column": 19
             },
-            "identifierName": "WoopackRunner"
+            "identifierName": "ProjextRunner"
           },
-          "name": "WoopackRunner",
+          "name": "ProjextRunner",
           "leadingComments": null
         },
         "superClass": {
@@ -2557,7 +2557,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+                  "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
                   "start": 1280,
                   "end": 1667,
                   "loc": {
@@ -2626,9 +2626,9 @@
                       "line": 65,
                       "column": 16
                     },
-                    "identifierName": "woopack"
+                    "identifierName": "projext"
                   },
-                  "name": "woopack"
+                  "name": "projext"
                 }
               ],
               "body": {
@@ -2734,9 +2734,9 @@
                                   "line": 67,
                                   "column": 26
                                 },
-                                "identifierName": "woopack"
+                                "identifierName": "projext"
                               },
-                              "name": "woopack"
+                              "name": "projext"
                             },
                             "property": {
                               "type": "Identifier",
@@ -3135,9 +3135,9 @@
                                                       "line": 71,
                                                       "column": 30
                                                     },
-                                                    "identifierName": "woopack"
+                                                    "identifierName": "projext"
                                                   },
-                                                  "name": "woopack"
+                                                  "name": "projext"
                                                 },
                                                 "property": {
                                                   "type": "Identifier",
@@ -3397,9 +3397,9 @@
                                                   "line": 73,
                                                   "column": 29
                                                 },
-                                                "identifierName": "woopack"
+                                                "identifierName": "projext"
                                               },
-                                              "name": "woopack"
+                                              "name": "projext"
                                             },
                                             "property": {
                                               "type": "Identifier",
@@ -3826,7 +3826,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+                        "value": " Adds the listener that includes the runner file on the list of files projext copies.",
                         "start": 2376,
                         "end": 2463,
                         "loc": {
@@ -4170,7 +4170,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+                        "value": " Adds the listener that includes the runner file on the list of files projext copies.",
                         "start": 2376,
                         "end": 2463,
                         "loc": {
@@ -4557,7 +4557,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+                  "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
                   "start": 1280,
                   "end": 1667,
                   "loc": {
@@ -5299,9 +5299,9 @@
                   "line": 115,
                   "column": 22
                 },
-                "identifierName": "WoopackRunner"
+                "identifierName": "ProjextRunner"
               },
-              "name": "WoopackRunner"
+              "name": "ProjextRunner"
             },
             "exported": {
               "type": "Identifier",
@@ -5316,9 +5316,9 @@
                   "line": 115,
                   "column": 22
                 },
-                "identifierName": "WoopackRunner"
+                "identifierName": "ProjextRunner"
               },
-              "name": "WoopackRunner"
+              "name": "ProjextRunner"
             }
           }
         ],
@@ -5365,9 +5365,9 @@
                 "line": 30,
                 "column": 19
               },
-              "identifierName": "WoopackRunner"
+              "identifierName": "ProjextRunner"
             },
-            "name": "WoopackRunner",
+            "name": "ProjextRunner",
             "leadingComments": null
           },
           "superClass": {
@@ -6975,7 +6975,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+                    "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
                     "start": 1280,
                     "end": 1667,
                     "loc": {
@@ -7044,9 +7044,9 @@
                         "line": 65,
                         "column": 16
                       },
-                      "identifierName": "woopack"
+                      "identifierName": "projext"
                     },
-                    "name": "woopack"
+                    "name": "projext"
                   }
                 ],
                 "body": {
@@ -7152,9 +7152,9 @@
                                     "line": 67,
                                     "column": 26
                                   },
-                                  "identifierName": "woopack"
+                                  "identifierName": "projext"
                                 },
-                                "name": "woopack"
+                                "name": "projext"
                               },
                               "property": {
                                 "type": "Identifier",
@@ -7553,9 +7553,9 @@
                                                         "line": 71,
                                                         "column": 30
                                                       },
-                                                      "identifierName": "woopack"
+                                                      "identifierName": "projext"
                                                     },
-                                                    "name": "woopack"
+                                                    "name": "projext"
                                                   },
                                                   "property": {
                                                     "type": "Identifier",
@@ -7815,9 +7815,9 @@
                                                     "line": 73,
                                                     "column": 29
                                                   },
-                                                  "identifierName": "woopack"
+                                                  "identifierName": "projext"
                                                 },
-                                                "name": "woopack"
+                                                "name": "projext"
                                               },
                                               "property": {
                                                 "type": "Identifier",
@@ -8244,7 +8244,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+                          "value": " Adds the listener that includes the runner file on the list of files projext copies.",
                           "start": 2376,
                           "end": 2463,
                           "loc": {
@@ -8588,7 +8588,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+                          "value": " Adds the listener that includes the runner file on the list of files projext copies.",
                           "start": 2376,
                           "end": 2463,
                           "loc": {
@@ -8975,7 +8975,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+                    "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
                     "start": 1280,
                     "end": 1667,
                     "loc": {
@@ -9673,7 +9673,7 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n ",
+              "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n ",
               "start": 409,
               "end": 635,
               "loc": {
@@ -9701,7 +9701,7 @@
   "comments": [
     {
       "type": "CommentBlock",
-      "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n ",
+      "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n ",
       "start": 409,
       "end": 635,
       "loc": {
@@ -9733,7 +9733,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+      "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
       "start": 1280,
       "end": 1667,
       "loc": {
@@ -9845,7 +9845,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+      "value": " Adds the listener that includes the runner file on the list of files projext copies.",
       "start": 2376,
       "end": 2463,
       "loc": {
@@ -11403,7 +11403,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n ",
+      "value": "*\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n ",
       "start": 409,
       "end": 635,
       "loc": {
@@ -11457,7 +11457,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "WoopackRunner",
+      "value": "ProjextRunner",
       "start": 642,
       "end": 655,
       "loc": {
@@ -14577,7 +14577,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   ",
+      "value": "*\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   ",
       "start": 1280,
       "end": 1667,
       "loc": {
@@ -14654,7 +14654,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "woopack",
+      "value": "projext",
       "start": 1677,
       "end": 1684,
       "loc": {
@@ -14827,7 +14827,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "woopack",
+      "value": "projext",
       "start": 1738,
       "end": 1745,
       "loc": {
@@ -15456,7 +15456,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "woopack",
+      "value": "projext",
       "start": 1953,
       "end": 1960,
       "loc": {
@@ -15940,7 +15940,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "woopack",
+      "value": "projext",
       "start": 2070,
       "end": 2077,
       "loc": {
@@ -16816,7 +16816,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Adds the listener that includes the runner file on the list of files Woopack copies.",
+      "value": " Adds the listener that includes the runner file on the list of files projext copies.",
       "start": 2376,
       "end": 2463,
       "loc": {
@@ -19627,7 +19627,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "WoopackRunner",
+      "value": "ProjextRunner",
       "start": 3226,
       "end": 3239,
       "loc": {

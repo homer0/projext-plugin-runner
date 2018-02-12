@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../">
-  <title data-ice="title">src/services/utils/asPlugin.js | woopack-plugin-runner</title>
+  <title data-ice="title">src/services/utils/asPlugin.js | projext-plugin-runner</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<meta name="description" content="A projext plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="projext-plugin-runner"><meta property="twitter:description" content="A projext plugin to run Node targets with a simple command no matter the environment."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/projext-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -36,9 +36,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
@@ -61,19 +61,19 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/services/utils/asPlugin.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const { provider } = require(&apos;jimple&apos;);
 /**
- * Checks whether or not Woopack is preent on the environment.
+ * Checks whether or not projext is present on the environment.
  * @return {boolean}
  */
 const asPlugin = () =&gt; {
-  let woopackExists = true;
+  let projextExists = true;
   try {
     // eslint-disable-next-line global-require
-    require(&apos;woopack&apos;);
+    require(&apos;projext&apos;);
   } catch (ignore) {
-    woopackExists = false;
+    projextExists = false;
   }
 
-  return woopackExists;
+  return projextExists;
 };
 /**
  * The service provider that once registered on the app container will set the result of

@@ -583,7 +583,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/abstracts/cliCommand.js",
+    "importPath": "projext-plugin-runner/src/abstracts/cliCommand.js",
     "importStyle": "CLICommand",
     "description": "A helper class for creating commands for the CLI interface.",
     "lineNumber": 5,
@@ -998,7 +998,7 @@
     "__docId__": 66,
     "kind": "file",
     "name": "src/app/index.js",
-    "content": "const Jimple = require('jimple');\nconst appPackage = require('../../package.json');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { asPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without Woopack present.\n * @extends {Jimple}\n */\nclass WoopackRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(asPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when Woopack is present and tries to load the plugin. It will add events\n   * listeners so every time Woopack builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when Woopack copies the projects files so it\n   * will include the runner file.\n   * @param {Woopack} woopack The Woopack main container.\n   */\n  plugin(woopack) {\n    // Get the events service.\n    const events = woopack.get('events');\n    // Adds the listener for when targets are built.\n    events.once('build-target-commands-list', (commands, target) => {\n      // Get the distribution directory path.\n      const distPath = woopack.get('projectConfiguration').getConfig().paths.build;\n      // Get the project version.\n      const version = woopack.get('buildVersion').getVersion();\n\n      // Update the runner file.\n      this.get('runnerFile').update(target, version, distPath);\n      /**\n       * Return the received commands. This is an reducer event, but there is no need for any\n       * update.\n       */\n      return commands;\n    });\n    // Adds the listener that includes the runner file on the list of files Woopack copies.\n    events.once('project-files-to-copy', (list) => [\n      ...list,\n      this.get('runnerFile').getFilename(),\n    ]);\n    /**\n     * Adds the listner that updates the version on the runner file when the revision file\n     * is created\n     */\n    events.once('revision-file-created', (version) => {\n      this.get('runnerFile').updateVersion(version);\n    });\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { WoopackRunner };\n",
+    "content": "const Jimple = require('jimple');\nconst appPackage = require('../../package.json');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { asPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n */\nclass ProjextRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(asPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   */\n  plugin(projext) {\n    // Get the events service.\n    const events = projext.get('events');\n    // Adds the listener for when targets are built.\n    events.once('build-target-commands-list', (commands, target) => {\n      // Get the distribution directory path.\n      const distPath = projext.get('projectConfiguration').getConfig().paths.build;\n      // Get the project version.\n      const version = projext.get('buildVersion').getVersion();\n\n      // Update the runner file.\n      this.get('runnerFile').update(target, version, distPath);\n      /**\n       * Return the received commands. This is an reducer event, but there is no need for any\n       * update.\n       */\n      return commands;\n    });\n    // Adds the listener that includes the runner file on the list of files projext copies.\n    events.once('project-files-to-copy', (list) => [\n      ...list,\n      this.get('runnerFile').getFilename(),\n    ]);\n    /**\n     * Adds the listner that updates the version on the runner file when the revision file\n     * is created\n     */\n    events.once('revision-file-created', (version) => {\n      this.get('runnerFile').updateVersion(version);\n    });\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { ProjextRunner };\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/app/index.js",
     "access": "public",
@@ -1008,15 +1008,15 @@
   {
     "__docId__": 67,
     "kind": "class",
-    "name": "WoopackRunner",
+    "name": "ProjextRunner",
     "memberof": "src/app/index.js",
     "static": true,
-    "longname": "src/app/index.js~WoopackRunner",
+    "longname": "src/app/index.js~ProjextRunner",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/app/index.js",
-    "importStyle": "{WoopackRunner}",
-    "description": "This is the plugin own dependency injection cotainer. Different from most of the other plugins,\nthis one is a little bit more complex as it is prepare to run with and without Woopack present.",
+    "importPath": "projext-plugin-runner/src/app/index.js",
+    "importStyle": "{ProjextRunner}",
+    "description": "This is the plugin own dependency injection cotainer. Different from most of the other plugins,\nthis one is a little bit more complex as it is prepare to run with and without projext present.",
     "lineNumber": 30,
     "interface": false,
     "extends": [
@@ -1027,11 +1027,11 @@
     "__docId__": 68,
     "kind": "constructor",
     "name": "constructor",
-    "memberof": "src/app/index.js~WoopackRunner",
+    "memberof": "src/app/index.js~ProjextRunner",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/app/index.js~WoopackRunner#constructor",
+    "longname": "src/app/index.js~ProjextRunner#constructor",
     "access": "public",
     "description": "Registers all the known services and add an error handler.",
     "lineNumber": 35,
@@ -1041,24 +1041,24 @@
     "__docId__": 69,
     "kind": "method",
     "name": "plugin",
-    "memberof": "src/app/index.js~WoopackRunner",
+    "memberof": "src/app/index.js~ProjextRunner",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/app/index.js~WoopackRunner#plugin",
+    "longname": "src/app/index.js~ProjextRunner#plugin",
     "access": "public",
-    "description": "This is called when Woopack is present and tries to load the plugin. It will add events\nlisteners so every time Woopack builds a target or creates a revision file, the runner file\nwill be updated. It also adds a listener for when Woopack copies the projects files so it\nwill include the runner file.",
+    "description": "This is called when projext is present and tries to load the plugin. It will add events\nlisteners so every time projext builds a target or creates a revision file, the runner file\nwill be updated. It also adds a listener for when projext copies the projects files so it\nwill include the runner file.",
     "lineNumber": 65,
     "params": [
       {
         "nullable": null,
         "types": [
-          "Woopack"
+          "Projext"
         ],
         "spread": false,
         "optional": false,
-        "name": "woopack",
-        "description": "The Woopack main container."
+        "name": "projext",
+        "description": "The projext main container."
       }
     ],
     "return": null
@@ -1067,11 +1067,11 @@
     "__docId__": 70,
     "kind": "method",
     "name": "cli",
-    "memberof": "src/app/index.js~WoopackRunner",
+    "memberof": "src/app/index.js~ProjextRunner",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/app/index.js~WoopackRunner#cli",
+    "longname": "src/app/index.js~ProjextRunner#cli",
     "access": "public",
     "description": "Starts the plugin CLI interface.",
     "lineNumber": 99,
@@ -1082,11 +1082,11 @@
     "__docId__": 71,
     "kind": "method",
     "name": "_addErrorHandler",
-    "memberof": "src/app/index.js~WoopackRunner",
+    "memberof": "src/app/index.js~ProjextRunner",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/app/index.js~WoopackRunner#_addErrorHandler",
+    "longname": "src/app/index.js~ProjextRunner#_addErrorHandler",
     "access": "protected",
     "description": "Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.",
     "lineNumber": 110,
@@ -1098,7 +1098,7 @@
     "__docId__": 72,
     "kind": "file",
     "name": "src/index.js",
-    "content": "const runner = require('../index');\n/**\n * This is the method called by Woopack when loading the plugin and it takes care of calling\n * the instance of the runner and using it to register on Woopack.\n * @param {Woopack} app The Woopack main container.\n * @ignore\n */\nconst loadPlugin = (app) => runner.plugin(app);\n\nmodule.exports = loadPlugin;\n",
+    "content": "const runner = require('../index');\n/**\n * This is the method called by projext when loading the plugin and it takes care of calling\n * the instance of the runner and using it to register on projext.\n * @param {Projext} app The projext main container.\n * @ignore\n */\nconst loadPlugin = (app) => runner.plugin(app);\n\nmodule.exports = loadPlugin;\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/index.js",
     "access": "public",
@@ -1116,21 +1116,21 @@
     "longname": "src/index.js~loadPlugin",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner",
+    "importPath": "projext-plugin-runner",
     "importStyle": "loadPlugin",
-    "description": "This is the method called by Woopack when loading the plugin and it takes care of calling\nthe instance of the runner and using it to register on Woopack.",
+    "description": "This is the method called by projext when loading the plugin and it takes care of calling\nthe instance of the runner and using it to register on projext.",
     "lineNumber": 8,
     "ignore": true,
     "params": [
       {
         "nullable": null,
         "types": [
-          "Woopack"
+          "Projext"
         ],
         "spread": false,
         "optional": false,
         "name": "app",
-        "description": "The Woopack main container."
+        "description": "The projext main container."
       }
     ],
     "return": null
@@ -1155,7 +1155,7 @@
     "longname": "src/services/cli/cli.js~CLI",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cli.js",
     "importStyle": "{CLI}",
     "description": "The main CLI program interface where all the commands are registered and that works as a bridge\nbetween the app and `commander`.",
     "lineNumber": 7,
@@ -1273,7 +1273,7 @@
     "longname": "src/services/cli/cli.js~cliWithName",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cli.js",
     "importStyle": "{cliWithName}",
     "description": "Generates a `Provider` with an already defined name for the program.",
     "examples": [
@@ -1310,7 +1310,7 @@
     "longname": "src/services/cli/cli.js~cli",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cli.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cli.js",
     "importStyle": "{cli}",
     "description": "The service provider that once registered on the app container will set an instance of\n`CLI` as the `cli` service.",
     "examples": [
@@ -1330,7 +1330,7 @@
     "__docId__": 82,
     "kind": "file",
     "name": "src/services/cli/cliSHRun.js",
-    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if Woopack is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const runPluginProduction = `${this.cliName} ${target} --production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const runPluginProduction = `${this.cliName} ${target} --production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHRun.js",
     "access": "public",
@@ -1346,7 +1346,7 @@
     "longname": "src/services/cli/cliSHRun.js~CLISHRunCommand",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cliSHRun.js",
     "importStyle": "{CLISHRunCommand}",
     "description": "This is private command the shell script executes in order to get a list of commands to run.",
     "lineNumber": 7,
@@ -1507,7 +1507,7 @@
         "spread": false,
         "optional": false,
         "name": "options.production",
-        "description": "If the user wants to run a production build, even with\n                                    Woopack preset."
+        "description": "If the user wants to run a production build, even with\n                                    projext preset."
       },
       {
         "nullable": null,
@@ -1531,7 +1531,7 @@
     "longname": "src/services/cli/cliSHRun.js~cliSHRunCommand",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cliSHRun.js",
     "importStyle": "{cliSHRunCommand}",
     "description": "The service provider that once registered on the app container will set an instance of\n`CLISHRunCommand` as the `cliSHRunCommand` service.",
     "examples": [
@@ -1551,7 +1551,7 @@
     "__docId__": 91,
     "kind": "file",
     "name": "src/services/cli/cliSHValidate.js",
-    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile} runnerFile To validate if the file exists or not.\n   * @param {Targets}    targets    To validate if a target exists or not.\n   */\n  constructor(runnerFile, targets) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if Woopack is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {string} target The name of the target.\n   */\n  handle(target) {\n    // First let the service make its own validation.\n    this.runnerFile.validate();\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     */\n    return !this.runnerFile.exists() || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile} runnerFile To validate if the file exists or not.\n   * @param {Targets}    targets    To validate if a target exists or not.\n   */\n  constructor(runnerFile, targets) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {string} target The name of the target.\n   */\n  handle(target) {\n    // First let the service make its own validation.\n    this.runnerFile.validate();\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     */\n    return !this.runnerFile.exists() || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHValidate.js",
     "access": "public",
@@ -1567,7 +1567,7 @@
     "longname": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cliSHValidate.js",
     "importStyle": "{CLISHValidateCommand}",
     "description": "This is a private command the shell script executes before running the run command in order to\nvalidate the arguments and throw any necessary error. The reason we do this in two separated\ncommands is that the shell script takes all the output of the run command and tries to execute\nit, so we can't include execptions in there.",
     "lineNumber": 10,
@@ -1745,7 +1745,7 @@
     "longname": "src/services/cli/cliSHValidate.js~cliSHValidateCommand",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "importPath": "projext-plugin-runner/src/services/cli/cliSHValidate.js",
     "importStyle": "{cliSHValidateCommand}",
     "description": "The service provider that once registered on the app container will set an instance of\n`CLISHValidateCommand` as the `cliSHValidateCommand` service.",
     "examples": [
@@ -1776,7 +1776,7 @@
     "__docId__": 102,
     "kind": "file",
     "name": "src/services/runner/file.js",
-    "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {boolean}   asPlugin  To check if Woopack is present or not.\n   * @param {Object}    info      The plugin `package.json` information, to use the plugin version\n   *                              on the file.\n   * @param {PathUtils} pathUtils To build the paths to the file.\n   */\n  constructor(asPlugin, info, pathUtils) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = '.woopackrunner';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   */\n  update(target, version, directory) {\n    const file = this.read();\n    file.version = version;\n    file.directory = directory;\n\n    let targetPath = '';\n    const { build } = target.folders;\n    if (build === directory) {\n      targetPath = './';\n    } else {\n      // +1 to replace the leading `/`\n      targetPath = build.substr(directory.length + 1);\n    }\n\n    const targetExec = target.bundle ? `${target.name}.js` : target.entry.production;\n    const targetExecPath = path.join(targetPath, targetExec);\n\n    file.targets[target.name] = {\n      name: target.name,\n      path: targetExecPath,\n      node: target.is.node,\n      options: target.runnerOptions || {},\n    };\n\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n  /**\n   * Validate the runner file.\n   * @throws {Error} If the runner file doesn't exist and Woopack is not present, which means the\n   *                 project was deployed to production without the runner file.\n   */\n  validate() {\n    if (!this.asPlugin && !this.exists()) {\n      throw new Error('The runner file doesn\\'t exist and Woopack is not present');\n    }\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('asPlugin'),\n    app.get('info'),\n    app.get('pathUtils')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
+    "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {boolean}   asPlugin  To check if projext is present or not.\n   * @param {Object}    info      The plugin `package.json` information, to use the plugin version\n   *                              on the file.\n   * @param {PathUtils} pathUtils To build the paths to the file.\n   */\n  constructor(asPlugin, info, pathUtils) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = 'projextrunner.json';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   */\n  update(target, version, directory) {\n    let result;\n    if (target.is.node) {\n      const file = this.read();\n      file.version = version;\n      file.directory = directory;\n\n      let targetPath = '';\n      const { build } = target.folders;\n      if (build === directory) {\n        targetPath = './';\n      } else {\n        // +1 to replace the leading `/`\n        targetPath = build.substr(directory.length + 1);\n      }\n\n      const targetExec = target.output.production;\n      const targetExecPath = path.join(targetPath, targetExec);\n\n      file.targets[target.name] = {\n        name: target.name,\n        path: targetExecPath,\n        options: target.runnerOptions || {},\n      };\n\n      result = fs.writeJsonSync(this.filepath, file);\n    }\n\n    return result;\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n  /**\n   * Validate the runner file.\n   * @throws {Error} If the runner file doesn't exist and projext is not present, which means the\n   *                 project was deployed to production without the runner file.\n   */\n  validate() {\n    if (!this.asPlugin && !this.exists()) {\n      throw new Error('The runner file doesn\\'t exist and projext is not present');\n    }\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('asPlugin'),\n    app.get('info'),\n    app.get('pathUtils')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/file.js",
     "access": "public",
@@ -1792,7 +1792,7 @@
     "longname": "src/services/runner/file.js~RunnerFile",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/file.js",
+    "importPath": "projext-plugin-runner/src/services/runner/file.js",
     "importStyle": "{RunnerFile}",
     "description": "This service is in charge of creating, validating and updating the runner file this plugin\nuses to store the information about the builded targets and how to execute them.",
     "lineNumber": 9,
@@ -1819,7 +1819,7 @@
         "spread": false,
         "optional": false,
         "name": "asPlugin",
-        "description": "To check if Woopack is present or not."
+        "description": "To check if projext is present or not."
       },
       {
         "nullable": null,
@@ -1851,7 +1851,7 @@
     "static": false,
     "longname": "src/services/runner/file.js~RunnerFile#asPlugin",
     "access": "public",
-    "description": "Whether Woopack is present or not.",
+    "description": "Whether projext is present or not.",
     "lineNumber": 22,
     "type": {
       "nullable": null,
@@ -2053,7 +2053,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#updateVersion",
     "access": "public",
     "description": "Updates the runner file with a new version of the project.",
-    "lineNumber": 102,
+    "lineNumber": 106,
     "params": [
       {
         "nullable": null,
@@ -2083,7 +2083,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#read",
     "access": "public",
     "description": "Read the contents of the runner file. If the file doesn't exist, it will create it with\nthe default template (`this.fileTemplate`).",
-    "lineNumber": 112,
+    "lineNumber": 116,
     "return": {
       "nullable": null,
       "types": [
@@ -2105,13 +2105,13 @@
     "longname": "src/services/runner/file.js~RunnerFile#validate",
     "access": "public",
     "description": "Validate the runner file.",
-    "lineNumber": 127,
+    "lineNumber": 131,
     "throws": [
       {
         "types": [
           "Error"
         ],
-        "description": "If the runner file doesn't exist and Woopack is not present, which means the\n                project was deployed to production without the runner file."
+        "description": "If the runner file doesn't exist and projext is not present, which means the\n                project was deployed to production without the runner file."
       }
     ],
     "params": [],
@@ -2126,13 +2126,13 @@
     "longname": "src/services/runner/file.js~runnerFile",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/file.js",
+    "importPath": "projext-plugin-runner/src/services/runner/file.js",
     "importStyle": "{runnerFile}",
     "description": "The service provider that once registered on the app container will set an instance of\n`RunnerFile` as the `runnerFile` service.",
     "examples": [
       "// Register it on the container\ncontainer.register(runnerFile);\n// Getting access to the service instance\nconst runnerFile = container.get('runnerFile');"
     ],
-    "lineNumber": 143,
+    "lineNumber": 147,
     "type": {
       "nullable": null,
       "types": [
@@ -2157,7 +2157,7 @@
     "__docId__": 119,
     "kind": "file",
     "name": "src/services/runner/runner.js",
-    "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile, targets) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, runAsPluginCommand) {\n    let commands;\n    // If Woopack is present...\n    if (this.asPlugin) {\n      // ..get the commands to run with Woopack.\n      commands = this.getCommandsForWoopack(targetName, production, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = this.targets.getTarget(targetName);\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = this.targets.getTarget(targetName);\n    // Get the commands to run without Woopack.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForWoopack(targetName, production, runAsPluginCommand) {\n    const commands = [];\n    // If the target needs to use the production build...\n    if (production) {\n      // ...push the command to create a production build.\n      commands.push(`woopack build ${targetName} --type production`);\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      // ...otherwise, get the environment variables to send.\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      // Push the command to the target with Woopack.\n      commands.push(`${variables} woopack run ${targetName}`);\n    }\n    // Return the list of commands.\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If Woopack is present...\n    if (this.asPlugin) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
+    "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile, targets) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, runAsPluginCommand) {\n    let commands;\n    // If projext is present...\n    if (this.asPlugin) {\n      // ..get the commands to run with projext.\n      commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = this.targets.getTarget(targetName);\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = this.targets.getTarget(targetName);\n    // Get the commands to run without projext.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForProjext(targetName, production, runAsPluginCommand) {\n    const commands = [];\n    // If the target needs to use the production build...\n    if (production) {\n      // ...push the command to create a production build.\n      commands.push(`projext build ${targetName} --type production`);\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      // ...otherwise, get the environment variables to send.\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      // Push the command to the target with projext.\n      commands.push(`${variables} projext run ${targetName}`);\n    }\n    // Return the list of commands.\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If projext is present...\n    if (this.asPlugin) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/runner.js",
     "access": "public",
@@ -2173,7 +2173,7 @@
     "longname": "src/services/runner/runner.js~Runner",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/runner.js",
+    "importPath": "projext-plugin-runner/src/services/runner/runner.js",
     "importStyle": "{Runner}",
     "description": "This service is the one that knows how to run a target, so it's in charge of generating the\nshell commands for it.",
     "lineNumber": 6,
@@ -2200,7 +2200,7 @@
         "spread": false,
         "optional": false,
         "name": "asPlugin",
-        "description": "To check if Woopack is present or not"
+        "description": "To check if projext is present or not"
       },
       {
         "nullable": null,
@@ -2242,7 +2242,7 @@
     "static": false,
     "longname": "src/services/runner/runner.js~Runner#asPlugin",
     "access": "public",
-    "description": "Whether Woopack is present or not.",
+    "description": "Whether projext is present or not.",
     "lineNumber": 19,
     "type": {
       "nullable": null,
@@ -2341,7 +2341,7 @@
         "spread": false,
         "optional": false,
         "name": "production",
-        "description": "In case Woopack is present, this flag forces the runner\n                                    to build the target for production and run that build."
+        "description": "In case projext is present, this flag forces the runner\n                                    to build the target for production and run that build."
       },
       {
         "nullable": null,
@@ -2399,14 +2399,14 @@
   {
     "__docId__": 128,
     "kind": "method",
-    "name": "getCommandsForWoopack",
+    "name": "getCommandsForProjext",
     "memberof": "src/services/runner/runner.js~Runner",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/services/runner/runner.js~Runner#getCommandsForWoopack",
+    "longname": "src/services/runner/runner.js~Runner#getCommandsForProjext",
     "access": "public",
-    "description": "Get the list of comands to run a target with Woopack.",
+    "description": "Get the list of comands to run a target with projext.",
     "lineNumber": 88,
     "params": [
       {
@@ -2427,7 +2427,7 @@
         "spread": false,
         "optional": false,
         "name": "production",
-        "description": "Forces Woopack to use the production build."
+        "description": "Forces projext to use the production build."
       },
       {
         "nullable": null,
@@ -2459,7 +2459,7 @@
     "static": false,
     "longname": "src/services/runner/runner.js~Runner#getCommandsForProduction",
     "access": "public",
-    "description": "Get the list of commands to run a target without Woopack present.",
+    "description": "Get the list of commands to run a target without projext present.",
     "lineNumber": 110,
     "params": [
       {
@@ -2527,7 +2527,7 @@
     "longname": "src/services/runner/runner.js~runner",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/runner.js",
+    "importPath": "projext-plugin-runner/src/services/runner/runner.js",
     "importStyle": "{runner}",
     "description": "The service provider that once registered on the app container will set an instance of\n`Runner` as the `runner` service.",
     "examples": [
@@ -2547,7 +2547,7 @@
     "__docId__": 132,
     "kind": "file",
     "name": "src/services/runner/targets.js",
-    "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile) {\n    /**\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target type is not Node.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.asPlugin) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = this.getTarget(name);\n      // Check if the target type is Node.\n      if (!target.node) {\n        throw new Error(`${name} is not a Node target, it can't be used with the runner`);\n      }\n\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
+    "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target type is not Node.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.asPlugin) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = this.getTarget(name);\n      // Check if the target type is Node.\n      if (!target.node) {\n        throw new Error(`${name} is not a Node target, it can't be used with the runner`);\n      }\n\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/targets.js",
     "access": "public",
@@ -2563,7 +2563,7 @@
     "longname": "src/services/runner/targets.js~Targets",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/targets.js",
+    "importPath": "projext-plugin-runner/src/services/runner/targets.js",
     "importStyle": "{Targets}",
     "description": "This service is in charge of providing and validating the targets stored on the runner file.",
     "lineNumber": 6,
@@ -2590,7 +2590,7 @@
         "spread": false,
         "optional": false,
         "name": "asPlugin",
-        "description": "To check if Woopack is present or not"
+        "description": "To check if projext is present or not"
       },
       {
         "nullable": null,
@@ -2622,7 +2622,7 @@
     "static": false,
     "longname": "src/services/runner/targets.js~Targets#asPlugin",
     "access": "public",
-    "description": "Whether Woopack is present or not.",
+    "description": "Whether projext is present or not.",
     "lineNumber": 18,
     "type": {
       "nullable": null,
@@ -2774,7 +2774,7 @@
     "longname": "src/services/runner/targets.js~targets",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/runner/targets.js",
+    "importPath": "projext-plugin-runner/src/services/runner/targets.js",
     "importStyle": "{targets}",
     "description": "The service provider that once registered on the app container will set an instance of\n`Targets` as the `targets` service.",
     "examples": [
@@ -2794,7 +2794,7 @@
     "__docId__": 141,
     "kind": "file",
     "name": "src/services/utils/asPlugin.js",
-    "content": "const { provider } = require('jimple');\n/**\n * Checks whether or not Woopack is preent on the environment.\n * @return {boolean}\n */\nconst asPlugin = () => {\n  let woopackExists = true;\n  try {\n    // eslint-disable-next-line global-require\n    require('woopack');\n  } catch (ignore) {\n    woopackExists = false;\n  }\n\n  return woopackExists;\n};\n/**\n * The service provider that once registered on the app container will set the result of\n * `asPlugin()` as the `asPlugin` service.\n * @example\n * // Register it on the container\n * container.register(asPluginProvider);\n * // Getting access to the service value\n * const asPlugin = container.get('asPlugin');\n * @type {Provider}\n */\nconst asPluginProvider = provider((app) => {\n  app.set('asPlugin', () => asPlugin());\n});\n\nmodule.exports = {\n  asPlugin,\n  asPluginProvider,\n};\n",
+    "content": "const { provider } = require('jimple');\n/**\n * Checks whether or not projext is present on the environment.\n * @return {boolean}\n */\nconst asPlugin = () => {\n  let projextExists = true;\n  try {\n    // eslint-disable-next-line global-require\n    require('projext');\n  } catch (ignore) {\n    projextExists = false;\n  }\n\n  return projextExists;\n};\n/**\n * The service provider that once registered on the app container will set the result of\n * `asPlugin()` as the `asPlugin` service.\n * @example\n * // Register it on the container\n * container.register(asPluginProvider);\n * // Getting access to the service value\n * const asPlugin = container.get('asPlugin');\n * @type {Provider}\n */\nconst asPluginProvider = provider((app) => {\n  app.set('asPlugin', () => asPlugin());\n});\n\nmodule.exports = {\n  asPlugin,\n  asPluginProvider,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/utils/asPlugin.js",
     "access": "public",
@@ -2812,9 +2812,9 @@
     "longname": "src/services/utils/asPlugin.js~asPlugin",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/utils/asPlugin.js",
+    "importPath": "projext-plugin-runner/src/services/utils/asPlugin.js",
     "importStyle": "{asPlugin}",
-    "description": "Checks whether or not Woopack is preent on the environment.",
+    "description": "Checks whether or not projext is present on the environment.",
     "lineNumber": 6,
     "return": {
       "nullable": null,
@@ -2835,7 +2835,7 @@
     "longname": "src/services/utils/asPlugin.js~asPluginProvider",
     "access": "public",
     "export": true,
-    "importPath": "woopack-plugin-runner/src/services/utils/asPlugin.js",
+    "importPath": "projext-plugin-runner/src/services/utils/asPlugin.js",
     "importStyle": "{asPluginProvider}",
     "description": "The service provider that once registered on the app container will set the result of\n`asPlugin()` as the `asPlugin` service.",
     "examples": [
@@ -2866,7 +2866,7 @@
     "__docId__": 145,
     "kind": "file",
     "name": "src/typedef.js",
-    "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Woopack}\n * https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the woopack target `runnerOptions`\n * setting.\n * @property {string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
+    "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Projext}\n * https://homer0.github.io/projext/class/src/app/index.js~Projext.html\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the projext target `runnerOptions`\n * setting.\n * @property {string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
     "static": true,
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/typedef.js",
     "access": "public",
@@ -2887,11 +2887,11 @@
   {
     "__docId__": 147,
     "kind": "external",
-    "name": "Woopack",
-    "externalLink": "https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html",
+    "name": "Projext",
+    "externalLink": "https://homer0.github.io/projext/class/src/app/index.js~Projext.html",
     "memberof": "src/typedef.js",
     "static": true,
-    "longname": "src/typedef.js~Woopack",
+    "longname": "src/typedef.js~Projext",
     "access": "public",
     "description": ""
   },
@@ -2965,7 +2965,7 @@
         "spread": false,
         "optional": false,
         "name": "options",
-        "description": "The options to customize the target that will be taken from the woopack target `runnerOptions`\nsetting."
+        "description": "The options to customize the target that will be taken from the projext target `runnerOptions`\nsetting."
       },
       {
         "nullable": null,
@@ -3105,7 +3105,7 @@
   },
   {
     "kind": "index",
-    "content": "# woopack runner\n\nA woopack plugin to run Node targets with a simple command no matter the environment, even if woopack is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When woopack present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If woopack is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when woopack is not present; and you can install on a production environment since it doesn't depend on any of the other woopack tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | woopack-plugin-runner                                                                 |\n| Description  | A woopack plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `.woopackrunner` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nwoopack-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if woopack is present. If the option is not specified, it will check if woopack is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `woopack run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customizing the execution\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\nFor now, there's only one available option.\n\n- `runWith`: The name of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike woopack, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `woopack.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// woopack.runner.js\n\n// Get the main class\nconst { WoopackRunner } = require('woopack-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new WoopackRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because woopack doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by woopack to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run install-hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `npm run install-hooks` | Install the GIT repository hooks.   |\n| `npm test`              | Run the project unit tests.         |\n| `npm run lint`          | Lint the modified files.            |\n| `npm run lint:full`     | Lint the project code.              |\n| `npm run docs`          | Generate the project documentation. |\n| `npm run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.",
+    "content": "# projext runner\n\nA projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | projext-plugin-runner                                                                 |\n| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nprojext-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customizing the execution\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\nFor now, there's only one available option.\n\n- `runWith`: The name of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// projext.runner.js\n\n// Get the main class\nconst { ProjextRunner } = require('projext-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new ProjextRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run install-hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `npm run install-hooks` | Install the GIT repository hooks.   |\n| `npm test`              | Run the project unit tests.         |\n| `npm run lint`          | Lint the modified files.            |\n| `npm run lint:full`     | Lint the project code.              |\n| `npm run docs`          | Generate the project documentation. |\n| `npm run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/README.md",
     "name": "./README.md",
     "static": true,
@@ -3113,7 +3113,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n    \"name\": \"woopack-plugin-runner\",\n    \"cliName\": \"woopack-runner\",\n    \"description\": \"A woopack plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/woopack-plugin-runner/\",\n    \"version\": \"1.0.0\",\n    \"repository\": \"homer0/woopack-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"homer0/jimple\",\n      \"fs-extra\": \"5.0.0\",\n      \"extend\": \"3.0.1\",\n      \"commander\": \"2.13.0\",\n      \"wootils\": \"^1.0.5\"\n    },\n    \"peerDependencies\": {\n\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.16.0\",\n      \"eslint-config-airbnb-base\": \"12.1.0\",\n      \"eslint-plugin-import\": \"2.8.0\",\n      \"eslint-plugin-node\": \"5.2.1\",\n      \"babel-preset-env\": \"1.6.1\",\n      \"jest-ex\": \"4.0.0\",\n      \"jest-cli\": \"22.1.4\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.0.4\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"4.13.0\",\n      \"coveralls\": \"3.0.0\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"woopack-runner\": \"./src/bin/woopack-runner\",\n      \"woopack-runner-cli\": \"./src/bin/woopack-runner-cli\"\n    },\n    \"scripts\": {\n      \"install-hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
+    "content": "{\n    \"name\": \"projext-plugin-runner\",\n    \"cliName\": \"projext-runner\",\n    \"description\": \"A projext plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/projext-plugin-runner/\",\n    \"version\": \"3.0.0\",\n    \"repository\": \"homer0/projext-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"homer0/jimple\",\n      \"fs-extra\": \"5.0.0\",\n      \"extend\": \"3.0.1\",\n      \"commander\": \"2.13.0\",\n      \"wootils\": \"^1.1.1\"\n    },\n    \"peerDependencies\": {\n\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.16.0\",\n      \"eslint-config-airbnb-base\": \"12.1.0\",\n      \"eslint-plugin-import\": \"2.8.0\",\n      \"eslint-plugin-node\": \"5.2.1\",\n      \"babel-preset-env\": \"1.6.1\",\n      \"jest-ex\": \"4.0.0\",\n      \"jest-cli\": \"22.1.4\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.0.4\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"4.13.0\",\n      \"coveralls\": \"3.0.0\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"projext-runner\": \"./src/bin/projext-runner\",\n      \"projext-runner-cli\": \"./src/bin/projext-runner-cli\"\n    },\n    \"scripts\": {\n      \"install-hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
     "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/package.json",
     "name": "package.json",
     "static": true,

@@ -405,7 +405,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+                        "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
                         "start": 588,
                         "end": 664,
                         "loc": {
@@ -833,7 +833,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
+                  "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
                   "start": 181,
                   "end": 525,
                   "loc": {
@@ -851,7 +851,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+                  "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
                   "start": 1078,
                   "end": 1891,
                   "loc": {
@@ -1027,7 +1027,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " If Woopack is present...",
+                        "value": " If projext is present...",
                         "start": 1974,
                         "end": 2001,
                         "loc": {
@@ -1225,9 +1225,9 @@
                                       "line": 53,
                                       "column": 43
                                     },
-                                    "identifierName": "getCommandsForWoopack"
+                                    "identifierName": "getCommandsForProjext"
                                   },
-                                  "name": "getCommandsForWoopack"
+                                  "name": "getCommandsForProjext"
                                 },
                                 "computed": false
                               },
@@ -1290,7 +1290,7 @@
                           "leadingComments": [
                             {
                               "type": "CommentLine",
-                              "value": " ..get the commands to run with Woopack.",
+                              "value": " ..get the commands to run with projext.",
                               "start": 2033,
                               "end": 2075,
                               "loc": {
@@ -1684,7 +1684,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " If Woopack is present...",
+                        "value": " If projext is present...",
                         "start": 1974,
                         "end": 2001,
                         "loc": {
@@ -1848,7 +1848,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+                  "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
                   "start": 1078,
                   "end": 1891,
                   "loc": {
@@ -2142,7 +2142,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " Get the commands to run without Woopack.",
+                        "value": " Get the commands to run without projext.",
                         "start": 2843,
                         "end": 2886,
                         "loc": {
@@ -2294,7 +2294,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " Get the commands to run without Woopack.",
+                        "value": " Get the commands to run without projext.",
                         "start": 2843,
                         "end": 2886,
                         "loc": {
@@ -2476,7 +2476,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+                  "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
                   "start": 3036,
                   "end": 3739,
                   "loc": {
@@ -2521,9 +2521,9 @@
                     "line": 88,
                     "column": 23
                   },
-                  "identifierName": "getCommandsForWoopack"
+                  "identifierName": "getCommandsForProjext"
                 },
-                "name": "getCommandsForWoopack",
+                "name": "getCommandsForProjext",
                 "leadingComments": null
               },
               "kind": "method",
@@ -2860,8 +2860,8 @@
                                       }
                                     },
                                     "value": {
-                                      "raw": "woopack build ",
-                                      "cooked": "woopack build "
+                                      "raw": "projext build ",
+                                      "cooked": "projext build "
                                     },
                                     "tail": false
                                   },
@@ -3299,7 +3299,7 @@
                           "trailingComments": [
                             {
                               "type": "CommentLine",
-                              "value": " Push the command to the target with Woopack.",
+                              "value": " Push the command to the target with projext.",
                               "start": 4295,
                               "end": 4342,
                               "loc": {
@@ -3482,8 +3482,8 @@
                                       }
                                     },
                                     "value": {
-                                      "raw": " woopack run ",
-                                      "cooked": " woopack run "
+                                      "raw": " projext run ",
+                                      "cooked": " projext run "
                                     },
                                     "tail": false
                                   },
@@ -3515,7 +3515,7 @@
                           "leadingComments": [
                             {
                               "type": "CommentLine",
-                              "value": " Push the command to the target with Woopack.",
+                              "value": " Push the command to the target with projext.",
                               "start": 4295,
                               "end": 4342,
                               "loc": {
@@ -3630,7 +3630,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+                  "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
                   "start": 3036,
                   "end": 3739,
                   "loc": {
@@ -3648,7 +3648,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+                  "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
                   "start": 4475,
                   "end": 4628,
                   "loc": {
@@ -4334,7 +4334,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " If Woopack is present...",
+                        "value": " If projext is present...",
                         "start": 5017,
                         "end": 5044,
                         "loc": {
@@ -4838,7 +4838,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentLine",
-                        "value": " If Woopack is present...",
+                        "value": " If projext is present...",
                         "start": 5017,
                         "end": 5044,
                         "loc": {
@@ -5186,7 +5186,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+                  "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
                   "start": 4475,
                   "end": 4628,
                   "loc": {
@@ -6933,7 +6933,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+                          "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
                           "start": 588,
                           "end": 664,
                           "loc": {
@@ -7361,7 +7361,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
+                    "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
                     "start": 181,
                     "end": 525,
                     "loc": {
@@ -7379,7 +7379,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+                    "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
                     "start": 1078,
                     "end": 1891,
                     "loc": {
@@ -7555,7 +7555,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " If Woopack is present...",
+                          "value": " If projext is present...",
                           "start": 1974,
                           "end": 2001,
                           "loc": {
@@ -7753,9 +7753,9 @@
                                         "line": 53,
                                         "column": 43
                                       },
-                                      "identifierName": "getCommandsForWoopack"
+                                      "identifierName": "getCommandsForProjext"
                                     },
-                                    "name": "getCommandsForWoopack"
+                                    "name": "getCommandsForProjext"
                                   },
                                   "computed": false
                                 },
@@ -7818,7 +7818,7 @@
                             "leadingComments": [
                               {
                                 "type": "CommentLine",
-                                "value": " ..get the commands to run with Woopack.",
+                                "value": " ..get the commands to run with projext.",
                                 "start": 2033,
                                 "end": 2075,
                                 "loc": {
@@ -8212,7 +8212,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " If Woopack is present...",
+                          "value": " If projext is present...",
                           "start": 1974,
                           "end": 2001,
                           "loc": {
@@ -8376,7 +8376,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+                    "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
                     "start": 1078,
                     "end": 1891,
                     "loc": {
@@ -8670,7 +8670,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " Get the commands to run without Woopack.",
+                          "value": " Get the commands to run without projext.",
                           "start": 2843,
                           "end": 2886,
                           "loc": {
@@ -8822,7 +8822,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " Get the commands to run without Woopack.",
+                          "value": " Get the commands to run without projext.",
                           "start": 2843,
                           "end": 2886,
                           "loc": {
@@ -9004,7 +9004,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+                    "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
                     "start": 3036,
                     "end": 3739,
                     "loc": {
@@ -9049,9 +9049,9 @@
                       "line": 88,
                       "column": 23
                     },
-                    "identifierName": "getCommandsForWoopack"
+                    "identifierName": "getCommandsForProjext"
                   },
-                  "name": "getCommandsForWoopack",
+                  "name": "getCommandsForProjext",
                   "leadingComments": null
                 },
                 "kind": "method",
@@ -9388,8 +9388,8 @@
                                         }
                                       },
                                       "value": {
-                                        "raw": "woopack build ",
-                                        "cooked": "woopack build "
+                                        "raw": "projext build ",
+                                        "cooked": "projext build "
                                       },
                                       "tail": false
                                     },
@@ -9827,7 +9827,7 @@
                             "trailingComments": [
                               {
                                 "type": "CommentLine",
-                                "value": " Push the command to the target with Woopack.",
+                                "value": " Push the command to the target with projext.",
                                 "start": 4295,
                                 "end": 4342,
                                 "loc": {
@@ -10010,8 +10010,8 @@
                                         }
                                       },
                                       "value": {
-                                        "raw": " woopack run ",
-                                        "cooked": " woopack run "
+                                        "raw": " projext run ",
+                                        "cooked": " projext run "
                                       },
                                       "tail": false
                                     },
@@ -10043,7 +10043,7 @@
                             "leadingComments": [
                               {
                                 "type": "CommentLine",
-                                "value": " Push the command to the target with Woopack.",
+                                "value": " Push the command to the target with projext.",
                                 "start": 4295,
                                 "end": 4342,
                                 "loc": {
@@ -10158,7 +10158,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+                    "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
                     "start": 3036,
                     "end": 3739,
                     "loc": {
@@ -10176,7 +10176,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+                    "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
                     "start": 4475,
                     "end": 4628,
                     "loc": {
@@ -10862,7 +10862,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " If Woopack is present...",
+                          "value": " If projext is present...",
                           "start": 5017,
                           "end": 5044,
                           "loc": {
@@ -11366,7 +11366,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentLine",
-                          "value": " If Woopack is present...",
+                          "value": " If projext is present...",
                           "start": 5017,
                           "end": 5044,
                           "loc": {
@@ -11714,7 +11714,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+                    "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
                     "start": 4475,
                     "end": 4628,
                     "loc": {
@@ -13151,7 +13151,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
       "start": 181,
       "end": 525,
       "loc": {
@@ -13167,7 +13167,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+      "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
       "start": 588,
       "end": 664,
       "loc": {
@@ -13231,7 +13231,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+      "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
       "start": 1078,
       "end": 1891,
       "loc": {
@@ -13247,7 +13247,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " If Woopack is present...",
+      "value": " If projext is present...",
       "start": 1974,
       "end": 2001,
       "loc": {
@@ -13263,7 +13263,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " ..get the commands to run with Woopack.",
+      "value": " ..get the commands to run with projext.",
       "start": 2033,
       "end": 2075,
       "loc": {
@@ -13359,7 +13359,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Get the commands to run without Woopack.",
+      "value": " Get the commands to run without projext.",
       "start": 2843,
       "end": 2886,
       "loc": {
@@ -13391,7 +13391,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+      "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
       "start": 3036,
       "end": 3739,
       "loc": {
@@ -13471,7 +13471,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Push the command to the target with Woopack.",
+      "value": " Push the command to the target with projext.",
       "start": 4295,
       "end": 4342,
       "loc": {
@@ -13503,7 +13503,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+      "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
       "start": 4475,
       "end": 4628,
       "loc": {
@@ -13567,7 +13567,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " If Woopack is present...",
+      "value": " If projext is present...",
       "start": 5017,
       "end": 5044,
       "loc": {
@@ -13959,7 +13959,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   ",
       "start": 181,
       "end": 525,
       "loc": {
@@ -14258,7 +14258,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+      "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
       "start": 588,
       "end": 664,
       "loc": {
@@ -14983,7 +14983,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case Woopack is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
+      "value": "*\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   ",
       "start": 1078,
       "end": 1891,
       "loc": {
@@ -15310,7 +15310,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " If Woopack is present...",
+      "value": " If projext is present...",
       "start": 1974,
       "end": 2001,
       "loc": {
@@ -15509,7 +15509,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " ..get the commands to run with Woopack.",
+      "value": " ..get the commands to run with projext.",
       "start": 2033,
       "end": 2075,
       "loc": {
@@ -15642,7 +15642,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "getCommandsForWoopack",
+      "value": "getCommandsForProjext",
       "start": 2098,
       "end": 2119,
       "loc": {
@@ -17273,7 +17273,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Get the commands to run without Woopack.",
+      "value": " Get the commands to run without projext.",
       "start": 2843,
       "end": 2886,
       "loc": {
@@ -17802,7 +17802,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the list of comands to run a target with Woopack.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces Woopack to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
+      "value": "*\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   ",
       "start": 3036,
       "end": 3739,
       "loc": {
@@ -17828,7 +17828,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "getCommandsForWoopack",
+      "value": "getCommandsForProjext",
       "start": 3742,
       "end": 3763,
       "loc": {
@@ -18508,7 +18508,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "woopack build ",
+      "value": "projext build ",
       "start": 3995,
       "end": 4009,
       "loc": {
@@ -19412,7 +19412,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " Push the command to the target with Woopack.",
+      "value": " Push the command to the target with projext.",
       "start": 4295,
       "end": 4342,
       "loc": {
@@ -19670,7 +19670,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": " woopack run ",
+      "value": " projext run ",
       "start": 4376,
       "end": 4389,
       "loc": {
@@ -20011,7 +20011,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the list of commands to run a target without Woopack present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
+      "value": "*\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   ",
       "start": 4475,
       "end": 4628,
       "loc": {
@@ -21125,7 +21125,7 @@
     },
     {
       "type": "CommentLine",
-      "value": " If Woopack is present...",
+      "value": " If projext is present...",
       "start": 5017,
       "end": 5044,
       "loc": {

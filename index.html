@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl">
-  <title data-ice="title">Home | woopack-plugin-runner</title>
+  <title data-ice="title">Home | projext-plugin-runner</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<meta name="description" content="A projext plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="projext-plugin-runner"><meta property="twitter:description" content="A projext plugin to run Node targets with a simple command no matter the environment."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/projext-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -36,9 +36,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
@@ -58,13 +58,13 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="woopack-runner">woopack runner</h1><p>A woopack plugin to run Node targets with a simple command no matter the environment, even if woopack is not installed.</p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="projext-runner">projext runner</h1><p>A projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.</p>
 <h2 id="introduction">Introduction</h2><p>This is part plugin and part stand alone tool:</p>
 <ul>
-<li>When woopack present, it assumes that is on a development environment and every time a file is builded, it will write an information file.</li>
-<li>If woopack is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.</li>
+<li>When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.</li>
+<li>If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.</li>
 </ul>
-<p>The idea behind this plugin-tool is that you don&apos;t have to hard code the instruction to run a target when woopack is not present; and you can install on a production environment since it doesn&apos;t depend on any of the other woopack tools.</p>
+<p>The idea behind this plugin-tool is that you don&apos;t have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn&apos;t depend on any of the other projext tools.</p>
 <h2 id="information">Information</h2><table>
 <thead>
 <tr>
@@ -75,11 +75,11 @@
 <tbody>
 <tr>
 <td>Package</td>
-<td>woopack-plugin-runner</td>
+<td>projext-plugin-runner</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>A woopack plugin to run Node targets with a simple command no matter the environment.</td>
+<td>A projext plugin to run Node targets with a simple command no matter the environment.</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -88,33 +88,33 @@
 </tbody>
 </table>
 <h2 id="usage">Usage</h2><h3 id="runner-file">Runner file</h3><p>The most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.</p>
-<p>The runner file is called <code>.woopackrunner</code> and it&apos;s created when you build your targets, on your project root directory. You should probably add it to your <code>.gitignore</code>.</p>
+<p>The runner file is called <code>projextrunner.json</code> and it&apos;s created when you build your targets, on your project root directory. You should probably add it to your <code>.gitignore</code>.</p>
 <p>If the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you&apos;ll have to copy it manually before moving the distribution directory to the production environment (deploying).</p>
 <h3 id="cli">CLI</h3><p>To run the targets, the runner provides you with a CLI tool:</p>
-<pre><code class="lang-bash"><code class="source-code prettyprint">woopack-runner [target] [--production]</code>
+<pre><code class="lang-bash"><code class="source-code prettyprint">projext-runner [target] [--production]</code>
 </code></pre>
 <ul>
 <li><code>target</code>: The name of the target you intend to run.</li>
-<li><code>--production</code>: This forces the runner to build the target for production and run that even if woopack is present. If the option is not specified, it will check if woopack is present to determine whether it is a development or production environment.</li>
+<li><code>--production</code>: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.</li>
 </ul>
-<p>When on a development environment, this command will basically call <code>woopack run</code>, unless <code>--production</code> is used; If it is on a production environment, it will use the information of the runner file to execute the file.</p>
+<p>When on a development environment, this command will basically call <code>projext run</code>, unless <code>--production</code> is used; If it is on a production environment, it will use the information of the runner file to execute the file.</p>
 <h3 id="customizing-the-execution">Customizing the execution</h3><p>On your project configuration targets settings, you can add a <code>runnerOptions</code> object setting that the runner will pick and that can be used to modify the way the target is executed.</p>
 <p>For now, there&apos;s only one available option.</p>
 <ul>
 <li><code>runWith</code>: The name of the executable the runner will use to run the target. By default is <code>node</code>, but you can changed to something like <a href="https://yarnpkg.com/en/package/nodemon"><code>nodemon</code></a>.</li>
 </ul>
-<h3 id="extending-overwriting-the-services">Extending/overwriting the services</h3><p>Like woopack, the this plugin-tool is built using <a href="https://yarnpkg.com/en/package/jimple">Jimple</a>, a port of <a href="https://github.com/silexphp/Pimple/">Pimple Dependency Injection container</a> for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.</p>
+<h3 id="extending-overwriting-the-services">Extending/overwriting the services</h3><p>Like projext, the this plugin-tool is built using <a href="https://yarnpkg.com/en/package/jimple">Jimple</a>, a port of <a href="https://github.com/silexphp/Pimple/">Pimple Dependency Injection container</a> for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.</p>
 <blockquote>
 <p>If you haven&apos;t tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it&apos;s excellent for organizing your app dependencies and services.</p>
 </blockquote>
-<p>The way you get access to the container is by creating a file called <code>woopack.runner.js</code> on your project root directory, there you&apos;ll create your own instance of the runner, register your custom/overwrite services and export it:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">// woopack.runner.js
+<p>The way you get access to the container is by creating a file called <code>projext.runner.js</code> on your project root directory, there you&apos;ll create your own instance of the runner, register your custom/overwrite services and export it:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// projext.runner.js
 
 // Get the main class
-const { WoopackRunner } = require(&apos;woopack-plugin-runner/src/app&apos;);
+const { ProjextRunner } = require(&apos;projext-plugin-runner/src/app&apos;);
 
 // Create a new instance
-const myRunner = new WoopackRunner();
+const myRunner = new ProjextRunner();
 
 // Overwrite a service
 myRunner.set(&apos;targets&apos;, () =&gt; myCustomTargetsManager);
@@ -123,7 +123,7 @@ myRunner.set(&apos;targets&apos;, () =&gt; myCustomTargetsManager);
 module.exports = myRunner;</code>
 </code></pre>
 <blockquote>
-<p>You have to require it from <code>/src/app</code> because woopack doesn&apos;t <strong>yet</strong> support a named export to load a plugin, and the main export is meant to be a function used by woopack to register the plugin.</p>
+<p>You have to require it from <code>/src/app</code> because projext doesn&apos;t <strong>yet</strong> support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.</p>
 </blockquote>
 <h2 id="development">Development</h2><p>Before doing anything, install the repository hooks:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter

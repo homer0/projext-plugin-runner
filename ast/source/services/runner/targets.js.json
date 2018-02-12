@@ -457,7 +457,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+                        "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
                         "start": 488,
                         "end": 564,
                         "loc": {
@@ -750,7 +750,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
+                  "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
                   "start": 184,
                   "end": 434,
                   "loc": {
@@ -3768,7 +3768,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+                          "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
                           "start": 488,
                           "end": 564,
                           "loc": {
@@ -4061,7 +4061,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
+                    "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
                     "start": 184,
                     "end": 434,
                     "loc": {
@@ -6786,7 +6786,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
       "start": 184,
       "end": 434,
       "loc": {
@@ -6802,7 +6802,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+      "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
       "start": 488,
       "end": 564,
       "loc": {
@@ -7375,7 +7375,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if Woopack is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   ",
       "start": 184,
       "end": 434,
       "loc": {
@@ -7622,7 +7622,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether Woopack is present or not.\n     * @type {boolean}\n     ",
+      "value": "*\n     * Whether projext is present or not.\n     * @type {boolean}\n     ",
       "start": 488,
       "end": 564,
       "loc": {

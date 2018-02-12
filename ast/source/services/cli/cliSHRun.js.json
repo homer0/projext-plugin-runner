@@ -927,10 +927,10 @@
                             }
                           },
                           "extra": {
-                            "rawValue": "Force the runner to use a production build even if Woopack is present",
-                            "raw": "'Force the runner to use a production build even if Woopack is present'"
+                            "rawValue": "Force the runner to use a production build even if projext is present",
+                            "raw": "'Force the runner to use a production build even if projext is present'"
                           },
-                          "value": "Force the runner to use a production build even if Woopack is present"
+                          "value": "Force the runner to use a production build even if projext is present"
                         },
                         {
                           "type": "BooleanLiteral",
@@ -1266,7 +1266,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+                  "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
                   "start": 1315,
                   "end": 2428,
                   "loc": {
@@ -2557,7 +2557,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+                  "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
                   "start": 1315,
                   "end": 2428,
                   "loc": {
@@ -3825,10 +3825,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": "Force the runner to use a production build even if Woopack is present",
-                              "raw": "'Force the runner to use a production build even if Woopack is present'"
+                              "rawValue": "Force the runner to use a production build even if projext is present",
+                              "raw": "'Force the runner to use a production build even if projext is present'"
                             },
-                            "value": "Force the runner to use a production build even if Woopack is present"
+                            "value": "Force the runner to use a production build even if projext is present"
                           },
                           {
                             "type": "BooleanLiteral",
@@ -4164,7 +4164,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+                    "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
                     "start": 1315,
                     "end": 2428,
                     "loc": {
@@ -5455,7 +5455,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+                    "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
                     "start": 1315,
                     "end": 2428,
                     "loc": {
@@ -6040,7 +6040,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+      "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
       "start": 1315,
       "end": 2428,
       "loc": {
@@ -7647,7 +7647,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "Force the runner to use a production build even if Woopack is present",
+      "value": "Force the runner to use a production build even if projext is present",
       "start": 963,
       "end": 1034,
       "loc": {
@@ -8313,7 +8313,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     Woopack preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
+      "value": "*\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   ",
       "start": 1315,
       "end": 2428,
       "loc": {

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">WoopackRunner | woopack-plugin-runner</title>
+  <title data-ice="title">ProjextRunner | projext-plugin-runner</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="A woopack plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="woopack-plugin-runner"><meta property="twitter:description" content="A woopack plugin to run Node targets with a simple command no matter the environment."></head>
+<meta name="description" content="A projext plugin to run Node targets with a simple command no matter the environment."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="projext-plugin-runner"><meta property="twitter:description" content="A projext plugin to run Node targets with a simple command no matter the environment."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/homer0/woopack-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/projext-plugin-runner"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -36,9 +36,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://tj.github.io/commander.js/#Command">Command</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html">WoopackRunner</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHRun.js~CLISHRunCommand.html">CLISHRunCommand</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html">CLISHValidateCommand</a></span></span></li>
@@ -59,7 +59,7 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {WoopackRunner} from &apos;<span><a href="file/src/app/index.js.html#lineNumber30">woopack-plugin-runner/src/app/index.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {ProjextRunner} from &apos;<span><a href="file/src/app/index.js.html#lineNumber30">projext-plugin-runner/src/app/index.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
@@ -69,13 +69,13 @@
 </div>
 
 <div class="self-detail detail">
-  <h1 data-ice="name">WoopackRunner</h1>
+  <h1 data-ice="name">ProjextRunner</h1>
 
   
 
   
   
-  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span> &#x2192; WoopackRunner</div></div>
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span> &#x2192; ProjextRunner</div></div>
   
   
   
@@ -86,7 +86,7 @@
   
   
   <div class="description" data-ice="description"><p>This is the plugin own dependency injection cotainer. Different from most of the other plugins,
-this one is a little bit more complex as it is prepare to run with and without Woopack present.</p>
+this one is a little bit more complex as it is prepare to run with and without projext present.</p>
 </div>
   
 
@@ -121,7 +121,7 @@ this one is a little bit more complex as it is prepare to run with and without W
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html#instance-method-cli">cli</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html#instance-method-cli">cli</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
       <div>
@@ -150,13 +150,13 @@ this one is a little bit more complex as it is prepare to run with and without W
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/app/index.js~WoopackRunner.html#instance-method-plugin">plugin</a></span></span><span class="code" data-ice="signature">(woopack: <span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html#instance-method-plugin">plugin</a></span></span><span class="code" data-ice="signature">(projext: <span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>This is called when Woopack is present and tries to load the plugin.</p>
+        <div data-ice="description"><p>This is called when projext is present and tries to load the plugin.</p>
 </div>
       </div>
     </td>
@@ -229,7 +229,7 @@ this one is a little bit more complex as it is prepare to run with and without W
     
     
     
-    <span class="code" data-ice="name">plugin</span><span class="code" data-ice="signature">(woopack: <span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span>)</span>
+    <span class="code" data-ice="name">plugin</span><span class="code" data-ice="signature">(projext: <span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span>)</span>
     <span class="right-info">
       
       
@@ -240,9 +240,9 @@ this one is a little bit more complex as it is prepare to run with and without W
   
   
   
-  <div data-ice="description"><p>This is called when Woopack is present and tries to load the plugin. It will add events
-listeners so every time Woopack builds a target or creates a revision file, the runner file
-will be updated. It also adds a listener for when Woopack copies the projects files so it
+  <div data-ice="description"><p>This is called when projext is present and tries to load the plugin. It will add events
+listeners so every time projext builds a target or creates a revision file, the runner file
+will be updated. It also adds a listener for when projext copies the projects files so it
 will include the runner file.</p>
 </div>
 
@@ -257,10 +257,10 @@ will include the runner file.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">woopack</td>
-      <td data-ice="type" class="code"><span><a href="https://homer0.github.io/woopack/class/src/app/index.js~Woopack.html">Woopack</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">projext</td>
+      <td data-ice="type" class="code"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The Woopack main container.</p>
+      <td data-ice="description"><p>The projext main container.</p>
 </td>
     </tr>
 </tbody>

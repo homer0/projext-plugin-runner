@@ -1079,10 +1079,10 @@
                             }
                           },
                           "extra": {
-                            "rawValue": "Force the runner to use a production build even if Woopack is present",
-                            "raw": "'Force the runner to use a production build even if Woopack is present'"
+                            "rawValue": "Force the runner to use a production build even if projext is present",
+                            "raw": "'Force the runner to use a production build even if projext is present'"
                           },
-                          "value": "Force the runner to use a production build even if Woopack is present"
+                          "value": "Force the runner to use a production build even if projext is present"
                         },
                         {
                           "type": "BooleanLiteral",
@@ -1643,7 +1643,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+                        "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
                         "start": 2046,
                         "end": 2234,
                         "loc": {
@@ -1930,7 +1930,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+                        "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
                         "start": 2046,
                         "end": 2234,
                         "loc": {
@@ -3459,10 +3459,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": "Force the runner to use a production build even if Woopack is present",
-                              "raw": "'Force the runner to use a production build even if Woopack is present'"
+                              "rawValue": "Force the runner to use a production build even if projext is present",
+                              "raw": "'Force the runner to use a production build even if projext is present'"
                             },
-                            "value": "Force the runner to use a production build even if Woopack is present"
+                            "value": "Force the runner to use a production build even if projext is present"
                           },
                           {
                             "type": "BooleanLiteral",
@@ -4023,7 +4023,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+                          "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
                           "start": 2046,
                           "end": 2234,
                           "loc": {
@@ -4310,7 +4310,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+                          "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
                           "start": 2046,
                           "end": 2234,
                           "loc": {
@@ -5052,7 +5052,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+      "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
       "start": 2046,
       "end": 2234,
       "loc": {
@@ -6774,7 +6774,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "Force the runner to use a production build even if Woopack is present",
+      "value": "Force the runner to use a production build even if projext is present",
       "start": 1450,
       "end": 1521,
       "loc": {
@@ -7807,7 +7807,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with Woopack present and the file is going to be generated on build.\n     ",
+      "value": "*\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     ",
       "start": 2046,
       "end": 2234,
       "loc": {
