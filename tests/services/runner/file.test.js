@@ -28,7 +28,7 @@ describe('services/runner:runnerFile', () => {
       join: jest.fn((rest) => rest),
     };
     let sut = null;
-    const expectedFilename = 'woopackrunner.json';
+    const expectedFilename = 'projextrunner.json';
     const expectedFileTemplate = {
       runnerVersion: info.version,
       version: 'development',
@@ -60,7 +60,7 @@ describe('services/runner:runnerFile', () => {
     let sut = null;
     let defaultName = null;
     let nameAfterChange = null;
-    const expectedDefaultFilename = 'woopackrunner.json';
+    const expectedDefaultFilename = 'projextrunner.json';
     // When
     sut = new RunnerFile(asPlugin, info, pathUtils);
     defaultName = sut.getFilename();
@@ -336,7 +336,7 @@ describe('services/runner:runnerFile', () => {
     expect(fs.readJsonSync).toHaveBeenCalledTimes(0);
   });
 
-  it('should throw an error if the file doesn\'t exists and woopack is not present', () => {
+  it('should throw an error if the file doesn\'t exists and projext is not present', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
     const asPlugin = false;
@@ -352,10 +352,10 @@ describe('services/runner:runnerFile', () => {
     sut = new RunnerFile(asPlugin, info, pathUtils);
     // Then
     expect(() => sut.validate())
-    .toThrow(/The runner file doesn't exist and woopack is not present/i);
+    .toThrow(/The runner file doesn't exist and projext is not present/i);
   });
 
-  it('shouldn\'t throw an error if the file doesn\'t exists but woopack is present', () => {
+  it('shouldn\'t throw an error if the file doesn\'t exists but projext is present', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
     const asPlugin = true;

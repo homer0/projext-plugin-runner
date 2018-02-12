@@ -1,18 +1,18 @@
 const { provider } = require('jimple');
 /**
- * Checks whether or not Woopack is preent on the environment.
+ * Checks whether or not projext is present on the environment.
  * @return {boolean}
  */
 const asPlugin = () => {
-  let woopackExists = true;
+  let projextExists = true;
   try {
     // eslint-disable-next-line global-require
-    require('woopack');
+    require('projext');
   } catch (ignore) {
-    woopackExists = false;
+    projextExists = false;
   }
 
-  return woopackExists;
+  return projextExists;
 };
 /**
  * The service provider that once registered on the app container will set the result of

@@ -6,10 +6,10 @@ require('jasmine-expect');
 const runner = require('../index');
 const plugin = require('/src/index');
 
-describe('plugin:woopackRunner', () => {
+describe('plugin:projextRunner', () => {
   it('should register all the services', () => {
     // Given
-    const app = 'woopackApp';
+    const app = 'projextApp';
     // When
     plugin(app);
     // Then

@@ -14,9 +14,9 @@ describe('services/utils:asPlugin', () => {
     jest.resetModules();
   });
 
-  it('should return `true` when woopack is present', () => {
+  it('should return `true` when projext is present', () => {
     // Given
-    jest.setMock('woopack', () => ({}));
+    jest.setMock('projext', () => ({}));
     let result = null;
     // When
     result = asPlugin();
@@ -24,9 +24,9 @@ describe('services/utils:asPlugin', () => {
     expect(result).toBeTrue();
   });
 
-  it('should return `false` when woopack is not present', () => {
+  it('should return `false` when projext is not present', () => {
     // Given
-    jest.mock('woopack', () => {
+    jest.mock('projext', () => {
       throw new Error('Module not present');
     });
     let result = null;
@@ -38,7 +38,7 @@ describe('services/utils:asPlugin', () => {
 
   it('should include a provider for the DIC', () => {
     // Given
-    jest.setMock('woopack', () => ({}));
+    jest.setMock('projext', () => ({}));
     let result = null;
     const container = {
       set: jest.fn(),

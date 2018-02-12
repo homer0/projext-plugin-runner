@@ -1,22 +1,22 @@
-# woopack runner
+# projext runner
 
-A woopack plugin to run Node targets with a simple command no matter the environment, even if woopack is not installed.
+A projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.
 
 ## Introduction
 
 This is part plugin and part stand alone tool:
 
-- When woopack present, it assumes that is on a development environment and every time a file is builded, it will write an information file.
-- If woopack is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.
+- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.
+- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.
 
-The idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when woopack is not present; and you can install on a production environment since it doesn't depend on any of the other woopack tools.
+The idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.
 
 ## Information
 
 | -            | -                                                                                     |
 |--------------|---------------------------------------------------------------------------------------|
-| Package      | woopack-plugin-runner                                                                 |
-| Description  | A woopack plugin to run Node targets with a simple command no matter the environment. |
+| Package      | projext-plugin-runner                                                                 |
+| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |
 | Node Version | >= v6.10.0                                                                            |
 
 ## Usage
@@ -25,7 +25,7 @@ The idea behind this plugin-tool is that you don't have to hard code the instruc
 
 The most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.
 
-The runner file is called `woopackrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.
+The runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.
 
 If the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).
 
@@ -34,13 +34,13 @@ If the feature to copy project files is enabled, the file will be automatically 
 To run the targets, the runner provides you with a CLI tool:
 
 ```bash
-woopack-runner [target] [--production]
+projext-runner [target] [--production]
 ```
 
 - `target`: The name of the target you intend to run.
-- `--production`: This forces the runner to build the target for production and run that even if woopack is present. If the option is not specified, it will check if woopack is present to determine whether it is a development or production environment.
+- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.
 
-When on a development environment, this command will basically call `woopack run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.
+When on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.
 
 ### Customizing the execution
 
@@ -52,20 +52,20 @@ For now, there's only one available option.
 
 ### Extending/overwriting the services
 
-Like woopack, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.
+Like projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.
 
 > If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.
 
-The way you get access to the container is by creating a file called `woopack.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:
+The way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:
 
 ```js
-// woopack.runner.js
+// projext.runner.js
 
 // Get the main class
-const { WoopackRunner } = require('woopack-plugin-runner/src/app');
+const { ProjextRunner } = require('projext-plugin-runner/src/app');
 
 // Create a new instance
-const myRunner = new WoopackRunner();
+const myRunner = new ProjextRunner();
 
 // Overwrite a service
 myRunner.set('targets', () => myCustomTargetsManager);
@@ -74,7 +74,7 @@ myRunner.set('targets', () => myCustomTargetsManager);
 module.exports = myRunner;
 ```
 
-> You have to require it from `/src/app` because woopack doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by woopack to register the plugin.
+> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.
 
 ## Development
 

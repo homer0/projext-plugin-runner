@@ -6,14 +6,14 @@ const { provider } = require('jimple');
 class Runner {
   /**
    * Class constructor.
-   * @param {boolean}    asPlugin   To check if Woopack is present or not
+   * @param {boolean}    asPlugin   To check if projext is present or not
    * @param {PathUtils}  pathUtils  To create the path for the targets executables.
    * @param {RunnerFile} runnerFile To read the required information to run targets.
    * @param {Targets}    targets    To get the targets information.
    */
   constructor(asPlugin, pathUtils, runnerFile, targets) {
     /**
-     * Whether Woopack is present or not.
+     * Whether projext is present or not.
      * @type {boolean}
      */
     this.asPlugin = asPlugin;
@@ -36,7 +36,7 @@ class Runner {
   /**
    * Get the shell execution commands for running a target.
    * @param {string}  targetName         The name of the target to run.
-   * @param {boolean} production         In case Woopack is present, this flag forces the runner
+   * @param {boolean} production         In case projext is present, this flag forces the runner
    *                                     to build the target for production and run that build.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
@@ -47,10 +47,10 @@ class Runner {
    */
   getCommands(targetName, production, runAsPluginCommand) {
     let commands;
-    // If Woopack is present...
+    // If projext is present...
     if (this.asPlugin) {
-      // ..get the commands to run with Woopack.
-      commands = this.getCommandsForWoopack(targetName, production, runAsPluginCommand);
+      // ..get the commands to run with projext.
+      commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);
     } else {
       // ...otherwise, get the target information.
       const target = this.targets.getTarget(targetName);
@@ -69,15 +69,15 @@ class Runner {
   getPluginCommandsForProduction(targetName) {
     // Get the target information.
     const target = this.targets.getTarget(targetName);
-    // Get the commands to run without Woopack.
+    // Get the commands to run without projext.
     const commands = this.getCommandsForProduction(target);
     // Push all the commands in to a single string.
     return commands.join(';');
   }
   /**
-   * Get the list of comands to run a target with Woopack.
+   * Get the list of comands to run a target with projext.
    * @param {string}  targetName         The name of the target to run.
-   * @param {boolean} production         Forces Woopack to use the production build.
+   * @param {boolean} production         Forces projext to use the production build.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
    *                                     the latest information and then it will run this command,
@@ -85,25 +85,25 @@ class Runner {
    *                                     needs to execute it.
    * @return {Array}
    */
-  getCommandsForWoopack(targetName, production, runAsPluginCommand) {
+  getCommandsForProjext(targetName, production, runAsPluginCommand) {
     const commands = [];
     // If the target needs to use the production build...
     if (production) {
       // ...push the command to create a production build.
-      commands.push(`woopack build ${targetName} --type production`);
+      commands.push(`projext build ${targetName} --type production`);
       // Push the command to run the plugin again.
       commands.push(runAsPluginCommand);
     } else {
       // ...otherwise, get the environment variables to send.
       const variables = this.getEnvironmentVariables(this.runnerFile.read());
-      // Push the command to the target with Woopack.
-      commands.push(`${variables} woopack run ${targetName}`);
+      // Push the command to the target with projext.
+      commands.push(`${variables} projext run ${targetName}`);
     }
     // Return the list of commands.
     return commands;
   }
   /**
-   * Get the list of commands to run a target without Woopack present.
+   * Get the list of commands to run a target without projext present.
    * @param {Target} target The target information.
    * @return {Array}
    */
@@ -115,7 +115,7 @@ class Runner {
     // Get the executable it needs to use to run the target.
     const runWith = target.options.runWith || 'node';
     let execPath;
-    // If Woopack is present...
+    // If projext is present...
     if (this.asPlugin) {
       /**
        * ...this means the user is running a production build, so set the execution file from
