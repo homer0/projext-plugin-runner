@@ -108,13 +108,66 @@ describe('services/runner:runnerFile', () => {
     };
     const target = {
       name: 'backend',
-      output: {
+      entry: {
         production: 'start.js',
       },
       folders: {
         build: 'dist',
       },
       bundle: false,
+      is: {
+        node: true,
+      },
+    };
+    const version = 'latest';
+    const directory = target.folders.build;
+    let sut = null;
+    let result = null;
+    const expectedFile = {
+      runnerVersion: expect.any(String),
+      version,
+      directory,
+      targets: {
+        [target.name]: {
+          name: target.name,
+          path: target.entry.production,
+          options: {},
+        },
+      },
+    };
+    // When
+    sut = new RunnerFile(asPlugin, info, pathUtils);
+    result = sut.update(target, version, directory);
+    // Then
+    expect(result).toBe(writeResult);
+    expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
+    expect(fs.pathExistsSync).toHaveBeenCalledWith(filename);
+    expect(fs.writeJsonSync).toHaveBeenCalledTimes(1);
+    expect(fs.writeJsonSync).toHaveBeenCalledWith(filename, expectedFile);
+  });
+
+  it('should update the file with a bundled target information', () => {
+    // Given
+    fs.pathExistsSync.mockImplementationOnce(() => false);
+    const writeResult = 'done!';
+    fs.writeJsonSync.mockImplementationOnce(() => writeResult);
+    const asPlugin = 'asPlugin';
+    const info = {
+      version: '25092015',
+    };
+    const filename = '.randomrunner';
+    const pathUtils = {
+      join: jest.fn(() => filename),
+    };
+    const target = {
+      name: 'backend',
+      output: {
+        production: 'start.js',
+      },
+      folders: {
+        build: 'dist',
+      },
+      bundle: true,
       is: {
         node: true,
       },
@@ -189,7 +242,7 @@ describe('services/runner:runnerFile', () => {
     };
     const target = {
       name: 'backend',
-      output: {
+      entry: {
         production: 'start.js',
       },
       folders: {
@@ -214,7 +267,7 @@ describe('services/runner:runnerFile', () => {
       targets: {
         [target.name]: {
           name: target.name,
-          path: target.output.production,
+          path: target.entry.production,
           options: target.runnerOptions,
         },
       },
@@ -247,7 +300,7 @@ describe('services/runner:runnerFile', () => {
     const targetDirectory = 'backend';
     const target = {
       name: 'backend',
-      output: {
+      entry: {
         production: 'start.js',
       },
       folders: {
@@ -271,7 +324,7 @@ describe('services/runner:runnerFile', () => {
       targets: {
         [target.name]: {
           name: target.name,
-          path: `${targetDirectory}/${target.output.production}`,
+          path: `${targetDirectory}/${target.entry.production}`,
           options: target.runnerOptions,
         },
       },
