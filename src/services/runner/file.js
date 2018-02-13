@@ -85,7 +85,9 @@ class RunnerFile {
         targetPath = build.substr(directory.length + 1);
       }
 
-      const targetExec = target.output.production;
+      const targetExec = target.bundle ?
+        target.output.production :
+        target.entry.production;
       const targetExecPath = path.join(targetPath, targetExec);
 
       file.targets[target.name] = {

@@ -114,39 +114,6 @@ describe('services/runner:targets', () => {
     .toThrow(/The runner file doesn't exist/i);
   });
 
-  it('should throw an error when trying to run a browser target', () => {
-    // Given
-    const asPlugin = false;
-    const pathUtils = {
-      join: jest.fn((rest) => rest),
-    };
-    const targetName = 'some-target';
-    const target = {
-      name: targetName,
-      path: 'path-to-the-file',
-      node: false,
-    };
-    const file = {
-      targets: {
-        [targetName]: target,
-      },
-    };
-    const runnerFileExists = true;
-    const runnerFile = {
-      exists: jest.fn(() => runnerFileExists),
-      read: jest.fn(() => file),
-    };
-    let sut = null;
-    // When
-    sut = new Targets(asPlugin, pathUtils, runnerFile);
-    // Then
-    expect(() => sut.validate(targetName))
-    .toThrow(/is not a Node target/i);
-    expect(runnerFile.read).toHaveBeenCalledTimes(1);
-    expect(pathUtils.join).toHaveBeenCalledTimes(1);
-    expect(pathUtils.join).toHaveBeenCalledWith(target.path);
-  });
-
   it('should throw an error if a target executable doesn\'t exist', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
@@ -158,7 +125,6 @@ describe('services/runner:targets', () => {
     const target = {
       name: targetName,
       path: 'path-to-the-file',
-      node: true,
     };
     const file = {
       targets: {
@@ -194,7 +160,6 @@ describe('services/runner:targets', () => {
     const target = {
       name: targetName,
       path: 'path-to-the-file',
-      node: true,
     };
     const file = {
       targets: {

@@ -50,7 +50,6 @@ class Targets {
    * @param  {string} name The target name.
    * @return {boolean}
    * @throws {Error} If the runner file doesn't exist.
-   * @throws {Error} If the target type is not Node.
    * @throws {Error} If the target executable doesn't exist.
    */
   validate(name) {
@@ -62,11 +61,6 @@ class Targets {
       }
 
       const target = this.getTarget(name);
-      // Check if the target type is Node.
-      if (!target.node) {
-        throw new Error(`${name} is not a Node target, it can't be used with the runner`);
-      }
-
       // Check if the target executable exists.
       if (!fs.pathExistsSync(target.exec)) {
         throw new Error(`The target executable doesn't exist: ${target.exec}`);
