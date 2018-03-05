@@ -86,7 +86,7 @@ class RunnerFile {
       }
 
       const targetExec = target.bundle ?
-        target.output.production :
+        target.output.production.js :
         target.entry.production;
       const targetExecPath = path.join(targetPath, targetExec);
 
