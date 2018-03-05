@@ -162,7 +162,9 @@ describe('services/runner:runnerFile', () => {
     const target = {
       name: 'backend',
       output: {
-        production: 'start.js',
+        production: {
+          js: 'start.js',
+        },
       },
       folders: {
         build: 'dist',
@@ -183,7 +185,7 @@ describe('services/runner:runnerFile', () => {
       targets: {
         [target.name]: {
           name: target.name,
-          path: target.output.production,
+          path: target.output.production.js,
           options: {},
         },
       },
