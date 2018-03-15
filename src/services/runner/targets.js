@@ -72,7 +72,7 @@ class Targets {
   }
   /**
    * Validate a target information.
-   * @param  {string} name The target name.
+   * @param  {?string} name The target name.
    * @return {boolean}
    * @throws {Error} If the runner file doesn't exist.
    * @throws {Error} If the target executable doesn't exist.
@@ -85,7 +85,7 @@ class Targets {
         throw new Error('The runner file doesn\'t exist, you first need to build a target');
       }
 
-      const target = this.getTarget(name);
+      const target = name ? this.getTarget(name) : this.getDefaultTarget();
       // Check if the target executable exists.
       if (!fs.pathExistsSync(target.exec)) {
         throw new Error(`The target executable doesn't exist: ${target.exec}`);
@@ -94,7 +94,11 @@ class Targets {
 
     return true;
   }
-
+  /**
+   * Add the execution path (`exec`) to a {@link Target}.
+   * @param {Target} target The target for which the execution path will be generated for.
+   * @return {Target}
+   */
   _normalizeTarget(target) {
     return Object.assign({
       exec: this.pathUtils.join(target.path),

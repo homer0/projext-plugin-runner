@@ -35,7 +35,7 @@ class Runner {
   }
   /**
    * Get the shell execution commands for running a target.
-   * @param {string}  targetName         The name of the target to run.
+   * @param {?string} targetName         The name of the target to run.
    * @param {boolean} production         In case projext is present, this flag forces the runner
    *                                     to build the target for production and run that build.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
@@ -53,7 +53,9 @@ class Runner {
       commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);
     } else {
       // ...otherwise, get the target information.
-      const target = this.targets.getTarget(targetName);
+      const target = targetName ?
+        this.targets.getTarget(targetName) :
+        this.targets.getDefaultTarget();
       // Get the commands to run on a production environment.
       commands = this.getCommandsForProduction(target);
     }
@@ -63,12 +65,14 @@ class Runner {
   /**
    * Get the commands to run a target production build. This needs to be called after a build is
    * made.
-   * @param {string} targetName The name of the target to run.
+   * @param {?string} targetName The name of the target to run.
    * @return {string}
    */
   getPluginCommandsForProduction(targetName) {
     // Get the target information.
-    const target = this.targets.getTarget(targetName);
+    const target = targetName ?
+      this.targets.getTarget(targetName) :
+      this.targets.getDefaultTarget();
     // Get the commands to run without projext.
     const commands = this.getCommandsForProduction(target);
     // Push all the commands in to a single string.
@@ -76,7 +80,7 @@ class Runner {
   }
   /**
    * Get the list of comands to run a target with projext.
-   * @param {string}  targetName         The name of the target to run.
+   * @param {?string} targetName         The name of the target to run.
    * @param {boolean} production         Forces projext to use the production build.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
@@ -87,17 +91,23 @@ class Runner {
    */
   getCommandsForProjext(targetName, production, runAsPluginCommand) {
     const commands = [];
+    /**
+     * The reason for creating this variable is that in case a target wasn't specified (in order
+     * to use the default target), the variable would be `undefined`, and we can't generate a
+     * CLI command using it.
+     */
+    const targetArg = targetName ? `${targetName} ` : '';
     // If the target needs to use the production build...
     if (production) {
       // ...push the command to create a production build.
-      commands.push(`projext build ${targetName} --type production`);
+      commands.push(`projext build ${targetArg}--type production`);
       // Push the command to run the plugin again.
       commands.push(runAsPluginCommand);
     } else {
       // ...otherwise, get the environment variables to send.
       const variables = this.getEnvironmentVariables(this.runnerFile.read());
       // Push the command to the target with projext.
-      commands.push(`${variables} projext run ${targetName}`);
+      commands.push(`${variables} projext run ${targetArg}`.trim());
     }
     // Return the list of commands.
     return commands;

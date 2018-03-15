@@ -1,48 +1,33 @@
 #!/bin/sh -e
-# Get the name of the target that needs to run
-target=$1
-# To validate if the target parameter is a real name or an option
-isAValidTarget=true
 # If this flag gets to be true, the execution will be handled by the Node CLI
 disableSHTasks=false
 # Determine whether the task is a private helper task or not
 isSHTask=true
 
-# Check if the target is a valid target name or an option
-if echo "$1" | grep -q "^\(\-\)"; then
-  isAValidTarget=false
+# ...otherwise, check if the task is a private helper task
+if echo "$task" | grep -q "^sh\-$"; then
+  isSHTask=false
 fi
 
-# If no target was specified
-if [ "$target" = "" ] || [ "$isAValidTarget" = false ]; then
-  # ...show the Node CLI help information
-  projext-runner-cli --help
+# check if the task was used with a 'help' or 'version' option
+if echo "$*" | grep -q "\(\s\-\-\?\(help\|h\|version\|v\)\(\s\|$\)\)"; then
+  disableSHTasks=true
+fi
+
+# If the task is a shell task that needs commands...
+if [ "$isSHTask" = true ] && [ "$disableSHTasks" = false ]; then
+    # ...execute a validation command to avoid any error being thrown on the
+    # command that returns the list.
+    eval "projext-runner-cli sh-validate $*"
+    # Capture the commands that need to run
+    command=$(eval "projext-runner-cli sh-run $*")
+    # If there are commands to run...
+    if [ "$command" != "" ]; then
+      # ...execute them
+      # echo "> $command"
+      eval "$command"
+    fi
 else
-  # ...otherwise, check if the task is a private helper task
-  if echo "$task" | grep -q "^sh\-$"; then
-    isSHTask=false
-  fi
-
-  # check if the task was used with a 'help' or 'version' option
-  if echo "$*" | grep -q "\(\s\-\-\?\(help\|h\|version\|v\)\(\s\|$\)\)"; then
-    disableSHTasks=true
-  fi
-
-  # If the task is a shell task that needs commands...
-  if [ "$isSHTask" = true ] && [ "$disableSHTasks" = false ]; then
-      # ...execute a validation command to avoid any error being thrown on the
-      # command that returns the list.
-      eval "projext-runner-cli sh-validate $*"
-      # Capture the commands that need to run
-      command=$(eval "projext-runner-cli sh-run $*")
-      # If there are commands to run...
-      if [ "$command" != "" ]; then
-        # ...execute them
-        # echo "> $command"
-        eval "$command"
-      fi
-  else
-    # ...otherwise, delegate everything to the Node CLI
-    projext-runner-cli "$@"
-  fi
+  # ...otherwise, delegate everything to the Node CLI
+  projext-runner-cli "$@"
 fi

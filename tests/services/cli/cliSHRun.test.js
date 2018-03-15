@@ -62,7 +62,30 @@ describe('services/cli:sh-run', () => {
     expect(runner.getCommands).toHaveBeenCalledWith(
       target,
       production,
-      expect.any(String)
+      `${CLICommandMock.cliName()} ${target} --production --ready`
+    );
+    expect(sut.output).toHaveBeenCalledTimes(1);
+    expect(sut.output).toHaveBeenCalledWith(runCommand);
+  });
+
+  it('should return the command to run the default target when executed', () => {
+    // Given
+    const runCommand = 'run';
+    const runner = {
+      getCommands: jest.fn(() => runCommand),
+    };
+    const production = false;
+    const ready = false;
+    let sut = null;
+    // When
+    sut = new CLISHRunCommand(runner);
+    sut.handle(null, null, { production, ready });
+    // Then
+    expect(runner.getCommands).toHaveBeenCalledTimes(1);
+    expect(runner.getCommands).toHaveBeenCalledWith(
+      null,
+      production,
+      `${CLICommandMock.cliName()} --production --ready`
     );
     expect(sut.output).toHaveBeenCalledTimes(1);
     expect(sut.output).toHaveBeenCalledWith(runCommand);

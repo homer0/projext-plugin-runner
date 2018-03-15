@@ -252,7 +252,7 @@ describe('services/runner:targets', () => {
     expect(fs.pathExistsSync).toHaveBeenCalledWith(target.path);
   });
 
-  it('shouldn\'t throw anything if the validation passes', () => {
+  it('shouldn\'t throw anything if the validation passes for a target', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => true);
     const asPlugin = false;
@@ -280,6 +280,42 @@ describe('services/runner:targets', () => {
     // When
     sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
     result = sut.validate(targetName);
+    // Then
+    expect(result).toBeTrue();
+    expect(runnerFile.read).toHaveBeenCalledTimes(1);
+    expect(pathUtils.join).toHaveBeenCalledTimes(1);
+    expect(pathUtils.join).toHaveBeenCalledWith(target.path);
+    expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
+    expect(fs.pathExistsSync).toHaveBeenCalledWith(target.path);
+  });
+
+  it('shouldn\'t throw anything if the validation passes for the default target', () => {
+    // Given
+    fs.pathExistsSync.mockImplementationOnce(() => true);
+    const asPlugin = false;
+    const packageInfo = 'packageInfo';
+    const pathUtils = {
+      join: jest.fn((rest) => rest),
+    };
+    const target = {
+      name: 'some-target',
+      path: 'path-to-the-file',
+    };
+    const file = {
+      targets: {
+        [target.targetName]: target,
+      },
+    };
+    const runnerFileExists = true;
+    const runnerFile = {
+      exists: jest.fn(() => runnerFileExists),
+      read: jest.fn(() => file),
+    };
+    let sut = null;
+    let result = null;
+    // When
+    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    result = sut.validate();
     // Then
     expect(result).toBeTrue();
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
