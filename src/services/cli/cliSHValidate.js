@@ -56,7 +56,7 @@ class CLISHValidateCommand extends CLICommand {
   }
   /**
    * Handle the execution of the command and validate all the arguments.
-   * @param {string} target The name of the target.
+   * @param {?string} target The name of the target.
    */
   handle(target) {
     // First let the service make its own validation.
