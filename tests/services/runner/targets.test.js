@@ -18,26 +18,26 @@ describe('services/runner:targets', () => {
 
   it('should be instantiated with all its dependencies', () => {
     // Given
-    const asPlugin = 'asPlugin';
+    const projextPlugin = 'projextPlugin';
     const packageInfo = 'packageInfo';
     const pathUtils = 'pathUtils';
     const runnerFile = 'runnerFile';
     let sut = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     // Then
     expect(sut).toBeInstanceOf(Targets);
-    expect(sut.asPlugin).toBe(asPlugin);
     expect(sut.packageInfo).toBe(packageInfo);
     expect(sut.pathUtils).toBe(pathUtils);
+    expect(sut.projextPlugin).toBe(projextPlugin);
     expect(sut.runnerFile).toBe(runnerFile);
   });
 
   it('should throw an error when trying to access a target that doesn\'t exist', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const packageInfo = 'packageInfo';
     const pathUtils = 'pathUtils';
+    const projextPlugin = 'projextPlugin';
     const file = {
       targets: {},
     };
@@ -46,7 +46,7 @@ describe('services/runner:targets', () => {
     };
     let sut = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     // Then
     expect(() => sut.getTarget('random'))
     .toThrow(/The target information is not on the runner file/i);
@@ -55,11 +55,11 @@ describe('services/runner:targets', () => {
 
   it('should include the executable path on a returned target information', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const packageInfo = 'packageInfo';
     const pathUtils = {
       join: jest.fn((rest) => rest),
     };
+    const projextPlugin = 'projextPlugin';
     const targetName = 'some-target';
     const target = {
       name: targetName,
@@ -79,7 +79,7 @@ describe('services/runner:targets', () => {
       exec: target.path,
     });
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.getTarget(targetName);
     // Then
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
@@ -90,7 +90,6 @@ describe('services/runner:targets', () => {
 
   it('should get a target with the project\'s name as the default target', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const projectName = 'myAppForCharito';
     const packageInfo = {
       name: projectName,
@@ -98,6 +97,7 @@ describe('services/runner:targets', () => {
     const pathUtils = {
       join: jest.fn((rest) => rest),
     };
+    const projextPlugin = 'projextPlugin';
     const target = {
       name: projectName,
       path: 'path-to-the-file',
@@ -118,7 +118,7 @@ describe('services/runner:targets', () => {
       exec: target.path,
     });
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.getDefaultTarget();
     // Then
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
@@ -129,13 +129,13 @@ describe('services/runner:targets', () => {
 
   it('should get the first target (by alphabetical order) as the default target', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const packageInfo = {
       name: 'myAppForCharito',
     };
     const pathUtils = {
       join: jest.fn((rest) => rest),
     };
+    const projextPlugin = 'projextPlugin';
     const targetName = 'aaa';
     const target = {
       name: targetName,
@@ -157,7 +157,7 @@ describe('services/runner:targets', () => {
       exec: target.path,
     });
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.getDefaultTarget();
     // Then
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
@@ -168,9 +168,9 @@ describe('services/runner:targets', () => {
 
   it('should throw an error while trying to get the default target without having targets', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const packageInfo = 'packageInfo';
     const pathUtils = 'pathUtils';
+    const projextPlugin = 'projextPlugin';
     const file = {
       targets: {},
     };
@@ -179,50 +179,61 @@ describe('services/runner:targets', () => {
     };
     let sut = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     // Then
     expect(() => sut.getDefaultTarget()).toThrow(/the project doesn't have any targets/i);
   });
 
   it('shouldn\'t throw anything while validating a target and running as plugin', () => {
     // Given
-    const asPlugin = true;
     const packageInfo = 'packageInfo';
     const pathUtils = 'pathUtils';
+    const asPlugin = true;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
     const runnerFile = 'runnerFile';
     let sut = null;
     let result = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.validate('some-target');
     // Then
     expect(result).toBeTrue();
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
   });
 
   it('should throw an error if the runner file doesn\'t exist', () => {
     // Given
-    const asPlugin = false;
     const packageInfo = 'packageInfo';
     const pathUtils = 'pathUtils';
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
     const runnerFileExists = false;
     const runnerFile = {
       exists: jest.fn(() => runnerFileExists),
     };
     let sut = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     // Then
     expect(() => sut.validate('some-target'))
     .toThrow(/The runner file doesn't exist/i);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
   });
 
   it('should throw an error if a target executable doesn\'t exist', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => false);
-    const asPlugin = false;
     const packageInfo = 'packageInfo';
     const pathUtils = {
       join: jest.fn((rest) => rest),
+    };
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
     };
     const targetName = 'some-target';
     const target = {
@@ -241,7 +252,7 @@ describe('services/runner:targets', () => {
     };
     let sut = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     // Then
     expect(() => sut.validate(targetName))
     .toThrow(/The target executable doesn't exist/i);
@@ -250,15 +261,19 @@ describe('services/runner:targets', () => {
     expect(pathUtils.join).toHaveBeenCalledWith(target.path);
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
     expect(fs.pathExistsSync).toHaveBeenCalledWith(target.path);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
   });
 
   it('shouldn\'t throw anything if the validation passes for a target', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => true);
-    const asPlugin = false;
     const packageInfo = 'packageInfo';
     const pathUtils = {
       join: jest.fn((rest) => rest),
+    };
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
     };
     const targetName = 'some-target';
     const target = {
@@ -278,7 +293,7 @@ describe('services/runner:targets', () => {
     let sut = null;
     let result = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.validate(targetName);
     // Then
     expect(result).toBeTrue();
@@ -287,15 +302,19 @@ describe('services/runner:targets', () => {
     expect(pathUtils.join).toHaveBeenCalledWith(target.path);
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
     expect(fs.pathExistsSync).toHaveBeenCalledWith(target.path);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
   });
 
   it('shouldn\'t throw anything if the validation passes for the default target', () => {
     // Given
     fs.pathExistsSync.mockImplementationOnce(() => true);
-    const asPlugin = false;
     const packageInfo = 'packageInfo';
     const pathUtils = {
       join: jest.fn((rest) => rest),
+    };
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
     };
     const target = {
       name: 'some-target',
@@ -314,7 +333,7 @@ describe('services/runner:targets', () => {
     let sut = null;
     let result = null;
     // When
-    sut = new Targets(asPlugin, packageInfo, pathUtils, runnerFile);
+    sut = new Targets(packageInfo, pathUtils, projextPlugin, runnerFile);
     result = sut.validate();
     // Then
     expect(result).toBeTrue();
@@ -323,6 +342,7 @@ describe('services/runner:targets', () => {
     expect(pathUtils.join).toHaveBeenCalledWith(target.path);
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
     expect(fs.pathExistsSync).toHaveBeenCalledWith(target.path);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
   });
 
   it('should include a provider for the DIC', () => {
@@ -342,9 +362,9 @@ describe('services/runner:targets', () => {
     expect(serviceName).toBe('targets');
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Targets);
-    expect(sut.asPlugin).toBe('asPlugin');
     expect(sut.packageInfo).toBe('packageInfo');
     expect(sut.pathUtils).toBe('pathUtils');
+    expect(sut.projextPlugin).toBe('projextPlugin');
     expect(sut.runnerFile).toBe('runnerFile');
   });
 });

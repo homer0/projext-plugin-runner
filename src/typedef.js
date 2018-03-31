@@ -9,6 +9,11 @@
  */
 
 /**
+ * @external {ProjextTarget}
+ * https://homer0.github.io/projext/typedef/index.html#static-typedef-Target
+ */
+
+/**
  * @external {Command}
  * https://tj.github.io/commander.js/#Command
  */
