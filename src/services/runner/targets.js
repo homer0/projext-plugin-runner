@@ -6,18 +6,14 @@ const { provider } = require('jimple');
 class Targets {
   /**
    * Class constructor.
-   * @param {boolean}    asPlugin    To check if projext is present or not
-   * @param {Object}     packageInfo The project's `package.json`, necessary to get the project's
-   *                                 name and use it as the name of the default target.
-   * @param {PathUtils}  pathUtils   To create the targets exeuction paths.
-   * @param {RunnerFile} runnerFile  To get the targets information.
+   * @param {Object}        packageInfo   The project's `package.json`, necessary to get the
+   *                                      project's name and use it as the name of the default
+   *                                      target.
+   * @param {PathUtils}     pathUtils     To create the targets exeuction paths.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
+   * @param {RunnerFile}    runnerFile    To get the targets information.
    */
-  constructor(asPlugin, packageInfo, pathUtils, runnerFile) {
-    /**
-     * Whether projext is present or not.
-     * @type {boolean}
-     */
-    this.asPlugin = asPlugin;
+  constructor(packageInfo, pathUtils, projextPlugin, runnerFile) {
     /**
      * The information of the project's `package.json`.
      * @type {Object}
@@ -28,6 +24,11 @@ class Targets {
      * @type {PathUtils}
      */
     this.pathUtils = pathUtils;
+    /**
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
+     */
+    this.projextPlugin = projextPlugin;
     /**
      * A local reference for the `runnerFile` service.
      * @type {RunnerFile}
@@ -79,7 +80,7 @@ class Targets {
    */
   validate(name) {
     // Only validate the target if the plugin is on a production environment.
-    if (!this.asPlugin) {
+    if (!this.projextPlugin.isInstalled()) {
       // Check if the runner file exists.
       if (!this.runnerFile.exists()) {
         throw new Error('The runner file doesn\'t exist, you first need to build a target');
@@ -117,9 +118,9 @@ class Targets {
  */
 const targets = provider((app) => {
   app.set('targets', () => new Targets(
-    app.get('asPlugin'),
     app.get('packageInfo'),
     app.get('pathUtils'),
+    app.get('projextPlugin'),
     app.get('runnerFile')
   ));
 });

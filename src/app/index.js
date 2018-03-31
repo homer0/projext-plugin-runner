@@ -21,7 +21,7 @@ const {
   targets,
 } = require('../services/runner');
 
-const { asPlugin } = require('../services/utils');
+const { projextPlugin } = require('../services/utils');
 /**
  * This is the plugin own dependency injection cotainer. Different from most of the other plugins,
  * this one is a little bit more complex as it is prepare to run with and without projext present.
@@ -51,47 +51,18 @@ class ProjextRunner extends Jimple {
     this.register(runner);
     this.register(targets);
 
-    this.register(asPlugin);
+    this.register(projextPlugin);
 
     this._addErrorHandler();
   }
   /**
-   * This is called when projext is present and tries to load the plugin. It will add events
-   * listeners so every time projext builds a target or creates a revision file, the runner file
-   * will be updated. It also adds a listener for when projext copies the projects files so it
-   * will include the runner file.
+   * This is called when projext is present and tries to load the plugin. It will call the service
+   * that handles all interaction with projext and that will take care of registering the necessary
+   * events to maintain the runner file updated.
    * @param {Projext} projext The projext main container.
    */
   plugin(projext) {
-    // Get the events service.
-    const events = projext.get('events');
-    // Adds the listener for when targets are built.
-    events.once('build-target-commands-list', (commands, target) => {
-      // Get the distribution directory path.
-      const distPath = projext.get('projectConfiguration').getConfig().paths.build;
-      // Get the project version.
-      const version = projext.get('buildVersion').getVersion();
-
-      // Update the runner file.
-      this.get('runnerFile').update(target, version, distPath);
-      /**
-       * Return the received commands. This is an reducer event, but there is no need for any
-       * update.
-       */
-      return commands;
-    });
-    // Adds the listener that includes the runner file on the list of files projext copies.
-    events.once('project-files-to-copy', (list) => [
-      ...list,
-      this.get('runnerFile').getFilename(),
-    ]);
-    /**
-     * Adds the listner that updates the version on the runner file when the revision file
-     * is created
-     */
-    events.once('revision-file-created', (version) => {
-      this.get('runnerFile').updateVersion(version);
-    });
+    this.get('projextPlugin').registerPlugin(projext);
   }
   /**
    * Starts the plugin CLI interface.

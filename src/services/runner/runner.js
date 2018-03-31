@@ -6,22 +6,23 @@ const { provider } = require('jimple');
 class Runner {
   /**
    * Class constructor.
-   * @param {boolean}    asPlugin   To check if projext is present or not
-   * @param {PathUtils}  pathUtils  To create the path for the targets executables.
-   * @param {RunnerFile} runnerFile To read the required information to run targets.
-   * @param {Targets}    targets    To get the targets information.
+   * @param {PathUtils}     pathUtils     To create the path for the targets executables.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not and to generated
+   *                                      the targets build commands.
+   * @param {RunnerFile}    runnerFile    To read the required information to run targets.
+   * @param {Targets}       targets       To get the targets information.
    */
-  constructor(asPlugin, pathUtils, runnerFile, targets) {
-    /**
-     * Whether projext is present or not.
-     * @type {boolean}
-     */
-    this.asPlugin = asPlugin;
+  constructor(pathUtils, projextPlugin, runnerFile, targets) {
     /**
      * A local reference for the `pathUtils` service.
      * @type {PathUtils}
      */
     this.pathUtils = pathUtils;
+    /**
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
+     */
+    this.projextPlugin = projextPlugin;
     /**
      * A local reference for the `runnerFile` service.
      * @type {RunnerFile}
@@ -48,7 +49,7 @@ class Runner {
   getCommands(targetName, production, runAsPluginCommand) {
     let commands;
     // If projext is present...
-    if (this.asPlugin) {
+    if (this.projextPlugin.isInstalled()) {
       // ..get the commands to run with projext.
       commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);
     } else {
@@ -90,26 +91,29 @@ class Runner {
    * @return {Array}
    */
   getCommandsForProjext(targetName, production, runAsPluginCommand) {
+    // Define the list of commands to return.
     const commands = [];
-    /**
-     * The reason for creating this variable is that in case a target wasn't specified (in order
-     * to use the default target), the variable would be `undefined`, and we can't generate a
-     * CLI command using it.
-     */
-    const targetArg = targetName ? `${targetName} ` : '';
+    // Define the base arguments for the build command.
+    const args = {
+      // The target can be empty in case the intended target is the default one.
+      target: targetName || '',
+      type: 'development',
+      run: false,
+    };
     // If the target needs to use the production build...
     if (production) {
-      // ...push the command to create a production build.
-      commands.push(`projext build ${targetArg}--type production`);
+      // ...set the `type` argument to production.
+      args.type = 'production';
+      // Push the command to create a production build.
+      commands.push(this.projextPlugin.getBuildCommand(args));
       // Push the command to run the plugin again.
       commands.push(runAsPluginCommand);
     } else {
-      // ...otherwise, get the environment variables to send.
+      args.run = true;
       const variables = this.getEnvironmentVariables(this.runnerFile.read());
-      // Push the command to the target with projext.
-      commands.push(`${variables} projext run ${targetArg}`.trim());
+      commands.push(this.projextPlugin.getBuildCommand(args, variables));
     }
-    // Return the list of commands.
+
     return commands;
   }
   /**
@@ -126,7 +130,7 @@ class Runner {
     const runWith = target.options.runWith || 'node';
     let execPath;
     // If projext is present...
-    if (this.asPlugin) {
+    if (this.projextPlugin.isInstalled()) {
       /**
        * ...this means the user is running a production build, so set the execution file from
        * inside the project distribution directory.
@@ -173,8 +177,8 @@ class Runner {
  */
 const runner = provider((app) => {
   app.set('runner', () => new Runner(
-    app.get('asPlugin'),
     app.get('pathUtils'),
+    app.get('projextPlugin'),
     app.get('runnerFile'),
     app.get('targets')
   ));
