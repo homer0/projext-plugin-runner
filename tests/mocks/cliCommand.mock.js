@@ -4,7 +4,13 @@ const mocks = {
   output: jest.fn(),
 };
 
+const cliName = 'mock';
+
 class CLICommandMock {
+  static cliName() {
+    return cliName;
+  }
+
   static mock(name, mock) {
     mocks[name] = mock;
   }
@@ -20,7 +26,7 @@ class CLICommandMock {
     this.constructorMock(...args);
     this.addOption = mocks.addOption;
     this.output = mocks.output;
-    this.cliName = 'mock';
+    this.cliName = cliName;
   }
 
   getConfig(...args) {

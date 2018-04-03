@@ -9,17 +9,17 @@ const { provider } = require('jimple');
 class RunnerFile {
   /**
    * Class constructor.
-   * @param {boolean}   asPlugin  To check if projext is present or not.
-   * @param {Object}    info      The plugin `package.json` information, to use the plugin version
-   *                              on the file.
-   * @param {PathUtils} pathUtils To build the paths to the file.
+   * @param {Object}        info          The plugin `package.json` information, to use the plugin
+   *                                      version on the file.
+   * @param {PathUtils}     pathUtils     To build the paths to the file.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
    */
-  constructor(asPlugin, info, pathUtils) {
+  constructor(info, pathUtils, projextPlugin) {
     /**
-     * Whether projext is present or not.
-     * @type {boolean}
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
      */
-    this.asPlugin = asPlugin;
+    this.projextPlugin = projextPlugin;
     /**
      * The name of the runner file.
      * @type {string}
@@ -68,6 +68,7 @@ class RunnerFile {
    * @param {Target} target    The target information.
    * @param {string} version   The project version.
    * @param {string} directory The project distribution directory.
+   * @return {Target} The information of the target saved on the file.
    */
   update(target, version, directory) {
     let result;
@@ -86,17 +87,19 @@ class RunnerFile {
       }
 
       const targetExec = target.bundle ?
-        target.output.production :
+        target.output.production.js :
         target.entry.production;
       const targetExecPath = path.join(targetPath, targetExec);
 
-      file.targets[target.name] = {
+      result = {
         name: target.name,
         path: targetExecPath,
         options: target.runnerOptions || {},
       };
 
-      result = fs.writeJsonSync(this.filepath, file);
+      file.targets[target.name] = result;
+
+      fs.writeJsonSync(this.filepath, file);
     }
 
     return result;
@@ -131,7 +134,7 @@ class RunnerFile {
    *                 project was deployed to production without the runner file.
    */
   validate() {
-    if (!this.asPlugin && !this.exists()) {
+    if (!this.projextPlugin.isInstalled() && !this.exists()) {
       throw new Error('The runner file doesn\'t exist and projext is not present');
     }
   }
@@ -148,9 +151,9 @@ class RunnerFile {
  */
 const runnerFile = provider((app) => {
   app.set('runnerFile', () => new RunnerFile(
-    app.get('asPlugin'),
     app.get('info'),
-    app.get('pathUtils')
+    app.get('pathUtils'),
+    app.get('projextPlugin')
   ));
 });
 

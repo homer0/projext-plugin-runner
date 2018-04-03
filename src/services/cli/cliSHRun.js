@@ -47,7 +47,7 @@ class CLISHRunCommand extends CLICommand {
   }
   /**
    * Handle the execution of the command and outputs the list of commands to run.
-   * @param {string}  target             The name of the target to run.
+   * @param {?string} target             The name of the target to run.
    * @param {Command} command            The executed command (sent by `commander`).
    * @param {Object}  options            The command options.
    * @param {string}  options.production If the user wants to run a production build, even with
@@ -74,7 +74,8 @@ class CLISHRunCommand extends CLICommand {
       commands = this.runner.getPluginCommandsForProduction(target);
     } else {
       // ...otherwise, generate the command to run this for a second time.
-      const runPluginProduction = `${this.cliName} ${target} --production --ready`;
+      const targetArg = target ? `${target} ` : '';
+      const runPluginProduction = `${this.cliName} ${targetArg}--production --ready`;
       // Get the list of commands from the runner service.
       commands = this.runner.getCommands(target, production, runPluginProduction);
     }

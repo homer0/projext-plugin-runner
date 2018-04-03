@@ -9,6 +9,11 @@
  */
 
 /**
+ * @external {ProjextTarget}
+ * https://homer0.github.io/projext/typedef/index.html#static-typedef-Target
+ */
+
+/**
  * @external {Command}
  * https://tj.github.io/commander.js/#Command
  */
@@ -29,7 +34,7 @@
  * @property {Object} options
  * The options to customize the target that will be taken from the projext target `runnerOptions`
  * setting.
- * @property {string} exec
+ * @property {?string} exec
  * The absolute path to the executable file. This is generated on runtime when the file is loaded,
  * not before.
  */

@@ -1,5 +1,5 @@
-const { asPluginProvider } = require('./asPlugin');
+const { projextPlugin } = require('./projextPlugin');
 
 module.exports = {
-  asPlugin: asPluginProvider,
+  projextPlugin,
 };

@@ -42,13 +42,12 @@ projext-runner [target] [--production]
 
 When on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.
 
-### Customizing the execution
+### Customization
 
 On your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.
 
-For now, there's only one available option.
-
-- `runWith`: The name of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).
+- `build`: A list (`Array`) of targets names that need to be built before running the target on a development environment (with projext present) but with a production build (with code ready for deployment).
+- `runWith`: The name (`string`) of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).
 
 ### Extending/overwriting the services
 

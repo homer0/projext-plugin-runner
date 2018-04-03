@@ -13,25 +13,28 @@ const {
 describe('services/runner:runner', () => {
   it('should be instantiated with all its dependencies', () => {
     // Given
-    const asPlugin = 'asPlugin';
     const pathUtils = 'pathUtils';
+    const projextPlugin = 'projextPlugin';
     const runnerFile = 'runnerFile';
     const targets = 'targets';
     let sut = null;
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     // Then
     expect(sut).toBeInstanceOf(Runner);
-    expect(sut.asPlugin).toBe(asPlugin);
     expect(sut.pathUtils).toBe(pathUtils);
+    expect(sut.projextPlugin).toBe(projextPlugin);
     expect(sut.runnerFile).toBe(runnerFile);
     expect(sut.targets).toBe(targets);
   });
 
   it('should return the command to run a target on production', () => {
     // Given
-    const asPlugin = false;
     const pathUtils = 'pathUtils';
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
     const file = {
       version: 'latest',
     };
@@ -54,19 +57,67 @@ describe('services/runner:runner', () => {
     const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} node ${target.exec}`;
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
     expect(targets.getTarget).toHaveBeenCalledWith(targetName);
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes([
+      'when validating whether to use projext or not',
+      'to validate if the executable should be run from the distribution or the source directory',
+    ].length);
+  });
+
+  it('should return the command to run the default target on production', () => {
+    // Given
+    const pathUtils = 'pathUtils';
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
+    const file = {
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
+    const targetName = 'charito';
+    const target = {
+      name: targetName,
+      options: {},
+      exec: 'some-path.js',
+    };
+    const targets = {
+      getDefaultTarget: jest.fn(() => target),
+    };
+    const production = true;
+    const runAsPluginCommand = '';
+    let sut = null;
+    let result = null;
+    const expectedVariables = `VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} node ${target.exec}`;
+    // When
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
+    result = sut.getCommands(null, production, runAsPluginCommand);
+    // Then
+    expect(result).toEqual(expectedCommand);
+    expect(targets.getDefaultTarget).toHaveBeenCalledTimes(1);
+    expect(runnerFile.read).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes([
+      'when validating whether to use projext or not',
+      'to validate if the executable should be run from the distribution or the source directory',
+    ].length);
   });
 
   it('should return the command to run a target on production with a custom program', () => {
     // Given
-    const asPlugin = false;
     const pathUtils = 'pathUtils';
+    const asPlugin = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
     const file = {
       version: 'latest',
     };
@@ -91,19 +142,28 @@ describe('services/runner:runner', () => {
     const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} ${target.options.runWith} ${target.exec}`;
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
     expect(targets.getTarget).toHaveBeenCalledWith(targetName);
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes([
+      'when validating whether to use projext or not',
+      'to validate if the executable should be run from the distribution or the source directory',
+    ].length);
   });
 
   it('should return the command to run a target with projext on development', () => {
     // Given
-    const asPlugin = true;
     const pathUtils = 'pathUtils';
+    const asPlugin = true;
+    const command = 'run projext run';
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+      getBuildCommand: jest.fn(() => command),
+    };
     const file = {
       version: 'latest',
     };
@@ -124,19 +184,69 @@ describe('services/runner:runner', () => {
     let sut = null;
     let result = null;
     const expectedVariables = `VERSION=${file.version}`;
-    const expectedCommand = `${expectedVariables} projext run ${targetName}`;
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
-    expect(result).toEqual(expectedCommand);
+    expect(result).toEqual(command);
     expect(targets.getTarget).toHaveBeenCalledTimes(0);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledWith(
+      {
+        target: targetName,
+        type: 'development',
+        run: true,
+      },
+      expectedVariables
+    );
+  });
+
+  it('should return the command to run the default target with projext on development', () => {
+    // Given
+    const pathUtils = 'pathUtils';
+    const asPlugin = true;
+    const command = 'run projext run';
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+      getBuildCommand: jest.fn(() => command),
+    };
+    const file = {
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
+    const targets = 'targets';
+    const production = false;
+    const runAsPluginCommand = 'run-as-plugin';
+    let sut = null;
+    let result = null;
+    const expectedVariables = `VERSION=${file.version}`;
+    // When
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
+    result = sut.getCommands(null, production, runAsPluginCommand);
+    // Then
+    expect(result).toEqual(command);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledWith(
+      {
+        target: '',
+        type: 'development',
+        run: true,
+      },
+      expectedVariables
+    );
   });
 
   it('should return the command to run a target with projext on production', () => {
     // Given
-    const asPlugin = true;
     const pathUtils = 'pathUtils';
+    const asPlugin = true;
+    const command = 'run projext run';
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+      getBuildCommand: jest.fn(() => command),
+    };
     const runnerFile = 'runnerFile';
     const targetName = 'charito';
     const target = {
@@ -152,22 +262,31 @@ describe('services/runner:runner', () => {
     let sut = null;
     let result = null;
     const expectedCommand = [
-      `projext build ${targetName} --type production`,
+      command,
       runAsPluginCommand,
     ].join(';');
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     result = sut.getCommands(targetName, production, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(0);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.getBuildCommand).toHaveBeenCalledWith({
+      target: targetName,
+      type: 'production',
+      run: false,
+    });
   });
 
   it('should return the command to run a builded target on production', () => {
     // Given
-    const asPlugin = true;
     const pathUtils = {
       join: jest.fn((base, rest) => path.join(base, rest)),
+    };
+    const asPlugin = true;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
     };
     const directory = 'dist';
     const file = {
@@ -191,12 +310,52 @@ describe('services/runner:runner', () => {
     const expectedVariables = `VERSION=${file.version}`;
     const expectedCommand = `${expectedVariables} node ${directory}/${target.path}`;
     // When
-    sut = new Runner(asPlugin, pathUtils, runnerFile, targets);
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
     result = sut.getPluginCommandsForProduction(targetName);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
     expect(targets.getTarget).toHaveBeenCalledWith(targetName);
+    expect(runnerFile.read).toHaveBeenCalledTimes(1);
+    expect(pathUtils.join).toHaveBeenCalledTimes(1);
+    expect(pathUtils.join).toHaveBeenCalledWith(directory, target.path);
+  });
+
+  it('should return the command to build and run the default target on production', () => {
+    // Given
+    const pathUtils = {
+      join: jest.fn((base, rest) => path.join(base, rest)),
+    };
+    const asPlugin = true;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => asPlugin),
+    };
+    const directory = 'dist';
+    const file = {
+      directory,
+      version: 'latest',
+    };
+    const runnerFile = {
+      read: jest.fn(() => file),
+    };
+    const target = {
+      name: 'charito',
+      options: {},
+      path: 'some-path.js',
+    };
+    const targets = {
+      getDefaultTarget: jest.fn(() => target),
+    };
+    let sut = null;
+    let result = null;
+    const expectedVariables = `VERSION=${file.version}`;
+    const expectedCommand = `${expectedVariables} node ${directory}/${target.path}`;
+    // When
+    sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
+    result = sut.getPluginCommandsForProduction();
+    // Then
+    expect(result).toEqual(expectedCommand);
+    expect(targets.getDefaultTarget).toHaveBeenCalledTimes(1);
     expect(runnerFile.read).toHaveBeenCalledTimes(1);
     expect(pathUtils.join).toHaveBeenCalledTimes(1);
     expect(pathUtils.join).toHaveBeenCalledWith(directory, target.path);
@@ -219,8 +378,8 @@ describe('services/runner:runner', () => {
     expect(serviceName).toBe('runner');
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Runner);
-    expect(sut.asPlugin).toBe('asPlugin');
     expect(sut.pathUtils).toBe('pathUtils');
+    expect(sut.projextPlugin).toBe('projextPlugin');
     expect(sut.runnerFile).toBe('runnerFile');
     expect(sut.targets).toBe('targets');
   });
