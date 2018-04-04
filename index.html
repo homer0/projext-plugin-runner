@@ -37,6 +37,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/typedef/index.html#static-typedef-Target">ProjextTarget</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
@@ -52,8 +53,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -98,10 +99,10 @@
 <li><code>--production</code>: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.</li>
 </ul>
 <p>When on a development environment, this command will basically call <code>projext run</code>, unless <code>--production</code> is used; If it is on a production environment, it will use the information of the runner file to execute the file.</p>
-<h3 id="customizing-the-execution">Customizing the execution</h3><p>On your project configuration targets settings, you can add a <code>runnerOptions</code> object setting that the runner will pick and that can be used to modify the way the target is executed.</p>
-<p>For now, there&apos;s only one available option.</p>
+<h3 id="customization">Customization</h3><p>On your project configuration targets settings, you can add a <code>runnerOptions</code> object setting that the runner will pick and that can be used to modify the way the target is executed.</p>
 <ul>
-<li><code>runWith</code>: The name of the executable the runner will use to run the target. By default is <code>node</code>, but you can changed to something like <a href="https://yarnpkg.com/en/package/nodemon"><code>nodemon</code></a>.</li>
+<li><code>build</code>: A list (<code>Array</code>) of targets names that need to be built before running the target on a development environment (with projext present) but with a production build (with code ready for deployment).</li>
+<li><code>runWith</code>: The name (<code>string</code>) of the executable the runner will use to run the target. By default is <code>node</code>, but you can changed to something like <a href="https://yarnpkg.com/en/package/nodemon"><code>nodemon</code></a>.</li>
 </ul>
 <h3 id="extending-overwriting-the-services">Extending/overwriting the services</h3><p>Like projext, the this plugin-tool is built using <a href="https://yarnpkg.com/en/package/jimple">Jimple</a>, a port of <a href="https://github.com/silexphp/Pimple/">Pimple Dependency Injection container</a> for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.</p>
 <blockquote>

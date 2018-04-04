@@ -37,6 +37,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/typedef/index.html#static-typedef-Target">ProjextTarget</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
@@ -52,8 +53,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -119,7 +120,7 @@ shell commands for it.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(asPlugin: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, pathUtils: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span>, runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(pathUtils: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span>, projextPlugin: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span>, runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
         </p>
       </div>
       <div>
@@ -155,13 +156,13 @@ shell commands for it.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-member-asPlugin">asPlugin</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-member-pathUtils">pathUtils</a></span></span><span class="code" data-ice="signature">: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Whether projext is present or not.</p>
+        <div data-ice="description"><p>A local reference for the <code>pathUtils</code> service.</p>
 </div>
       </div>
     </td>
@@ -184,13 +185,13 @@ shell commands for it.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-member-pathUtils">pathUtils</a></span></span><span class="code" data-ice="signature">: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-member-projextPlugin">projextPlugin</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A local reference for the <code>pathUtils</code> service.</p>
+        <div data-ice="description"><p>A local reference for the <code>projextPlugin</code> service.</p>
 </div>
       </div>
     </td>
@@ -427,11 +428,11 @@ shell commands for it.</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(asPlugin: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, pathUtils: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span>, runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(pathUtils: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span>, projextPlugin: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span>, runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber15">source</a></span></span>
     </span>
   </h3>
 
@@ -452,17 +453,18 @@ shell commands for it.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">asPlugin</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>To check if projext is present or not</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">pathUtils</td>
       <td data-ice="type" class="code"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>To create the path for the targets executables.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">projextPlugin</td>
+      <td data-ice="type" class="code"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>To check if projext is present or not and to generated
+                                     the targets build commands.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -505,25 +507,25 @@ shell commands for it.</p>
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-asPlugin">
+  <h3 data-ice="anchor" id="instance-member-pathUtils">
     <span class="access" data-ice="access">public</span>
     
     
     
     
     
-    <span class="code" data-ice="name">asPlugin</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">pathUtils</span><span class="code" data-ice="signature">: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber19">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber20">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Whether projext is present or not.</p>
+  <div data-ice="description"><p>A local reference for the <code>pathUtils</code> service.</p>
 </div>
 
   
@@ -549,25 +551,25 @@ shell commands for it.</p>
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-pathUtils">
+  <h3 data-ice="anchor" id="instance-member-projextPlugin">
     <span class="access" data-ice="access">public</span>
     
     
     
     
     
-    <span class="code" data-ice="name">pathUtils</span><span class="code" data-ice="signature">: <span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span>
+    <span class="code" data-ice="name">projextPlugin</span><span class="code" data-ice="signature">: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber24">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber25">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A local reference for the <code>pathUtils</code> service.</p>
+  <div data-ice="description"><p>A local reference for the <code>projextPlugin</code> service.</p>
 </div>
 
   
@@ -604,7 +606,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber29">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber30">source</a></span></span>
     </span>
   </h3>
 
@@ -648,7 +650,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber34">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber35">source</a></span></span>
     </span>
   </h3>
 
@@ -695,7 +697,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber48">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
@@ -718,7 +720,7 @@ shell commands for it.</p>
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">targetName</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
       <td data-ice="description"><p>The name of the target to run.</p>
 </td>
     </tr>
@@ -787,7 +789,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber110">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber124">source</a></span></span>
     </span>
   </h3>
 
@@ -860,7 +862,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber88">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber93">source</a></span></span>
     </span>
   </h3>
 
@@ -883,7 +885,7 @@ shell commands for it.</p>
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">targetName</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
       <td data-ice="description"><p>The name of the target to run.</p>
 </td>
     </tr>
@@ -951,7 +953,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber144">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber158">source</a></span></span>
     </span>
   </h3>
 
@@ -1025,7 +1027,7 @@ For now is just the version of the project.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber69">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber72">source</a></span></span>
     </span>
   </h3>
 
@@ -1049,7 +1051,7 @@ made.</p>
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">targetName</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
       <td data-ice="description"><p>The name of the target to run.</p>
 </td>
     </tr>

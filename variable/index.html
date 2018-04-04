@@ -37,6 +37,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/typedef/index.html#static-typedef-Target">ProjextTarget</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
@@ -52,8 +53,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -64,36 +65,6 @@
   <tbody>
   
   <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span><span class="code" data-ice="signature">: <span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>The service provider that once registered on the app container will set the result of
-<code>asPlugin()</code> as the <code>asPlugin</code> service.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       
@@ -175,6 +146,36 @@
         
         <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
 <code>CLISHValidateCommand</code> as the <code>cliSHValidateCommand</code> service.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span><span class="code" data-ice="signature">: <span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
+<code>ProjextPlugin</code> as the <code>projextPlugin</code> service.</p>
 </div>
       </div>
     </td>
@@ -279,61 +280,6 @@
 <div data-ice="details"><h2 data-ice="title">Static Public </h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-variable-asPluginProvider">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">asPluginProvider</span><span class="code" data-ice="signature">: <span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/services/utils/asPlugin.js.html#lineNumber27">source</a></span></span>
-    </span>
-  </h3>
-
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {asPluginProvider} from &apos;<span><a href="file/src/services/utils/asPlugin.js.html#lineNumber27">projext-plugin-runner/src/services/utils/asPlugin.js</a></span>&apos;</code></pre></div>
-  
-  
-  <div data-ice="description"><p>The service provider that once registered on the app container will set the result of
-<code>asPlugin()</code> as the <code>asPlugin</code> service.</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  <div data-ice="example">
-    <h4>Example:</h4>
-    
-  <div class="example-doc" data-ice="exampleDoc">
-      
-      <pre class="prettyprint source-code"><code data-ice="exampleCode">// Register it on the container
-container.register(asPluginProvider);
-// Getting access to the service value
-const asPlugin = container.get(&apos;asPlugin&apos;);</code></pre>
-    </div>
-</div>
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-variable-cli">
     <span class="access" data-ice="access">public</span>
     
@@ -400,11 +346,11 @@ const cli = container.get(&apos;cli&apos;);</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHRun.js.html#lineNumber95">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHRun.js.html#lineNumber96">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {cliSHRunCommand} from &apos;<span><a href="file/src/services/cli/cliSHRun.js.html#lineNumber95">projext-plugin-runner/src/services/cli/cliSHRun.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {cliSHRunCommand} from &apos;<span><a href="file/src/services/cli/cliSHRun.js.html#lineNumber96">projext-plugin-runner/src/services/cli/cliSHRun.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
@@ -499,6 +445,61 @@ const cliSHValidateCommand = container.get(&apos;cliSHValidateCommand&apos;);</c
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-variable-projextPlugin">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">projextPlugin</span><span class="code" data-ice="signature">: <span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/services/utils/projextPlugin.js.html#lineNumber283">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {projextPlugin} from &apos;<span><a href="file/src/services/utils/projextPlugin.js.html#lineNumber283">projext-plugin-runner/src/services/utils/projextPlugin.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
+<code>ProjextPlugin</code> as the <code>projextPlugin</code> service.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">// Register it on the container
+container.register(projextPlugin);
+// Getting access to the service instance
+const projextPlugin = container.get(&apos;projextPlugin&apos;);</code></pre>
+    </div>
+</div>
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-variable-runner">
     <span class="access" data-ice="access">public</span>
     
@@ -510,11 +511,11 @@ const cliSHValidateCommand = container.get(&apos;cliSHValidateCommand&apos;);</c
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber164">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber178">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {runner} from &apos;<span><a href="file/src/services/runner/runner.js.html#lineNumber164">projext-plugin-runner/src/services/runner/runner.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {runner} from &apos;<span><a href="file/src/services/runner/runner.js.html#lineNumber178">projext-plugin-runner/src/services/runner/runner.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
@@ -565,11 +566,11 @@ const runner = container.get(&apos;runner&apos;);</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/file.js.html#lineNumber147">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/file.js.html#lineNumber152">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {runnerFile} from &apos;<span><a href="file/src/services/runner/file.js.html#lineNumber147">projext-plugin-runner/src/services/runner/file.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {runnerFile} from &apos;<span><a href="file/src/services/runner/file.js.html#lineNumber152">projext-plugin-runner/src/services/runner/file.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of
@@ -620,11 +621,11 @@ const runnerFile = container.get(&apos;runnerFile&apos;);</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/targets.js.html#lineNumber89">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/targets.js.html#lineNumber119">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {targets} from &apos;<span><a href="file/src/services/runner/targets.js.html#lineNumber89">projext-plugin-runner/src/services/runner/targets.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {targets} from &apos;<span><a href="file/src/services/runner/targets.js.html#lineNumber119">projext-plugin-runner/src/services/runner/targets.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>The service provider that once registered on the app container will set an instance of

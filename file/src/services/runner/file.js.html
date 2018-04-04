@@ -37,6 +37,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/typedef/index.html#static-typedef-Target">ProjextTarget</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
@@ -52,8 +53,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -70,17 +71,17 @@ const { provider } = require(&apos;jimple&apos;);
 class RunnerFile {
   /**
    * Class constructor.
-   * @param {boolean}   asPlugin  To check if projext is present or not.
-   * @param {Object}    info      The plugin `package.json` information, to use the plugin version
-   *                              on the file.
-   * @param {PathUtils} pathUtils To build the paths to the file.
+   * @param {Object}        info          The plugin `package.json` information, to use the plugin
+   *                                      version on the file.
+   * @param {PathUtils}     pathUtils     To build the paths to the file.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
    */
-  constructor(asPlugin, info, pathUtils) {
+  constructor(info, pathUtils, projextPlugin) {
     /**
-     * Whether projext is present or not.
-     * @type {boolean}
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
      */
-    this.asPlugin = asPlugin;
+    this.projextPlugin = projextPlugin;
     /**
      * The name of the runner file.
      * @type {string}
@@ -129,6 +130,7 @@ class RunnerFile {
    * @param {Target} target    The target information.
    * @param {string} version   The project version.
    * @param {string} directory The project distribution directory.
+   * @return {Target} The information of the target saved on the file.
    */
   update(target, version, directory) {
     let result;
@@ -146,16 +148,20 @@ class RunnerFile {
         targetPath = build.substr(directory.length + 1);
       }
 
-      const targetExec = target.output.production;
+      const targetExec = target.bundle ?
+        target.output.production.js :
+        target.entry.production;
       const targetExecPath = path.join(targetPath, targetExec);
 
-      file.targets[target.name] = {
+      result = {
         name: target.name,
         path: targetExecPath,
         options: target.runnerOptions || {},
       };
 
-      result = fs.writeJsonSync(this.filepath, file);
+      file.targets[target.name] = result;
+
+      fs.writeJsonSync(this.filepath, file);
     }
 
     return result;
@@ -190,7 +196,7 @@ class RunnerFile {
    *                 project was deployed to production without the runner file.
    */
   validate() {
-    if (!this.asPlugin &amp;&amp; !this.exists()) {
+    if (!this.projextPlugin.isInstalled() &amp;&amp; !this.exists()) {
       throw new Error(&apos;The runner file doesn\&apos;t exist and projext is not present&apos;);
     }
   }
@@ -207,9 +213,9 @@ class RunnerFile {
  */
 const runnerFile = provider((app) =&gt; {
   app.set(&apos;runnerFile&apos;, () =&gt; new RunnerFile(
-    app.get(&apos;asPlugin&apos;),
     app.get(&apos;info&apos;),
-    app.get(&apos;pathUtils&apos;)
+    app.get(&apos;pathUtils&apos;),
+    app.get(&apos;projextPlugin&apos;)
   ));
 });
 

@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 82,
-  "actualCount": 82,
+  "expectCount": 103,
+  "actualCount": 103,
   "files": {
     "src/abstracts/cliCommand.js": {
       "expectCount": 16,
@@ -44,13 +44,13 @@
       "undocumentLines": []
     },
     "src/services/runner/targets.js": {
-      "expectCount": 8,
-      "actualCount": 8,
+      "expectCount": 11,
+      "actualCount": 11,
       "undocumentLines": []
     },
-    "src/services/utils/asPlugin.js": {
-      "expectCount": 2,
-      "actualCount": 2,
+    "src/services/utils/projextPlugin.js": {
+      "expectCount": 20,
+      "actualCount": 20,
       "undocumentLines": []
     }
   }

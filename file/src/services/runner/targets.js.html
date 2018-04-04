@@ -37,6 +37,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/class/src/app/index.js~Projext.html">Projext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://homer0.github.io/projext/typedef/index.html#static-typedef-Target">ProjextTarget</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#abstracts">abstracts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html">CLICommand</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app">app</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/app/index.js~ProjextRunner.html">ProjextRunner</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-cli">services/cli</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/cli/cli.js~CLI.html">CLI</a></span></span></li>
@@ -52,8 +53,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runnerFile">runnerFile</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-runner">runner</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-targets">targets</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asPlugin">asPlugin</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asPluginProvider">asPluginProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#services-utils">services/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-projextPlugin">projextPlugin</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -67,21 +68,29 @@ const { provider } = require(&apos;jimple&apos;);
 class Targets {
   /**
    * Class constructor.
-   * @param {boolean}    asPlugin   To check if projext is present or not
-   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.
-   * @param {RunnerFile} runnerFile To get the targets information.
+   * @param {Object}        packageInfo   The project&apos;s `package.json`, necessary to get the
+   *                                      project&apos;s name and use it as the name of the default
+   *                                      target.
+   * @param {PathUtils}     pathUtils     To create the targets exeuction paths.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
+   * @param {RunnerFile}    runnerFile    To get the targets information.
    */
-  constructor(asPlugin, pathUtils, runnerFile) {
+  constructor(packageInfo, pathUtils, projextPlugin, runnerFile) {
     /**
-     * Whether projext is present or not.
-     * @type {boolean}
+     * The information of the project&apos;s `package.json`.
+     * @type {Object}
      */
-    this.asPlugin = asPlugin;
+    this.packageInfo = packageInfo;
     /**
      * A local reference for the `pathUtils` service.
      * @type {PathUtils}
      */
     this.pathUtils = pathUtils;
+    /**
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
+     */
+    this.projextPlugin = projextPlugin;
     /**
      * A local reference for the `runnerFile` service.
      * @type {RunnerFile}
@@ -102,32 +111,44 @@ class Targets {
       );
     }
 
-    return Object.assign({
-      exec: this.pathUtils.join(target.path),
-    }, target);
+    return this._normalizeTarget(target);
+  }
+  /**
+   * Returns the target with the name of project (specified on the `package.json`) and if there&apos;s
+   * no target with that name, then the first one, using a list of the targets name on alphabetical
+   * order.
+   * @return {Target}
+   * @throws {Error} If the project has no targets
+   */
+  getDefaultTarget() {
+    const { targets } = this.runnerFile.read();
+    const names = Object.keys(targets).sort();
+    let target;
+    if (names.length) {
+      const { name: projectName } = this.packageInfo;
+      target = targets[projectName] || targets[names[0]];
+    } else {
+      throw new Error(&apos;The project doesn\&apos;t have any targets or none has been built yet&apos;);
+    }
+
+    return this._normalizeTarget(target);
   }
   /**
    * Validate a target information.
-   * @param  {string} name The target name.
+   * @param  {?string} name The target name.
    * @return {boolean}
    * @throws {Error} If the runner file doesn&apos;t exist.
-   * @throws {Error} If the target type is not Node.
    * @throws {Error} If the target executable doesn&apos;t exist.
    */
   validate(name) {
     // Only validate the target if the plugin is on a production environment.
-    if (!this.asPlugin) {
+    if (!this.projextPlugin.isInstalled()) {
       // Check if the runner file exists.
       if (!this.runnerFile.exists()) {
         throw new Error(&apos;The runner file doesn\&apos;t exist, you first need to build a target&apos;);
       }
 
-      const target = this.getTarget(name);
-      // Check if the target type is Node.
-      if (!target.node) {
-        throw new Error(`${name} is not a Node target, it can&apos;t be used with the runner`);
-      }
-
+      const target = name ? this.getTarget(name) : this.getDefaultTarget();
       // Check if the target executable exists.
       if (!fs.pathExistsSync(target.exec)) {
         throw new Error(`The target executable doesn&apos;t exist: ${target.exec}`);
@@ -135,6 +156,16 @@ class Targets {
     }
 
     return true;
+  }
+  /**
+   * Add the execution path (`exec`) to a {@link Target}.
+   * @param {Target} target The target for which the execution path will be generated for.
+   * @return {Target}
+   */
+  _normalizeTarget(target) {
+    return Object.assign({
+      exec: this.pathUtils.join(target.path),
+    }, target);
   }
 }
 /**
@@ -149,8 +180,9 @@ class Targets {
  */
 const targets = provider((app) =&gt; {
   app.set(&apos;targets&apos;, () =&gt; new Targets(
-    app.get(&apos;asPlugin&apos;),
+    app.get(&apos;packageInfo&apos;),
     app.get(&apos;pathUtils&apos;),
+    app.get(&apos;projextPlugin&apos;),
     app.get(&apos;runnerFile&apos;)
   ));
 });

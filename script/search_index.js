@@ -24,6 +24,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "projext-plugin-runner/src/services/utils/projextplugin.js~projextplugin",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html",
+    "<span>ProjextPlugin</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/utils/projextPlugin.js</span>",
+    "class"
+  ],
+  [
     "projext-plugin-runner/src/app/index.js~projextrunner",
     "class/src/app/index.js~ProjextRunner.html",
     "<span>ProjextRunner</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/app/index.js</span>",
@@ -48,18 +54,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "projext-plugin-runner/src/services/utils/asplugin.js~asplugin",
-    "function/index.html#static-function-asPlugin",
-    "<span>asPlugin</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/utils/asPlugin.js</span>",
-    "function"
-  ],
-  [
-    "projext-plugin-runner/src/services/utils/asplugin.js~aspluginprovider",
-    "variable/index.html#static-variable-asPluginProvider",
-    "<span>asPluginProvider</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/utils/asPlugin.js</span>",
-    "variable"
-  ],
-  [
     "projext-plugin-runner/src/services/cli/cli.js~cli",
     "variable/index.html#static-variable-cli",
     "<span>cli</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/cli/cli.js</span>",
@@ -82,6 +76,12 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-cliWithName",
     "<span>cliWithName</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/cli/cli.js</span>",
     "function"
+  ],
+  [
+    "projext-plugin-runner/src/services/utils/projextplugin.js~projextplugin",
+    "variable/index.html#static-variable-projextPlugin",
+    "<span>projextPlugin</span> <span class=\"search-result-import-path\">projext-plugin-runner/src/services/utils/projextPlugin.js</span>",
+    "variable"
   ],
   [
     "projext-plugin-runner/src/services/runner/runner.js~runner",
@@ -630,12 +630,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/services/runner/file.js~runnerfile#asplugin",
-    "class/src/services/runner/file.js~RunnerFile.html#instance-member-asPlugin",
-    "src/services/runner/file.js~RunnerFile#asPlugin",
-    "member"
-  ],
-  [
     "src/services/runner/file.js~runnerfile#constructor",
     "class/src/services/runner/file.js~RunnerFile.html#instance-constructor-constructor",
     "src/services/runner/file.js~RunnerFile#constructor",
@@ -670,6 +664,12 @@ window.esdocSearchIndex = [
     "class/src/services/runner/file.js~RunnerFile.html#instance-method-getFilename",
     "src/services/runner/file.js~RunnerFile#getFilename",
     "method"
+  ],
+  [
+    "src/services/runner/file.js~runnerfile#projextplugin",
+    "class/src/services/runner/file.js~RunnerFile.html#instance-member-projextPlugin",
+    "src/services/runner/file.js~RunnerFile#projextPlugin",
+    "member"
   ],
   [
     "src/services/runner/file.js~runnerfile#read",
@@ -714,12 +714,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/services/runner/runner.js~runner#asplugin",
-    "class/src/services/runner/runner.js~Runner.html#instance-member-asPlugin",
-    "src/services/runner/runner.js~Runner#asPlugin",
-    "member"
-  ],
-  [
     "src/services/runner/runner.js~runner#constructor",
     "class/src/services/runner/runner.js~Runner.html#instance-constructor-constructor",
     "src/services/runner/runner.js~Runner#constructor",
@@ -762,6 +756,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/services/runner/runner.js~runner#projextplugin",
+    "class/src/services/runner/runner.js~Runner.html#instance-member-projextPlugin",
+    "src/services/runner/runner.js~Runner#projextPlugin",
+    "member"
+  ],
+  [
     "src/services/runner/runner.js~runner#runnerfile",
     "class/src/services/runner/runner.js~Runner.html#instance-member-runnerFile",
     "src/services/runner/runner.js~Runner#runnerFile",
@@ -780,15 +780,21 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/services/runner/targets.js~targets#asplugin",
-    "class/src/services/runner/targets.js~Targets.html#instance-member-asPlugin",
-    "src/services/runner/targets.js~Targets#asPlugin",
-    "member"
+    "src/services/runner/targets.js~targets#_normalizetarget",
+    "class/src/services/runner/targets.js~Targets.html#instance-method-_normalizeTarget",
+    "src/services/runner/targets.js~Targets#_normalizeTarget",
+    "method"
   ],
   [
     "src/services/runner/targets.js~targets#constructor",
     "class/src/services/runner/targets.js~Targets.html#instance-constructor-constructor",
     "src/services/runner/targets.js~Targets#constructor",
+    "method"
+  ],
+  [
+    "src/services/runner/targets.js~targets#getdefaulttarget",
+    "class/src/services/runner/targets.js~Targets.html#instance-method-getDefaultTarget",
+    "src/services/runner/targets.js~Targets#getDefaultTarget",
     "method"
   ],
   [
@@ -798,9 +804,21 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/services/runner/targets.js~targets#packageinfo",
+    "class/src/services/runner/targets.js~Targets.html#instance-member-packageInfo",
+    "src/services/runner/targets.js~Targets#packageInfo",
+    "member"
+  ],
+  [
     "src/services/runner/targets.js~targets#pathutils",
     "class/src/services/runner/targets.js~Targets.html#instance-member-pathUtils",
     "src/services/runner/targets.js~Targets#pathUtils",
+    "member"
+  ],
+  [
+    "src/services/runner/targets.js~targets#projextplugin",
+    "class/src/services/runner/targets.js~Targets.html#instance-member-projextPlugin",
+    "src/services/runner/targets.js~Targets#projextPlugin",
     "member"
   ],
   [
@@ -816,16 +834,112 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/services/utils/asplugin.js",
-    "file/src/services/utils/asPlugin.js.html",
-    "src/services/utils/asPlugin.js",
-    "file"
-  ],
-  [
     "src/services/utils/index.js",
     "file/src/services/utils/index.js.html",
     "src/services/utils/index.js",
     "file"
+  ],
+  [
+    "src/services/utils/projextplugin.js",
+    "file/src/services/utils/projextPlugin.js.html",
+    "src/services/utils/projextPlugin.js",
+    "file"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_detectinstallation",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_detectInstallation",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_detectInstallation",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_getinstalledinstance",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_getInstalledInstance",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_getInstalledInstance",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_loadinstalledinstanceifneeded",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_loadInstalledInstanceIfNeeded",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_loadInstalledInstanceIfNeeded",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_pluginflagname",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-member-_pluginFlagName",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_pluginFlagName",
+    "member"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_setinstance",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_setInstance",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_setInstance",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_updatebuildcommands",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_updateBuildCommands",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_updateBuildCommands",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_updatecopylist",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_updateCopyList",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_updateCopyList",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#_updatefileversion",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-_updateFileVersion",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#_updateFileVersion",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#constructor",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-constructor-constructor",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#constructor",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#get",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-get",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#get",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#getbuildcommand",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-getBuildCommand",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#getBuildCommand",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#getbuildcommandfortarget",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-getBuildCommandForTarget",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#getBuildCommandForTarget",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#isinstalled",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-isInstalled",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#isInstalled",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#pluginname",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-member-pluginName",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#pluginName",
+    "member"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#registerplugin",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-method-registerPlugin",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#registerPlugin",
+    "method"
+  ],
+  [
+    "src/services/utils/projextplugin.js~projextplugin#runnerfile",
+    "class/src/services/utils/projextPlugin.js~ProjextPlugin.html#instance-member-runnerFile",
+    "src/services/utils/projextPlugin.js~ProjextPlugin#runnerFile",
+    "member"
   ],
   [
     "src/typedef.js",
@@ -855,6 +969,12 @@ window.esdocSearchIndex = [
     "src/typedef.js~projext",
     "https://homer0.github.io/projext/class/src/app/index.js~Projext.html",
     "src/typedef.js~Projext",
+    "external"
+  ],
+  [
+    "src/typedef.js~projexttarget",
+    "https://homer0.github.io/projext/typedef/index.html#static-typedef-Target",
+    "src/typedef.js~ProjextTarget",
     "external"
   ],
   [

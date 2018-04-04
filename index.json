@@ -569,7 +569,7 @@
     "name": "src/abstracts/cliCommand.js",
     "content": "/**\n * A helper class for creating commands for the CLI interface.\n * @abstract\n */\nclass CLICommand {\n  /**\n   * Class constructor.\n   * @throws {TypeError} If instantiated directly.\n   * @abstract\n   */\n  constructor() {\n    if (new.target === CLICommand) {\n      throw new TypeError(\n        'CLICommand is an abstract class, it can\\'t be instantiated directly'\n      );\n    }\n    /**\n     * The CLI command instruction. For example `my-command [target]`.\n     * @type {string}\n     */\n    this.command = '';\n    /**\n     * A description of the command for the help interface.\n     * @type {string}\n     */\n    this.description = '';\n    /**\n     * A list with the name of the options the command supports. New options can be added using\n     * the `addOption` method.\n     * @type {Array}\n     */\n    this.options = [];\n    /**\n     * A dictionary of command options settings by their option name. New options can be added\n     * using the `addOption` method.\n     * @type {Object}\n     */\n    this.optionsByName = {};\n    /**\n     * This is a useful flag for when the command is ran as a result of another command. It lets\n     * the interface know that it can search for option values on a parent command, if there's one.\n     * @type {boolean}\n     */\n    this.checkOptionsOnParent = true;\n    /**\n     * Whether the command and its description should be shown on the CLI interface list of\n     * commands.\n     * @type {boolean}\n     */\n    this.hidden = false;\n    /**\n     * Whether or not a sub program should be executed for this command. Take for example the case\n     * of `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\n     * sub program. If this is `true`, then a binary with the name of the command should be\n     * exported on the `package.json`.\n     * @type {boolean}\n     */\n    this.subProgram = false;\n    /**\n     * This is the name of the program that runs the command. It will be added when the command\n     * is registered on the program.\n     * @type {string}\n     */\n    this.cliName = '';\n  }\n  /**\n   * Add a new option for the command.\n   * @example\n   * // To capture an option\n   * this.addOption(\n   *   'type',\n   *   '-t, --type [type]',\n   *   'The type of thingy you want to use?',\n   * );\n   *\n   * // As a simple flag\n   * this.addOption(\n   *   'ready',\n   *   '-r, --ready',\n   *   'Is it read?',\n   *   false\n   * );\n   *\n   * @param {string} name              The option name.\n   * @param {string} instruction       The option instruction, for example: `-t, --type [type]`.\n   * @param {string} [description='']  The option description.\n   * @param {string} [defaultValue=''] The option default value, in case is not used on execution.\n   */\n  addOption(name, instruction, description = '', defaultValue = '') {\n    this.optionsByName[name] = {\n      name,\n      instruction,\n      description,\n      defaultValue,\n    };\n\n    this.options.push(name);\n  }\n  /**\n   * Register this command on a CLI program.\n   * @param {Command} program  A Commander instance.\n   * @param {Object}  cli      The main CLI interface, just for the name.\n   * @param {string}  cli.name The CLI interface name.\n   * @see https://yarnpkg.com/en/package/commander\n   */\n  register(program, cli) {\n    // Get the name of the program\n    this.cliName = cli.name;\n    const options = {};\n    // If the command should be hidden...\n    if (this.hidden) {\n      // ...remove it from the help interface.\n      options.noHelp = true;\n    }\n\n    let command;\n    // If the command is a sub program...\n    if (this.subProgram) {\n      /**\n       * ...it gets added without the `.description` property. That's how Commander differentiates\n       * a main program command and a sub program command.\n       */\n      command = program.command(this.command, this.description, options);\n    } else {\n      // ...otherwise, it gets added as a sub command of the main program.\n      command = program\n      .command(this.command, '', options)\n      .description(this.description);\n    }\n    // Register all the command options.\n    this.options.forEach((name) => {\n      const option = this.optionsByName[name];\n      command = command.option(\n        option.instruction,\n        option.description\n      );\n    });\n    // Add the handler for when the command gets executed.\n    command.action(this._handle.bind(this));\n  }\n  /**\n   * Generate an instruction for this command.\n   * @example\n   * // Let's say this command is `destroy [target] [--once]`\n   *\n   * this.generate({ target: 'pluto' });\n   * // Will return `destroy pluto`\n   *\n   * this.generate({ target: 'moon', once: true });\n   * // Will return `destroy moon --once`\n   * @param  {Object} [args={}] A dictionary with the arguments and options for the command. If the\n   *                            command includes an argument on its `command` property, that\n   *                            argument is required.\n   * @return {string} The command instruction to run on the CLI interface.\n   */\n  generate(args = {}) {\n    let cmd = this.command;\n    const cmdOptions = [];\n    // Loop all the `args`...\n    Object.keys(args).forEach((name) => {\n      const value = args[name];\n      const asPlaceholder = `[${name}]`;\n      // Check if the current argument should be used on the command instruction...\n      if (cmd.includes(asPlaceholder)) {\n        // ...if so, replace it on the main command.\n        cmd = cmd.replace(asPlaceholder, value);\n      } else if (this.optionsByName[name]) {\n        // ...otherwise, check if there's an option with the same name as the argument.\n        const option = this.optionsByName[name];\n        /**\n         * Remove the shorthand version of the option instruction, if there's one. For example:\n         * `-t, --type [type]` -> `--type [type]`.\n         */\n        let instruction = option.instruction.split(',').pop().trim();\n        // If the option instruction includes the argument as a value (`[argument-name]`)...\n        if (instruction.includes(asPlaceholder)) {\n          // ...replace it on the option instruction.\n          instruction = instruction.replace(asPlaceholder, value);\n        } else if (value === false) {\n          /**\n           * ...but if the value is `false`, then we clear the instruction as it won't be included\n           * on the generated string.\n           */\n          instruction = '';\n        }\n\n        // If there's an option instruction...\n        if (instruction) {\n          // ...add it to the list.\n          cmdOptions.push(instruction);\n        }\n      }\n    });\n\n    let options = '';\n    // If after the loop, there are option instructions to add...\n    if (cmdOptions.length) {\n      // ...put them all together on a single string, separated by a space\n      options = ['', ...cmdOptions].join(' ');\n    }\n\n    // Return the complete command instruction\n    return `${this.cliName} ${cmd}${options}`;\n  }\n  /**\n   * Handle the command execution.\n   * This method will receive first the captured arguments, then the executed command information\n   * from Commander and finally, a dictionary with the options and their values.\n   * @example\n   * // Let's say the command is `run [target] [--production]`.\n   * // And now, it was executed with `run my-target`\n   * handle(target, command, options) {\n   *   console.log(target);\n   *   // Will output `my-target`\n   *   console.log(options.production)\n   *   // Will output `false`\n   * }\n   * @throws {Error} if not overwritten.\n   * @abstract\n   */\n  handle() {\n    throw new Error('This method must to be overwritten');\n  }\n  /**\n   * A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.\n   * @param {string} text The text to output.\n   */\n  output(text) {\n    // eslint-disable-next-line no-console\n    console.log(text);\n  }\n  /**\n   * This is the real method that receives the execution of the command and parses it in order to\n   * create the options dictionary that the `handle` method receives.\n   * @param {Array} args The list of arguments sent by Commander.\n   * @ignore\n   * @access protected\n   */\n  _handle(...args) {\n    // The actual command is always the last argument.\n    const command = args[args.length - 1];\n    const options = {};\n    // Loop all the known options the command can receive\n    Object.keys(this.optionsByName).forEach((name) => {\n      const option = this.optionsByName[name];\n      let value = '';\n      // If the option is on the command...\n      if (command[name]) {\n        // ...then that's the value that will be used.\n        value = command[name];\n      }\n\n      /**\n       * If no value was found yet, the flag to check on the parent is `true`, there's a parent\n       * command and it has an option with that name...\n       */\n      if (\n        !value &&\n        this.checkOptionsOnParent &&\n        command.parent &&\n        command.parent[name]\n      ) {\n        // ...then that's the value that will be used.\n        value = command.parent[name];\n      }\n      // If no value was found and there's a default value registered for the option...\n      if (!value && typeof option.defaultValue !== 'undefined') {\n        // ...then that's the value that will be used.\n        value = option.defaultValue;\n      }\n\n      // Set the option on the dictionary with the value found.\n      options[name] = value;\n    });\n\n    // Copy the arguments list.\n    const newArgs = args.slice();\n    // Add the new options dictionary at the end.\n    newArgs.push(options);\n    // Call the abstract method that handles the execution.\n    this.handle(...newArgs);\n  }\n}\n\nmodule.exports = CLICommand;\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/abstracts/cliCommand.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/abstracts/cliCommand.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -998,9 +998,9 @@
     "__docId__": 66,
     "kind": "file",
     "name": "src/app/index.js",
-    "content": "const Jimple = require('jimple');\nconst appPackage = require('../../package.json');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { asPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n */\nclass ProjextRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(asPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when projext is present and tries to load the plugin. It will add events\n   * listeners so every time projext builds a target or creates a revision file, the runner file\n   * will be updated. It also adds a listener for when projext copies the projects files so it\n   * will include the runner file.\n   * @param {Projext} projext The projext main container.\n   */\n  plugin(projext) {\n    // Get the events service.\n    const events = projext.get('events');\n    // Adds the listener for when targets are built.\n    events.once('build-target-commands-list', (commands, target) => {\n      // Get the distribution directory path.\n      const distPath = projext.get('projectConfiguration').getConfig().paths.build;\n      // Get the project version.\n      const version = projext.get('buildVersion').getVersion();\n\n      // Update the runner file.\n      this.get('runnerFile').update(target, version, distPath);\n      /**\n       * Return the received commands. This is an reducer event, but there is no need for any\n       * update.\n       */\n      return commands;\n    });\n    // Adds the listener that includes the runner file on the list of files projext copies.\n    events.once('project-files-to-copy', (list) => [\n      ...list,\n      this.get('runnerFile').getFilename(),\n    ]);\n    /**\n     * Adds the listner that updates the version on the runner file when the revision file\n     * is created\n     */\n    events.once('revision-file-created', (version) => {\n      this.get('runnerFile').updateVersion(version);\n    });\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { ProjextRunner };\n",
+    "content": "const Jimple = require('jimple');\nconst appPackage = require('../../package.json');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { projextPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n */\nclass ProjextRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(projextPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when projext is present and tries to load the plugin. It will call the service\n   * that handles all interaction with projext and that will take care of registering the necessary\n   * events to maintain the runner file updated.\n   * @param {Projext} projext The projext main container.\n   */\n  plugin(projext) {\n    this.get('projextPlugin').registerPlugin(projext);\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { ProjextRunner };\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/app/index.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/app/index.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1047,8 +1047,8 @@
     "static": false,
     "longname": "src/app/index.js~ProjextRunner#plugin",
     "access": "public",
-    "description": "This is called when projext is present and tries to load the plugin. It will add events\nlisteners so every time projext builds a target or creates a revision file, the runner file\nwill be updated. It also adds a listener for when projext copies the projects files so it\nwill include the runner file.",
-    "lineNumber": 65,
+    "description": "This is called when projext is present and tries to load the plugin. It will call the service\nthat handles all interaction with projext and that will take care of registering the necessary\nevents to maintain the runner file updated.",
+    "lineNumber": 64,
     "params": [
       {
         "nullable": null,
@@ -1074,7 +1074,7 @@
     "longname": "src/app/index.js~ProjextRunner#cli",
     "access": "public",
     "description": "Starts the plugin CLI interface.",
-    "lineNumber": 99,
+    "lineNumber": 70,
     "params": [],
     "return": null
   },
@@ -1089,7 +1089,7 @@
     "longname": "src/app/index.js~ProjextRunner#_addErrorHandler",
     "access": "protected",
     "description": "Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.",
-    "lineNumber": 110,
+    "lineNumber": 81,
     "ignore": true,
     "params": [],
     "return": null
@@ -1100,7 +1100,7 @@
     "name": "src/index.js",
     "content": "const runner = require('../index');\n/**\n * This is the method called by projext when loading the plugin and it takes care of calling\n * the instance of the runner and using it to register on projext.\n * @param {Projext} app The projext main container.\n * @ignore\n */\nconst loadPlugin = (app) => runner.plugin(app);\n\nmodule.exports = loadPlugin;\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/index.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/index.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1141,7 +1141,7 @@
     "name": "src/services/cli/cli.js",
     "content": "const commander = require('commander');\nconst { provider } = require('jimple');\n/**\n * The main CLI program interface where all the commands are registered and that works as a bridge\n * between the app and `commander`.\n */\nclass CLI {\n  /**\n   * Class constructor.\n   * @param {Object} info      This app `package.json` information.\n   * @param {string} [name=''] The name of the program. If not specified, it will use the one on\n   *                           `info` object.\n   */\n  constructor(info, name = '') {\n    /**\n     * This app `package.json` information.\n     * @type {Object}\n     */\n    this.info = info;\n    /**\n     * The name of the CLI program.\n     * @type {string}\n     */\n    this.name = name || this.info.name;\n  }\n  /**\n   * Start the interface with a list of commands.\n   * @param {Array<CLICommand>} commands A list of commands to register.\n   */\n  start(commands) {\n    // eslint-disable-next-line no-underscore-dangle\n    commander._name = this.name;\n    // Set the version and the description of the program.\n    commander.version(this.info.version, '-v, --version');\n    commander.description(this.info.description);\n    // Loop all the commands and register them.\n    commands.forEach((command) => {\n      command.register(commander, this);\n    });\n    // Tell commander to parse the arguments.\n    commander.parse(process.argv);\n  }\n}\n/**\n * Generates a `Provider` with an already defined name for the program.\n * @example\n * // Generate the provider\n * const provider = cliWithName('my-program');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @param {string} name The name of the program.\n * @return {Provider}\n */\nconst cliWithName = (name) => provider((app) => {\n  app.set('cli', () => new CLI(\n    app.get('info'),\n    name\n  ));\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLI` as the `cli` service.\n * @example\n * // Register it on the container\n * container.register(cli);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @type {Provider}\n */\nconst cli = cliWithName();\n\nmodule.exports = {\n  CLI,\n  cliWithName,\n  cli,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cli.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/cli/cli.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1330,9 +1330,9 @@
     "__docId__": 82,
     "kind": "file",
     "name": "src/services/cli/cliSHRun.js",
-    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {string}  target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const runPluginProduction = `${this.cliName} ${target} --production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {?string} target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const targetArg = target ? `${target} ` : '';\n      const runPluginProduction = `${this.cliName} ${targetArg}--production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHRun.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/cli/cliSHRun.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1470,7 +1470,7 @@
     "lineNumber": 63,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -1537,7 +1537,7 @@
     "examples": [
       "// Register it on the container\ncontainer.register(cliSHRunCommand);\n// Getting access to the service instance\nconst cliSHRunCommand = container.get('cliSHRunCommand');"
     ],
-    "lineNumber": 95,
+    "lineNumber": 96,
     "type": {
       "nullable": null,
       "types": [
@@ -1551,9 +1551,9 @@
     "__docId__": 91,
     "kind": "file",
     "name": "src/services/cli/cliSHValidate.js",
-    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile} runnerFile To validate if the file exists or not.\n   * @param {Targets}    targets    To validate if a target exists or not.\n   */\n  constructor(runnerFile, targets) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {string} target The name of the target.\n   */\n  handle(target) {\n    // First let the service make its own validation.\n    this.runnerFile.validate();\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     */\n    return !this.runnerFile.exists() || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
+    "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile} runnerFile To validate if the file exists or not.\n   * @param {Targets}    targets    To validate if a target exists or not.\n   */\n  constructor(runnerFile, targets) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {?string} target The name of the target.\n   */\n  handle(target) {\n    // First let the service make its own validation.\n    this.runnerFile.validate();\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     */\n    return !this.runnerFile.exists() || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/cliSHValidate.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/cli/cliSHValidate.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1720,7 +1720,7 @@
     "lineNumber": 61,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -1767,7 +1767,7 @@
     "name": "src/services/cli/index.js",
     "content": "const { cli, cliWithName } = require('./cli');\nconst { cliSHRunCommand } = require('./cliSHRun');\nconst { cliSHValidateCommand } = require('./cliSHValidate');\n\nmodule.exports = {\n  cli,\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/cli/index.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/cli/index.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1776,9 +1776,9 @@
     "__docId__": 102,
     "kind": "file",
     "name": "src/services/runner/file.js",
-    "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {boolean}   asPlugin  To check if projext is present or not.\n   * @param {Object}    info      The plugin `package.json` information, to use the plugin version\n   *                              on the file.\n   * @param {PathUtils} pathUtils To build the paths to the file.\n   */\n  constructor(asPlugin, info, pathUtils) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = 'projextrunner.json';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   */\n  update(target, version, directory) {\n    let result;\n    if (target.is.node) {\n      const file = this.read();\n      file.version = version;\n      file.directory = directory;\n\n      let targetPath = '';\n      const { build } = target.folders;\n      if (build === directory) {\n        targetPath = './';\n      } else {\n        // +1 to replace the leading `/`\n        targetPath = build.substr(directory.length + 1);\n      }\n\n      const targetExec = target.output.production;\n      const targetExecPath = path.join(targetPath, targetExec);\n\n      file.targets[target.name] = {\n        name: target.name,\n        path: targetExecPath,\n        options: target.runnerOptions || {},\n      };\n\n      result = fs.writeJsonSync(this.filepath, file);\n    }\n\n    return result;\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n  /**\n   * Validate the runner file.\n   * @throws {Error} If the runner file doesn't exist and projext is not present, which means the\n   *                 project was deployed to production without the runner file.\n   */\n  validate() {\n    if (!this.asPlugin && !this.exists()) {\n      throw new Error('The runner file doesn\\'t exist and projext is not present');\n    }\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('asPlugin'),\n    app.get('info'),\n    app.get('pathUtils')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
+    "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {Object}        info          The plugin `package.json` information, to use the plugin\n   *                                      version on the file.\n   * @param {PathUtils}     pathUtils     To build the paths to the file.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.\n   */\n  constructor(info, pathUtils, projextPlugin) {\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = 'projextrunner.json';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   * @return {Target} The information of the target saved on the file.\n   */\n  update(target, version, directory) {\n    let result;\n    if (target.is.node) {\n      const file = this.read();\n      file.version = version;\n      file.directory = directory;\n\n      let targetPath = '';\n      const { build } = target.folders;\n      if (build === directory) {\n        targetPath = './';\n      } else {\n        // +1 to replace the leading `/`\n        targetPath = build.substr(directory.length + 1);\n      }\n\n      const targetExec = target.bundle ?\n        target.output.production.js :\n        target.entry.production;\n      const targetExecPath = path.join(targetPath, targetExec);\n\n      result = {\n        name: target.name,\n        path: targetExecPath,\n        options: target.runnerOptions || {},\n      };\n\n      file.targets[target.name] = result;\n\n      fs.writeJsonSync(this.filepath, file);\n    }\n\n    return result;\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n  /**\n   * Validate the runner file.\n   * @throws {Error} If the runner file doesn't exist and projext is not present, which means the\n   *                 project was deployed to production without the runner file.\n   */\n  validate() {\n    if (!this.projextPlugin.isInstalled() && !this.exists()) {\n      throw new Error('The runner file doesn\\'t exist and projext is not present');\n    }\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('info'),\n    app.get('pathUtils'),\n    app.get('projextPlugin')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/file.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/runner/file.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -1814,22 +1814,12 @@
       {
         "nullable": null,
         "types": [
-          "boolean"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "asPlugin",
-        "description": "To check if projext is present or not."
-      },
-      {
-        "nullable": null,
-        "types": [
           "Object"
         ],
         "spread": false,
         "optional": false,
         "name": "info",
-        "description": "The plugin `package.json` information, to use the plugin version\n                             on the file."
+        "description": "The plugin `package.json` information, to use the plugin\n                                     version on the file."
       },
       {
         "nullable": null,
@@ -1840,23 +1830,33 @@
         "optional": false,
         "name": "pathUtils",
         "description": "To build the paths to the file."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "ProjextPlugin"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "projextPlugin",
+        "description": "To check if projext is present or not."
       }
     ]
   },
   {
     "__docId__": 105,
     "kind": "member",
-    "name": "asPlugin",
+    "name": "projextPlugin",
     "memberof": "src/services/runner/file.js~RunnerFile",
     "static": false,
-    "longname": "src/services/runner/file.js~RunnerFile#asPlugin",
+    "longname": "src/services/runner/file.js~RunnerFile#projextPlugin",
     "access": "public",
-    "description": "Whether projext is present or not.",
+    "description": "A local reference for the `projextPlugin` service.",
     "lineNumber": 22,
     "type": {
       "nullable": null,
       "types": [
-        "boolean"
+        "ProjextPlugin"
       ],
       "spread": false,
       "description": null
@@ -2003,7 +2003,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#update",
     "access": "public",
     "description": "Updates the runner file with a new build information.",
-    "lineNumber": 72,
+    "lineNumber": 73,
     "params": [
       {
         "nullable": null,
@@ -2037,9 +2037,12 @@
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "Target"
+      ],
+      "spread": false,
+      "description": "The information of the target saved on the file."
     }
   },
   {
@@ -2053,7 +2056,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#updateVersion",
     "access": "public",
     "description": "Updates the runner file with a new version of the project.",
-    "lineNumber": 106,
+    "lineNumber": 111,
     "params": [
       {
         "nullable": null,
@@ -2083,7 +2086,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#read",
     "access": "public",
     "description": "Read the contents of the runner file. If the file doesn't exist, it will create it with\nthe default template (`this.fileTemplate`).",
-    "lineNumber": 116,
+    "lineNumber": 121,
     "return": {
       "nullable": null,
       "types": [
@@ -2105,7 +2108,7 @@
     "longname": "src/services/runner/file.js~RunnerFile#validate",
     "access": "public",
     "description": "Validate the runner file.",
-    "lineNumber": 131,
+    "lineNumber": 136,
     "throws": [
       {
         "types": [
@@ -2132,7 +2135,7 @@
     "examples": [
       "// Register it on the container\ncontainer.register(runnerFile);\n// Getting access to the service instance\nconst runnerFile = container.get('runnerFile');"
     ],
-    "lineNumber": 147,
+    "lineNumber": 152,
     "type": {
       "nullable": null,
       "types": [
@@ -2148,7 +2151,7 @@
     "name": "src/services/runner/index.js",
     "content": "const { runnerFile } = require('./file');\nconst { runner } = require('./runner');\nconst { targets } = require('./targets');\n\nmodule.exports = {\n  runnerFile,\n  runner,\n  targets,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/index.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/runner/index.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -2157,9 +2160,9 @@
     "__docId__": 119,
     "kind": "file",
     "name": "src/services/runner/runner.js",
-    "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the path for the targets executables.\n   * @param {RunnerFile} runnerFile To read the required information to run targets.\n   * @param {Targets}    targets    To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile, targets) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, runAsPluginCommand) {\n    let commands;\n    // If projext is present...\n    if (this.asPlugin) {\n      // ..get the commands to run with projext.\n      commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = this.targets.getTarget(targetName);\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = this.targets.getTarget(targetName);\n    // Get the commands to run without projext.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with projext.\n   * @param {string}  targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForProjext(targetName, production, runAsPluginCommand) {\n    const commands = [];\n    // If the target needs to use the production build...\n    if (production) {\n      // ...push the command to create a production build.\n      commands.push(`projext build ${targetName} --type production`);\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      // ...otherwise, get the environment variables to send.\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      // Push the command to the target with projext.\n      commands.push(`${variables} projext run ${targetName}`);\n    }\n    // Return the list of commands.\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If projext is present...\n    if (this.asPlugin) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
+    "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {PathUtils}     pathUtils     To create the path for the targets executables.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not and to generated\n   *                                      the targets build commands.\n   * @param {RunnerFile}    runnerFile    To read the required information to run targets.\n   * @param {Targets}       targets       To get the targets information.\n   */\n  constructor(pathUtils, projextPlugin, runnerFile, targets) {\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {?string} targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, runAsPluginCommand) {\n    let commands;\n    // If projext is present...\n    if (this.projextPlugin.isInstalled()) {\n      // ..get the commands to run with projext.\n      commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = targetName ?\n        this.targets.getTarget(targetName) :\n        this.targets.getDefaultTarget();\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {?string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = targetName ?\n      this.targets.getTarget(targetName) :\n      this.targets.getDefaultTarget();\n    // Get the commands to run without projext.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with projext.\n   * @param {?string} targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForProjext(targetName, production, runAsPluginCommand) {\n    // Define the list of commands to return.\n    const commands = [];\n    // Define the base arguments for the build command.\n    const args = {\n      // The target can be empty in case the intended target is the default one.\n      target: targetName || '',\n      type: 'development',\n      run: false,\n    };\n    // If the target needs to use the production build...\n    if (production) {\n      // ...set the `type` argument to production.\n      args.type = 'production';\n      // Push the command to create a production build.\n      commands.push(this.projextPlugin.getBuildCommand(args));\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      args.run = true;\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      commands.push(this.projextPlugin.getBuildCommand(args, variables));\n    }\n\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If projext is present...\n    if (this.projextPlugin.isInstalled()) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('pathUtils'),\n    app.get('projextPlugin'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/runner.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/runner/runner.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -2190,18 +2193,8 @@
     "longname": "src/services/runner/runner.js~Runner#constructor",
     "access": "public",
     "description": "Class constructor.",
-    "lineNumber": 14,
+    "lineNumber": 15,
     "params": [
-      {
-        "nullable": null,
-        "types": [
-          "boolean"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "asPlugin",
-        "description": "To check if projext is present or not"
-      },
       {
         "nullable": null,
         "types": [
@@ -2211,6 +2204,16 @@
         "optional": false,
         "name": "pathUtils",
         "description": "To create the path for the targets executables."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "ProjextPlugin"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "projextPlugin",
+        "description": "To check if projext is present or not and to generated\n                                     the targets build commands."
       },
       {
         "nullable": null,
@@ -2237,17 +2240,17 @@
   {
     "__docId__": 122,
     "kind": "member",
-    "name": "asPlugin",
+    "name": "pathUtils",
     "memberof": "src/services/runner/runner.js~Runner",
     "static": false,
-    "longname": "src/services/runner/runner.js~Runner#asPlugin",
+    "longname": "src/services/runner/runner.js~Runner#pathUtils",
     "access": "public",
-    "description": "Whether projext is present or not.",
-    "lineNumber": 19,
+    "description": "A local reference for the `pathUtils` service.",
+    "lineNumber": 20,
     "type": {
       "nullable": null,
       "types": [
-        "boolean"
+        "PathUtils"
       ],
       "spread": false,
       "description": null
@@ -2256,17 +2259,17 @@
   {
     "__docId__": 123,
     "kind": "member",
-    "name": "pathUtils",
+    "name": "projextPlugin",
     "memberof": "src/services/runner/runner.js~Runner",
     "static": false,
-    "longname": "src/services/runner/runner.js~Runner#pathUtils",
+    "longname": "src/services/runner/runner.js~Runner#projextPlugin",
     "access": "public",
-    "description": "A local reference for the `pathUtils` service.",
-    "lineNumber": 24,
+    "description": "A local reference for the `projextPlugin` service.",
+    "lineNumber": 25,
     "type": {
       "nullable": null,
       "types": [
-        "PathUtils"
+        "ProjextPlugin"
       ],
       "spread": false,
       "description": null
@@ -2281,7 +2284,7 @@
     "longname": "src/services/runner/runner.js~Runner#runnerFile",
     "access": "public",
     "description": "A local reference for the `runnerFile` service.",
-    "lineNumber": 29,
+    "lineNumber": 30,
     "type": {
       "nullable": null,
       "types": [
@@ -2300,7 +2303,7 @@
     "longname": "src/services/runner/runner.js~Runner#targets",
     "access": "public",
     "description": "A local reference for the `targets` service.",
-    "lineNumber": 34,
+    "lineNumber": 35,
     "type": {
       "nullable": null,
       "types": [
@@ -2321,10 +2324,10 @@
     "longname": "src/services/runner/runner.js~Runner#getCommands",
     "access": "public",
     "description": "Get the shell execution commands for running a target.",
-    "lineNumber": 48,
+    "lineNumber": 49,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -2374,10 +2377,10 @@
     "longname": "src/services/runner/runner.js~Runner#getPluginCommandsForProduction",
     "access": "public",
     "description": "Get the commands to run a target production build. This needs to be called after a build is\nmade.",
-    "lineNumber": 69,
+    "lineNumber": 72,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -2407,10 +2410,10 @@
     "longname": "src/services/runner/runner.js~Runner#getCommandsForProjext",
     "access": "public",
     "description": "Get the list of comands to run a target with projext.",
-    "lineNumber": 88,
+    "lineNumber": 93,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -2460,7 +2463,7 @@
     "longname": "src/services/runner/runner.js~Runner#getCommandsForProduction",
     "access": "public",
     "description": "Get the list of commands to run a target without projext present.",
-    "lineNumber": 110,
+    "lineNumber": 124,
     "params": [
       {
         "nullable": null,
@@ -2493,7 +2496,7 @@
     "longname": "src/services/runner/runner.js~Runner#getEnvironmentVariables",
     "access": "public",
     "description": "Get a set of environment variables that will be sent to the executables.\nFor now is just the version of the project.",
-    "lineNumber": 144,
+    "lineNumber": 158,
     "todo": [
       "Refactor this. The variables should be configurable."
     ],
@@ -2533,7 +2536,7 @@
     "examples": [
       "// Register it on the container\ncontainer.register(runner);\n// Getting access to the service instance\nconst runner = container.get('runner');"
     ],
-    "lineNumber": 164,
+    "lineNumber": 178,
     "type": {
       "nullable": null,
       "types": [
@@ -2547,9 +2550,9 @@
     "__docId__": 132,
     "kind": "file",
     "name": "src/services/runner/targets.js",
-    "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {boolean}    asPlugin   To check if projext is present or not\n   * @param {PathUtils}  pathUtils  To create the targets exeuction paths.\n   * @param {RunnerFile} runnerFile To get the targets information.\n   */\n  constructor(asPlugin, pathUtils, runnerFile) {\n    /**\n     * Whether projext is present or not.\n     * @type {boolean}\n     */\n    this.asPlugin = asPlugin;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target type is not Node.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.asPlugin) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = this.getTarget(name);\n      // Check if the target type is Node.\n      if (!target.node) {\n        throw new Error(`${name} is not a Node target, it can't be used with the runner`);\n      }\n\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('asPlugin'),\n    app.get('pathUtils'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
+    "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {Object}        packageInfo   The project's `package.json`, necessary to get the\n   *                                      project's name and use it as the name of the default\n   *                                      target.\n   * @param {PathUtils}     pathUtils     To create the targets exeuction paths.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.\n   * @param {RunnerFile}    runnerFile    To get the targets information.\n   */\n  constructor(packageInfo, pathUtils, projextPlugin, runnerFile) {\n    /**\n     * The information of the project's `package.json`.\n     * @type {Object}\n     */\n    this.packageInfo = packageInfo;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return this._normalizeTarget(target);\n  }\n  /**\n   * Returns the target with the name of project (specified on the `package.json`) and if there's\n   * no target with that name, then the first one, using a list of the targets name on alphabetical\n   * order.\n   * @return {Target}\n   * @throws {Error} If the project has no targets\n   */\n  getDefaultTarget() {\n    const { targets } = this.runnerFile.read();\n    const names = Object.keys(targets).sort();\n    let target;\n    if (names.length) {\n      const { name: projectName } = this.packageInfo;\n      target = targets[projectName] || targets[names[0]];\n    } else {\n      throw new Error('The project doesn\\'t have any targets or none has been built yet');\n    }\n\n    return this._normalizeTarget(target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {?string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.projextPlugin.isInstalled()) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = name ? this.getTarget(name) : this.getDefaultTarget();\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n  /**\n   * Add the execution path (`exec`) to a {@link Target}.\n   * @param {Target} target The target for which the execution path will be generated for.\n   * @return {Target}\n   */\n  _normalizeTarget(target) {\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('packageInfo'),\n    app.get('pathUtils'),\n    app.get('projextPlugin'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/runner/targets.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/runner/targets.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -2580,17 +2583,17 @@
     "longname": "src/services/runner/targets.js~Targets#constructor",
     "access": "public",
     "description": "Class constructor.",
-    "lineNumber": 13,
+    "lineNumber": 16,
     "params": [
       {
         "nullable": null,
         "types": [
-          "boolean"
+          "Object"
         ],
         "spread": false,
         "optional": false,
-        "name": "asPlugin",
-        "description": "To check if projext is present or not"
+        "name": "packageInfo",
+        "description": "The project's `package.json`, necessary to get the\n                                     project's name and use it as the name of the default\n                                     target."
       },
       {
         "nullable": null,
@@ -2601,6 +2604,16 @@
         "optional": false,
         "name": "pathUtils",
         "description": "To create the targets exeuction paths."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "ProjextPlugin"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "projextPlugin",
+        "description": "To check if projext is present or not."
       },
       {
         "nullable": null,
@@ -2617,17 +2630,17 @@
   {
     "__docId__": 135,
     "kind": "member",
-    "name": "asPlugin",
+    "name": "packageInfo",
     "memberof": "src/services/runner/targets.js~Targets",
     "static": false,
-    "longname": "src/services/runner/targets.js~Targets#asPlugin",
+    "longname": "src/services/runner/targets.js~Targets#packageInfo",
     "access": "public",
-    "description": "Whether projext is present or not.",
-    "lineNumber": 18,
+    "description": "The information of the project's `package.json`.",
+    "lineNumber": 21,
     "type": {
       "nullable": null,
       "types": [
-        "boolean"
+        "Object"
       ],
       "spread": false,
       "description": null
@@ -2642,7 +2655,7 @@
     "longname": "src/services/runner/targets.js~Targets#pathUtils",
     "access": "public",
     "description": "A local reference for the `pathUtils` service.",
-    "lineNumber": 23,
+    "lineNumber": 26,
     "type": {
       "nullable": null,
       "types": [
@@ -2655,13 +2668,32 @@
   {
     "__docId__": 137,
     "kind": "member",
+    "name": "projextPlugin",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#projextPlugin",
+    "access": "public",
+    "description": "A local reference for the `projextPlugin` service.",
+    "lineNumber": 31,
+    "type": {
+      "nullable": null,
+      "types": [
+        "ProjextPlugin"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 138,
+    "kind": "member",
     "name": "runnerFile",
     "memberof": "src/services/runner/targets.js~Targets",
     "static": false,
     "longname": "src/services/runner/targets.js~Targets#runnerFile",
     "access": "public",
     "description": "A local reference for the `runnerFile` service.",
-    "lineNumber": 28,
+    "lineNumber": 36,
     "type": {
       "nullable": null,
       "types": [
@@ -2672,7 +2704,7 @@
     }
   },
   {
-    "__docId__": 138,
+    "__docId__": 139,
     "kind": "method",
     "name": "getTarget",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2682,7 +2714,7 @@
     "longname": "src/services/runner/targets.js~Targets#getTarget",
     "access": "public",
     "description": "Get a target information by its name.",
-    "lineNumber": 36,
+    "lineNumber": 44,
     "params": [
       {
         "nullable": null,
@@ -2713,7 +2745,37 @@
     ]
   },
   {
-    "__docId__": 139,
+    "__docId__": 140,
+    "kind": "method",
+    "name": "getDefaultTarget",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#getDefaultTarget",
+    "access": "public",
+    "description": "Returns the target with the name of project (specified on the `package.json`) and if there's\nno target with that name, then the first one, using a list of the targets name on alphabetical\norder.",
+    "lineNumber": 61,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Target"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the project has no targets"
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 141,
     "kind": "method",
     "name": "validate",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2723,10 +2785,10 @@
     "longname": "src/services/runner/targets.js~Targets#validate",
     "access": "public",
     "description": "Validate a target information.",
-    "lineNumber": 56,
+    "lineNumber": 81,
     "params": [
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -2755,18 +2817,45 @@
         "types": [
           "Error"
         ],
-        "description": "If the target type is not Node."
-      },
-      {
-        "types": [
-          "Error"
-        ],
         "description": "If the target executable doesn't exist."
       }
     ]
   },
   {
-    "__docId__": 140,
+    "__docId__": 142,
+    "kind": "method",
+    "name": "_normalizeTarget",
+    "memberof": "src/services/runner/targets.js~Targets",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/runner/targets.js~Targets#_normalizeTarget",
+    "access": "private",
+    "description": "Add the execution path (`exec`) to a {@link Target}.",
+    "lineNumber": 103,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Target"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The target for which the execution path will be generated for."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Target"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 143,
     "kind": "variable",
     "name": "targets",
     "memberof": "src/services/runner/targets.js",
@@ -2780,68 +2869,7 @@
     "examples": [
       "// Register it on the container\ncontainer.register(targets);\n// Getting access to the service instance\nconst targets = container.get('targets');"
     ],
-    "lineNumber": 89,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Provider"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 141,
-    "kind": "file",
-    "name": "src/services/utils/asPlugin.js",
-    "content": "const { provider } = require('jimple');\n/**\n * Checks whether or not projext is present on the environment.\n * @return {boolean}\n */\nconst asPlugin = () => {\n  let projextExists = true;\n  try {\n    // eslint-disable-next-line global-require\n    require('projext');\n  } catch (ignore) {\n    projextExists = false;\n  }\n\n  return projextExists;\n};\n/**\n * The service provider that once registered on the app container will set the result of\n * `asPlugin()` as the `asPlugin` service.\n * @example\n * // Register it on the container\n * container.register(asPluginProvider);\n * // Getting access to the service value\n * const asPlugin = container.get('asPlugin');\n * @type {Provider}\n */\nconst asPluginProvider = provider((app) => {\n  app.set('asPlugin', () => asPlugin());\n});\n\nmodule.exports = {\n  asPlugin,\n  asPluginProvider,\n};\n",
-    "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/utils/asPlugin.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 142,
-    "kind": "function",
-    "name": "asPlugin",
-    "memberof": "src/services/utils/asPlugin.js",
-    "generator": false,
-    "async": false,
-    "static": true,
-    "longname": "src/services/utils/asPlugin.js~asPlugin",
-    "access": "public",
-    "export": true,
-    "importPath": "projext-plugin-runner/src/services/utils/asPlugin.js",
-    "importStyle": "{asPlugin}",
-    "description": "Checks whether or not projext is present on the environment.",
-    "lineNumber": 6,
-    "return": {
-      "nullable": null,
-      "types": [
-        "boolean"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "params": []
-  },
-  {
-    "__docId__": 143,
-    "kind": "variable",
-    "name": "asPluginProvider",
-    "memberof": "src/services/utils/asPlugin.js",
-    "static": true,
-    "longname": "src/services/utils/asPlugin.js~asPluginProvider",
-    "access": "public",
-    "export": true,
-    "importPath": "projext-plugin-runner/src/services/utils/asPlugin.js",
-    "importStyle": "{asPluginProvider}",
-    "description": "The service provider that once registered on the app container will set the result of\n`asPlugin()` as the `asPlugin` service.",
-    "examples": [
-      "// Register it on the container\ncontainer.register(asPluginProvider);\n// Getting access to the service value\nconst asPlugin = container.get('asPlugin');"
-    ],
-    "lineNumber": 27,
+    "lineNumber": 119,
     "type": {
       "nullable": null,
       "types": [
@@ -2855,9 +2883,9 @@
     "__docId__": 144,
     "kind": "file",
     "name": "src/services/utils/index.js",
-    "content": "const { asPluginProvider } = require('./asPlugin');\n\nmodule.exports = {\n  asPlugin: asPluginProvider,\n};\n",
+    "content": "const { projextPlugin } = require('./projextPlugin');\n\nmodule.exports = {\n  projextPlugin,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/services/utils/index.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/utils/index.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
@@ -2865,16 +2893,616 @@
   {
     "__docId__": 145,
     "kind": "file",
-    "name": "src/typedef.js",
-    "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Projext}\n * https://homer0.github.io/projext/class/src/app/index.js~Projext.html\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the projext target `runnerOptions`\n * setting.\n * @property {string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
+    "name": "src/services/utils/projextPlugin.js",
+    "content": "const { provider } = require('jimple');\n/**\n * This service handles all interaction between the plugin and projext. It takes care of validating\n * if projext is installed, registering the necessary events and generating the build commands for\n * when the plugin is used on a development environment.\n */\nclass ProjextPlugin {\n  /**\n   * Class constructor.\n   * @param {Object}     info       The plugin's `package.json`. The service uses it to get the\n   *                                name and send it on the build commands as the `--plugin` flag.\n   * @param {RunnerFile} runnerFile To be able to update the runner file when a target is built.\n   */\n  constructor(info, runnerFile) {\n    /**\n     * The name of the plugin as it's defined on the `package.json`. It's used on the generated\n     * build command(s) as the `--plugin` option. The flag is verified by the plugin in order to\n     * building dependencies (other targets) when a target is running on a development\n     * environment.\n     * @type {string}\n     */\n    this.pluginName = info.name;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * The name of the option flag the service will add on the build commands.\n     * @type {string}\n     */\n    this._pluginFlagName = 'plugin';\n    /**\n     * Whether or not projext is installed on the current environment.\n     * @type {boolean}\n     * @ignore\n     * @access protected\n     */\n    this._installed = this._detectInstallation();\n    /**\n     * When running along side projext, when the plugin gets registered, this property will hold a\n     * reference to the projext instance.\n     * @type {?Projext}\n     * @ignore\n     * @access protected\n     */\n    this._instance = null;\n  }\n  /**\n   * Check whether projext is installed or not.\n   * @return {boolean}\n   */\n  isInstalled() {\n    return this._installed;\n  }\n  /**\n   * Register all the necessary events for the plugin to work:\n   * - Update the target information on the runner file when the target build command is generated.\n   * - Add the runner file to the list of files projext copies.\n   * - Update the runner file version when the revision file is created.\n   *\n   * @param {Projext} instance The projext instance that is registering the plugin.\n   */\n  registerPlugin(instance) {\n    this._setInstance(instance);\n    const events = this.get('events');\n    events.once('build-target-commands-list', (commands, target, options, unknownOptions) => (\n      this._updateBuildCommands(commands, target, options, unknownOptions)\n    ));\n\n    events.once('project-files-to-copy', (list) => this._updateCopyList(list));\n    events.once('revision-file-created', (version) => this._updateFileVersion(version));\n  }\n  /**\n   * Get a service from projext.\n   * @param {string} service The service name.\n   * @return {*}\n   * @throws {Error} If the plugin hasn't been registered.\n   */\n  get(service) {\n    if (!this._instance) {\n      throw new Error('You can\\'t access projext services if the plugin is not installed');\n    }\n\n    return this._instance.get(service);\n  }\n  /**\n   * Generate a projext build command for one or more targets.\n   * @param {string|Array} target                    A target name or a list of them.\n   * @param {Object}       [args={}]                 A dictionary of arguments and their values to\n   *                                                 send on the command. If this dictionary\n   *                                                 contains a `target` key, it will be ignored\n   *                                                 and removed, since it's the one used to send\n   *                                                 the target name this method uses as parameter.\n   * @param {string}       [environmentVariables=''] Environment variables to prefix the command\n   *                                                 with. For example: `NODE_ENV=production`.\n   * @return {Array} No matter if you used a single (`string`) target or a list (`Array`), it will\n   *                 always return a list (`Array`) of commands.\n   */\n  getBuildCommandForTarget(target, args = {}, environmentVariables = '') {\n    const list = Array.isArray(target) ? target : [target];\n    const newArgs = Object.assign({}, args);\n    delete newArgs.target;\n    const result = list\n    .map((name) => this.getBuildCommand(Object.assign(\n      { target: name },\n      newArgs\n    ), environmentVariables));\n\n    return result;\n  }\n  /**\n   * Generate a projext build command. If not overwritten by the `args` parameter, this method\n   * sends an empty `target` and a `plugin` argument with the value of the `pluginName` property.\n   * @param {Object} args                      A dictionary of arguments and their values to send\n   *                                           on the command.\n   * @param {string} [environmentVariables=''] Environment variables to prefix the command with.\n   *                                           For example: `NODE_ENV=production`\n   * @return {string}\n   * @throws {Error} If projext is not installed and/or it couldn't access is instance.\n   */\n  getBuildCommand(args, environmentVariables = '') {\n    this._loadInstalledInstanceIfNeeded();\n    if (!this.isInstalled() || !this._instance) {\n      throw new Error('You can\\'t generate a build command if projext is not installed');\n    }\n\n    const env = environmentVariables ? `${environmentVariables} ` : '';\n    /**\n     * We need to access the main `cli` service in order to get the program name, since we are\n     * accessing the build command without the CLI being triggered, so the command is not\n     * registered on the program.\n     */\n    const program = this.get('cli').name;\n    const command = this.get('cliBuildCommand').generate(Object.assign(\n      {\n        target: '',\n        [this._pluginFlagName]: this.pluginName,\n      },\n      args\n    )).trim();\n\n    return `${env}${program} ${command}`;\n  }\n  /**\n   * Set the projext instance.\n   * @param {Projext} instance The projext instance accessed either from registering the plugin or\n   *                           by requiring the module directly.\n   */\n  _setInstance(instance) {\n    this._instance = instance;\n  }\n  /**\n   * Get an instance of projext by requiring the module.\n   * @return {?Projext} If something is wrong with the module or projext is not installed, it will\n   *                    return `null`.\n   */\n  _getInstalledInstance() {\n    let instance;\n    try {\n      // eslint-disable-next-line global-require\n      instance = require('projext/index');\n    } catch (ignore) {\n      instance = null;\n    }\n\n    return instance;\n  }\n  /**\n   * If projext is installed but the plugin wasn't registerd (probably because the plugin was\n   * executed from its own CLI), this method will try to set the instance by requiring the module.\n   */\n  _loadInstalledInstanceIfNeeded() {\n    if (this.isInstalled() && !this._instance) {\n      this._setInstance(this._getInstalledInstance());\n    }\n  }\n  /**\n   * Detect whether or not projext is installed on the current environment.\n   * @return {boolean}\n   */\n  _detectInstallation() {\n    let installed = true;\n    try {\n      // eslint-disable-next-line global-require\n      require('projext');\n    } catch (ignore) {\n      installed = false;\n    }\n\n    return installed;\n  }\n  /**\n   * This method gets called when projext is creating the build commands for a target. It takes\n   * care of updating the runner file with the target information and, if the target needs other\n   * targes to be built first in order to run, injecting the commands for building those targets.\n   * @param {Array}         commands       The list of commands projext uses to build and run the\n   *                                       target.\n   * @param {ProjextTarget} target         The target information.\n   * @param {Object}        options        A dictionary with the options the original command\n   *                                       received.\n   * @param {string}        options.type   The required build type: `development` or `production`.\n   * @param {Object}        unknownOptions Like `options`, this is also a dictionary of options\n   *                                       the original command received, the difference is that\n   *                                       these ones are unknown by the command, as they were\n   *                                       probably injected by an event. In this case, the\n   *                                       method checks if the plugin option the\n   *                                       `getBuildCommand` method adds is present in order to\n   *                                       determine whether it should add the build commands for\n   *                                       the dependencies or not.\n   * @return {Array} The updated list of commands.\n   */\n  _updateBuildCommands(commands, target, options, unknownOptions) {\n    // Get the distribution directory path.\n    const distPath = this.get('projectConfiguration').getConfig().paths.build;\n    // Get the project version.\n    const version = this.get('buildVersion').getVersion();\n    // Save the target information on the runner file and get it once it's parsed.\n    const targetInfo = this.runnerFile.update(target, version, distPath);\n    // Get the list of targets that need to be built before running this one.\n    const { build: dependencies } = targetInfo.options;\n    // Define the list of commands that are going to be returned.\n    let updatedCommands;\n    /**\n     * If the build command was ran with the required plugin flag and there are targets that need\n     * to be built before running this one...\n     */\n    if (\n      unknownOptions[this._pluginFlagName] === this.pluginName &&\n      options.type === 'production' &&\n      dependencies\n    ) {\n      // Get the commands for the other targets.\n      const newCommands = this.getBuildCommandForTarget(dependencies, Object.assign(\n        {},\n        options,\n        unknownOptions\n      ));\n      // Push them first on the list of commands projext will run.\n      updatedCommands = [\n        ...newCommands,\n        ...commands,\n      ];\n    } else {\n      // ...otherwise, keep the list as it was received.\n      updatedCommands = commands;\n    }\n\n    // Return the list of commands for projext to run.\n    return updatedCommands;\n  }\n  /**\n   * This method gets called when projext is copying the project files to the distribution\n   * directory. It just adds the runner file to the list and returns it.\n   * @param {Array} list The list of files projext is going to copy.\n   * @return {Array} An updated list of files, with the runner file on it.\n   */\n  _updateCopyList(list) {\n    return [\n      ...list,\n      this.runnerFile.getFilename(),\n    ];\n  }\n  /**\n   * This method gets called when projext is generating a revision file and it takes care of\n   * updating the runner file with the generated version.\n   * @param {string} version The new version for the revision file.\n   */\n  _updateFileVersion(version) {\n    this.runnerFile.updateVersion(version);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `ProjextPlugin` as the `projextPlugin` service.\n * @example\n * // Register it on the container\n * container.register(projextPlugin);\n * // Getting access to the service instance\n * const projextPlugin = container.get('projextPlugin');\n * @type {Provider}\n */\nconst projextPlugin = provider((app) => {\n  app.set('projextPlugin', () => new ProjextPlugin(\n    app.get('info'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  ProjextPlugin,\n  projextPlugin,\n};\n",
     "static": true,
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/src/typedef.js",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/services/utils/projextPlugin.js",
     "access": "public",
     "description": null,
     "lineNumber": 1
   },
   {
     "__docId__": 146,
+    "kind": "class",
+    "name": "ProjextPlugin",
+    "memberof": "src/services/utils/projextPlugin.js",
+    "static": true,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "projext-plugin-runner/src/services/utils/projextPlugin.js",
+    "importStyle": "{ProjextPlugin}",
+    "description": "This service handles all interaction between the plugin and projext. It takes care of validating\nif projext is installed, registering the necessary events and generating the build commands for\nwhen the plugin is used on a development environment.",
+    "lineNumber": 7,
+    "interface": false
+  },
+  {
+    "__docId__": 147,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "info",
+        "description": "The plugin's `package.json`. The service uses it to get the\n                               name and send it on the build commands as the `--plugin` flag."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "RunnerFile"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "runnerFile",
+        "description": "To be able to update the runner file when a target is built."
+      }
+    ]
+  },
+  {
+    "__docId__": 148,
+    "kind": "member",
+    "name": "pluginName",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#pluginName",
+    "access": "public",
+    "description": "The name of the plugin as it's defined on the `package.json`. It's used on the generated\nbuild command(s) as the `--plugin` option. The flag is verified by the plugin in order to\nbuilding dependencies (other targets) when a target is running on a development\nenvironment.",
+    "lineNumber": 22,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 149,
+    "kind": "member",
+    "name": "runnerFile",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#runnerFile",
+    "access": "public",
+    "description": "A local reference for the `runnerFile` service.",
+    "lineNumber": 27,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RunnerFile"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 150,
+    "kind": "member",
+    "name": "_pluginFlagName",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_pluginFlagName",
+    "access": "private",
+    "description": "The name of the option flag the service will add on the build commands.",
+    "lineNumber": 32,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 151,
+    "kind": "member",
+    "name": "_installed",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_installed",
+    "access": "protected",
+    "description": "Whether or not projext is installed on the current environment.",
+    "lineNumber": 39,
+    "ignore": true,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 152,
+    "kind": "member",
+    "name": "_instance",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_instance",
+    "access": "protected",
+    "description": "When running along side projext, when the plugin gets registered, this property will hold a\nreference to the projext instance.",
+    "lineNumber": 47,
+    "ignore": true,
+    "type": {
+      "nullable": true,
+      "types": [
+        "Projext"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 153,
+    "kind": "method",
+    "name": "isInstalled",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#isInstalled",
+    "access": "public",
+    "description": "Check whether projext is installed or not.",
+    "lineNumber": 53,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 154,
+    "kind": "method",
+    "name": "registerPlugin",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#registerPlugin",
+    "access": "public",
+    "description": "Register all the necessary events for the plugin to work:\n- Update the target information on the runner file when the target build command is generated.\n- Add the runner file to the list of files projext copies.\n- Update the runner file version when the revision file is created.",
+    "lineNumber": 64,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Projext"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "instance",
+        "description": "The projext instance that is registering the plugin."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 155,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#get",
+    "access": "public",
+    "description": "Get a service from projext.",
+    "lineNumber": 80,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "service",
+        "description": "The service name."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the plugin hasn't been registered."
+      }
+    ]
+  },
+  {
+    "__docId__": 156,
+    "kind": "method",
+    "name": "getBuildCommandForTarget",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#getBuildCommandForTarget",
+    "access": "public",
+    "description": "Generate a projext build command for one or more targets.",
+    "lineNumber": 100,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "A target name or a list of them."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "args",
+        "description": "A dictionary of arguments and their values to\n                                                send on the command. If this dictionary\n                                                contains a `target` key, it will be ignored\n                                                and removed, since it's the one used to send\n                                                the target name this method uses as parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "''",
+        "defaultRaw": "''",
+        "name": "environmentVariables",
+        "description": "Environment variables to prefix the command\n                                                with. For example: `NODE_ENV=production`."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "No matter if you used a single (`string`) target or a list (`Array`), it will\n                always return a list (`Array`) of commands."
+    }
+  },
+  {
+    "__docId__": 157,
+    "kind": "method",
+    "name": "getBuildCommand",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#getBuildCommand",
+    "access": "public",
+    "description": "Generate a projext build command. If not overwritten by the `args` parameter, this method\nsends an empty `target` and a `plugin` argument with the value of the `pluginName` property.",
+    "lineNumber": 122,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "args",
+        "description": "A dictionary of arguments and their values to send\n                                          on the command."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "''",
+        "defaultRaw": "''",
+        "name": "environmentVariables",
+        "description": "Environment variables to prefix the command with.\n                                          For example: `NODE_ENV=production`"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If projext is not installed and/or it couldn't access is instance."
+      }
+    ]
+  },
+  {
+    "__docId__": 158,
+    "kind": "method",
+    "name": "_setInstance",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_setInstance",
+    "access": "private",
+    "description": "Set the projext instance.",
+    "lineNumber": 150,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Projext"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "instance",
+        "description": "The projext instance accessed either from registering the plugin or\n                          by requiring the module directly."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 160,
+    "kind": "method",
+    "name": "_getInstalledInstance",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_getInstalledInstance",
+    "access": "private",
+    "description": "Get an instance of projext by requiring the module.",
+    "lineNumber": 158,
+    "return": {
+      "nullable": true,
+      "types": [
+        "Projext"
+      ],
+      "spread": false,
+      "description": "If something is wrong with the module or projext is not installed, it will\n                   return `null`."
+    },
+    "params": []
+  },
+  {
+    "__docId__": 161,
+    "kind": "method",
+    "name": "_loadInstalledInstanceIfNeeded",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_loadInstalledInstanceIfNeeded",
+    "access": "private",
+    "description": "If projext is installed but the plugin wasn't registerd (probably because the plugin was\nexecuted from its own CLI), this method will try to set the instance by requiring the module.",
+    "lineNumber": 173,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 162,
+    "kind": "method",
+    "name": "_detectInstallation",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_detectInstallation",
+    "access": "private",
+    "description": "Detect whether or not projext is installed on the current environment.",
+    "lineNumber": 182,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 163,
+    "kind": "method",
+    "name": "_updateBuildCommands",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_updateBuildCommands",
+    "access": "private",
+    "description": "This method gets called when projext is creating the build commands for a target. It takes\ncare of updating the runner file with the target information and, if the target needs other\ntarges to be built first in order to run, injecting the commands for building those targets.",
+    "lineNumber": 213,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "commands",
+        "description": "The list of commands projext uses to build and run the\n                                      target."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "ProjextTarget"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The target information."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "A dictionary with the options the original command\n                                      received."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.type",
+        "description": "The required build type: `development` or `production`."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "unknownOptions",
+        "description": "Like `options`, this is also a dictionary of options\n                                      the original command received, the difference is that\n                                      these ones are unknown by the command, as they were\n                                      probably injected by an event. In this case, the\n                                      method checks if the plugin option the\n                                      `getBuildCommand` method adds is present in order to\n                                      determine whether it should add the build commands for\n                                      the dependencies or not."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "The updated list of commands."
+    }
+  },
+  {
+    "__docId__": 164,
+    "kind": "method",
+    "name": "_updateCopyList",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_updateCopyList",
+    "access": "private",
+    "description": "This method gets called when projext is copying the project files to the distribution\ndirectory. It just adds the runner file to the list and returns it.",
+    "lineNumber": 258,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "list",
+        "description": "The list of files projext is going to copy."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "An updated list of files, with the runner file on it."
+    }
+  },
+  {
+    "__docId__": 165,
+    "kind": "method",
+    "name": "_updateFileVersion",
+    "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/services/utils/projextPlugin.js~ProjextPlugin#_updateFileVersion",
+    "access": "private",
+    "description": "This method gets called when projext is generating a revision file and it takes care of\nupdating the runner file with the generated version.",
+    "lineNumber": 269,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "version",
+        "description": "The new version for the revision file."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 166,
+    "kind": "variable",
+    "name": "projextPlugin",
+    "memberof": "src/services/utils/projextPlugin.js",
+    "static": true,
+    "longname": "src/services/utils/projextPlugin.js~projextPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "projext-plugin-runner/src/services/utils/projextPlugin.js",
+    "importStyle": "{projextPlugin}",
+    "description": "The service provider that once registered on the app container will set an instance of\n`ProjextPlugin` as the `projextPlugin` service.",
+    "examples": [
+      "// Register it on the container\ncontainer.register(projextPlugin);\n// Getting access to the service instance\nconst projextPlugin = container.get('projextPlugin');"
+    ],
+    "lineNumber": 283,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Provider"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 167,
+    "kind": "file",
+    "name": "src/typedef.js",
+    "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Projext}\n * https://homer0.github.io/projext/class/src/app/index.js~Projext.html\n */\n\n/**\n * @external {ProjextTarget}\n * https://homer0.github.io/projext/typedef/index.html#static-typedef-Target\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the projext target `runnerOptions`\n * setting.\n * @property {?string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/src/typedef.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 168,
     "kind": "external",
     "name": "Jimple",
     "externalLink": "https://yarnpkg.com/en/package/jimple",
@@ -2885,7 +3513,7 @@
     "description": ""
   },
   {
-    "__docId__": 147,
+    "__docId__": 169,
     "kind": "external",
     "name": "Projext",
     "externalLink": "https://homer0.github.io/projext/class/src/app/index.js~Projext.html",
@@ -2896,7 +3524,18 @@
     "description": ""
   },
   {
-    "__docId__": 148,
+    "__docId__": 170,
+    "kind": "external",
+    "name": "ProjextTarget",
+    "externalLink": "https://homer0.github.io/projext/typedef/index.html#static-typedef-Target",
+    "memberof": "src/typedef.js",
+    "static": true,
+    "longname": "src/typedef.js~ProjextTarget",
+    "access": "public",
+    "description": ""
+  },
+  {
+    "__docId__": 171,
     "kind": "external",
     "name": "Command",
     "externalLink": "https://tj.github.io/commander.js/#Command",
@@ -2907,7 +3546,7 @@
     "description": ""
   },
   {
-    "__docId__": 149,
+    "__docId__": 172,
     "kind": "external",
     "name": "PathUtils",
     "externalLink": "https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html",
@@ -2918,7 +3557,7 @@
     "description": ""
   },
   {
-    "__docId__": 150,
+    "__docId__": 173,
     "kind": "typedef",
     "name": "Target",
     "memberof": "src/typedef.js",
@@ -2968,7 +3607,7 @@
         "description": "The options to customize the target that will be taken from the projext target `runnerOptions`\nsetting."
       },
       {
-        "nullable": null,
+        "nullable": true,
         "types": [
           "string"
         ],
@@ -2987,7 +3626,7 @@
     }
   },
   {
-    "__docId__": 151,
+    "__docId__": 174,
     "kind": "typedef",
     "name": "RunnerFileContents",
     "memberof": "src/typedef.js",
@@ -3046,7 +3685,7 @@
     }
   },
   {
-    "__docId__": 152,
+    "__docId__": 175,
     "kind": "typedef",
     "name": "ProviderRegisterMethod",
     "memberof": "src/typedef.js",
@@ -3075,7 +3714,7 @@
     }
   },
   {
-    "__docId__": 153,
+    "__docId__": 176,
     "kind": "typedef",
     "name": "Provider",
     "memberof": "src/typedef.js",
@@ -3105,16 +3744,16 @@
   },
   {
     "kind": "index",
-    "content": "# projext runner\n\nA projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | projext-plugin-runner                                                                 |\n| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nprojext-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customizing the execution\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\nFor now, there's only one available option.\n\n- `runWith`: The name of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// projext.runner.js\n\n// Get the main class\nconst { ProjextRunner } = require('projext-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new ProjextRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run install-hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `npm run install-hooks` | Install the GIT repository hooks.   |\n| `npm test`              | Run the project unit tests.         |\n| `npm run lint`          | Lint the modified files.            |\n| `npm run lint:full`     | Lint the project code.              |\n| `npm run docs`          | Generate the project documentation. |\n| `npm run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/README.md",
+    "content": "# projext runner\n\nA projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | projext-plugin-runner                                                                 |\n| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nprojext-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customization\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\n- `build`: A list (`Array`) of targets names that need to be built before running the target on a development environment (with projext present) but with a production build (with code ready for deployment).\n- `runWith`: The name (`string`) of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// projext.runner.js\n\n// Get the main class\nconst { ProjextRunner } = require('projext-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new ProjextRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run install-hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `npm run install-hooks` | Install the GIT repository hooks.   |\n| `npm test`              | Run the project unit tests.         |\n| `npm run lint`          | Lint the modified files.            |\n| `npm run lint:full`     | Lint the project code.              |\n| `npm run docs`          | Generate the project documentation. |\n| `npm run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/README.md",
     "name": "./README.md",
     "static": true,
     "access": "public"
   },
   {
     "kind": "packageJSON",
-    "content": "{\n    \"name\": \"projext-plugin-runner\",\n    \"cliName\": \"projext-runner\",\n    \"description\": \"A projext plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/projext-plugin-runner/\",\n    \"version\": \"3.0.0\",\n    \"repository\": \"homer0/projext-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"homer0/jimple\",\n      \"fs-extra\": \"5.0.0\",\n      \"extend\": \"3.0.1\",\n      \"commander\": \"2.13.0\",\n      \"wootils\": \"^1.1.1\"\n    },\n    \"peerDependencies\": {\n\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.16.0\",\n      \"eslint-config-airbnb-base\": \"12.1.0\",\n      \"eslint-plugin-import\": \"2.8.0\",\n      \"eslint-plugin-node\": \"5.2.1\",\n      \"babel-preset-env\": \"1.6.1\",\n      \"jest-ex\": \"4.0.0\",\n      \"jest-cli\": \"22.1.4\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.0.4\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"4.13.0\",\n      \"coveralls\": \"3.0.0\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"projext-runner\": \"./src/bin/projext-runner\",\n      \"projext-runner-cli\": \"./src/bin/projext-runner-cli\"\n    },\n    \"scripts\": {\n      \"install-hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
-    "longname": "/Users/homer0/CODE/Node/woopack/woopack-plugin-runner/package.json",
+    "content": "{\n    \"name\": \"projext-plugin-runner\",\n    \"cliName\": \"projext-runner\",\n    \"description\": \"A projext plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/projext-plugin-runner/\",\n    \"version\": \"4.0.0\",\n    \"repository\": \"homer0/projext-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"homer0/jimple\",\n      \"fs-extra\": \"5.0.0\",\n      \"extend\": \"3.0.1\",\n      \"commander\": \"2.13.0\",\n      \"wootils\": \"^1.1.1\"\n    },\n    \"peerDependencies\": {\n\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.16.0\",\n      \"eslint-config-airbnb-base\": \"12.1.0\",\n      \"eslint-plugin-import\": \"2.8.0\",\n      \"eslint-plugin-node\": \"5.2.1\",\n      \"babel-preset-env\": \"1.6.1\",\n      \"jest-ex\": \"4.0.0\",\n      \"jest-cli\": \"22.1.4\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.0.4\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"4.13.0\",\n      \"coveralls\": \"3.0.0\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"projext-runner\": \"./src/bin/projext-runner\",\n      \"projext-runner-cli\": \"./src/bin/projext-runner-cli\"\n    },\n    \"scripts\": {\n      \"install-hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
+    "longname": "/Users/homer0/CODE/Node/projext/projext-plugin-runner/package.json",
     "name": "package.json",
     "static": true,
     "access": "public"
