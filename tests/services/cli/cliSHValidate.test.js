@@ -20,14 +20,16 @@ describe('services/cli:sh-validate', () => {
     // Given
     const runnerFile = 'runnerFile';
     const targets = 'targets';
+    const projextPlugin = 'projextPlugin';
     let sut = null;
     // When
-    sut = new CLISHValidateCommand(runnerFile, targets);
+    sut = new CLISHValidateCommand(runnerFile, targets, projextPlugin);
     // Then
     expect(sut).toBeInstanceOf(CLISHValidateCommand);
     expect(sut.constructorMock).toHaveBeenCalledTimes(1);
     expect(sut.runnerFile).toBe(runnerFile);
     expect(sut.targets).toBe(targets);
+    expect(sut.projextPlugin).toBe(projextPlugin);
     expect(sut.command).not.toBeEmptyString();
     expect(sut.description).not.toBeEmptyString();
     expect(sut.addOption).toHaveBeenCalledTimes(2);
@@ -50,42 +52,73 @@ describe('services/cli:sh-validate', () => {
     // Given
     const runnerFileExists = true;
     const runnerFile = {
-      validate: jest.fn(),
       exists: jest.fn(() => runnerFileExists),
     };
     const targets = {
       validate: jest.fn(),
     };
+    const projextInstalled = true;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => projextInstalled),
+    };
     const target = 'some-target';
     let sut = null;
     // When
-    sut = new CLISHValidateCommand(runnerFile, targets);
+    sut = new CLISHValidateCommand(runnerFile, targets, projextPlugin);
     sut.handle(target);
     // Then
-    expect(runnerFile.validate).toHaveBeenCalledTimes(1);
     expect(runnerFile.exists).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
     expect(targets.validate).toHaveBeenCalledTimes(1);
     expect(targets.validate).toHaveBeenCalledWith(target);
   });
 
-  it('shouldn\'t validate a target if the runner file exists when executed', () => {
+  it('should throw an error if projext is not present and the runner file doesn\'t exist', () => {
     // Given
     const runnerFileExists = false;
     const runnerFile = {
-      validate: jest.fn(),
       exists: jest.fn(() => runnerFileExists),
     };
     const targets = {
       validate: jest.fn(),
     };
+    const projextInstalled = false;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => projextInstalled),
+    };
     const target = 'some-target';
     let sut = null;
     // When
-    sut = new CLISHValidateCommand(runnerFile, targets);
+    sut = new CLISHValidateCommand(runnerFile, targets, projextPlugin);
+    // Then
+    expect(() => sut.handle(target))
+    .toThrow(/The runner file doesn't exist and projext is not present/i);
+    expect(runnerFile.exists).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
+    expect(targets.validate).toHaveBeenCalledTimes(0);
+  });
+
+  it('shouldn\'t validate a target if the runner file exists but projext is present', () => {
+    // Given
+    const runnerFileExists = false;
+    const runnerFile = {
+      exists: jest.fn(() => runnerFileExists),
+    };
+    const targets = {
+      validate: jest.fn(),
+    };
+    const projextInstalled = true;
+    const projextPlugin = {
+      isInstalled: jest.fn(() => projextInstalled),
+    };
+    const target = 'some-target';
+    let sut = null;
+    // When
+    sut = new CLISHValidateCommand(runnerFile, targets, projextPlugin);
     sut.handle(target);
     // Then
-    expect(runnerFile.validate).toHaveBeenCalledTimes(1);
     expect(runnerFile.exists).toHaveBeenCalledTimes(1);
+    expect(projextPlugin.isInstalled).toHaveBeenCalledTimes(1);
     expect(targets.validate).toHaveBeenCalledTimes(0);
   });
 
@@ -108,5 +141,6 @@ describe('services/cli:sh-validate', () => {
     expect(sut).toBeInstanceOf(CLISHValidateCommand);
     expect(sut.runnerFile).toBe('runnerFile');
     expect(sut.targets).toBe('targets');
+    expect(sut.projextPlugin).toBe('projextPlugin');
   });
 });
