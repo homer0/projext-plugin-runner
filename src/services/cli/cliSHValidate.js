@@ -10,10 +10,11 @@ const CLICommand = require('../../abstracts/cliCommand');
 class CLISHValidateCommand extends CLICommand {
   /**
    * Class constructor.
-   * @param {RunnerFile} runnerFile To validate if the file exists or not.
-   * @param {Targets}    targets    To validate if a target exists or not.
+   * @param {RunnerFile}    runnerFile    To validate if the file exists or not.
+   * @param {Targets}       targets       To validate if a target exists or not.
+   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
    */
-  constructor(runnerFile, targets) {
+  constructor(runnerFile, targets, projextPlugin) {
     super();
     /**
      * A local reference for the `runnerFile` service.
@@ -25,6 +26,11 @@ class CLISHValidateCommand extends CLICommand {
      * @type {Targets}
      */
     this.targets = targets;
+    /**
+     * A local reference for the `projextPlugin` service.
+     * @type {ProjextPlugin}
+     */
+    this.projextPlugin = projextPlugin;
     /**
      * The instruction needed to trigger the command.
      * @type {string}
@@ -59,13 +65,17 @@ class CLISHValidateCommand extends CLICommand {
    * @param {?string} target The name of the target.
    */
   handle(target) {
-    // First let the service make its own validation.
-    this.runnerFile.validate();
+    // First, let's detect if the runner file exists.
+    const exists = this.runnerFile.exists();
+    // If projext is not present and the file doesn't exist, there's nothing the plugin can do.
+    if (!this.projextPlugin.isInstalled() && !exists) {
+      throw new Error('The runner file doesn\'t exist and projext is not present');
+    }
     /**
      * Then, if the runner file exists, validate the target, otherwise, we'll assume this is
      * running with projext present and the file is going to be generated on build.
      */
-    return !this.runnerFile.exists() || this.targets.validate(target);
+    return !exists || this.targets.validate(target);
   }
 }
 /**
@@ -81,7 +91,8 @@ class CLISHValidateCommand extends CLICommand {
 const cliSHValidateCommand = provider((app) => {
   app.set('cliSHValidateCommand', () => new CLISHValidateCommand(
     app.get('runnerFile'),
-    app.get('targets')
+    app.get('targets'),
+    app.get('projextPlugin')
   ));
 });
 
