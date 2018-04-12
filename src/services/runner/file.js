@@ -62,10 +62,11 @@ class RunnerFile {
    * @param {Target} target    The target information.
    * @param {string} version   The project version.
    * @param {string} directory The project distribution directory.
-   * @return {Target} The information of the target saved on the file.
+   * @return {?Target} If the target type was `node`, it will return the information saved on the
+   *                   file, otherwise, it will return `null`.
    */
   update(target, version, directory) {
-    let result;
+    let result = null;
     if (target.is.node) {
       const file = this.read();
       file.version = version;

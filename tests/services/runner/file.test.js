@@ -215,7 +215,7 @@ describe('services/runner:runnerFile', () => {
     sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
-    expect(result).toBeUndefined();
+    expect(result).toBeNull();
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(0);
     expect(fs.writeJsonSync).toHaveBeenCalledTimes(0);
   });

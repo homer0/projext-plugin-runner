@@ -217,21 +217,21 @@ class ProjextPlugin {
     const version = this.get('buildVersion').getVersion();
     // Save the target information on the runner file and get it once it's parsed.
     const targetInfo = this.runnerFile.update(target, version, distPath);
-    // Get the list of targets that need to be built before running this one.
-    const { build: dependencies } = targetInfo.options;
     // Define the list of commands that are going to be returned.
     let updatedCommands;
     /**
-     * If the build command was ran with the required plugin flag and there are targets that need
-     * to be built before running this one...
+     * If the build command was ran from the plugin, the target type is `node` (a browser target
+     * wouldn't return anything from `runnerFile.update`) and it needs other targets to be built
+     * before running...
      */
     if (
       unknownOptions[this._pluginFlagName] === this.pluginName &&
       options.type === 'production' &&
-      dependencies
+      targetInfo &&
+      targetInfo.options.build
     ) {
       // Get the commands for the other targets.
-      const newCommands = this.getBuildCommandForTarget(dependencies, Object.assign(
+      const newCommands = this.getBuildCommandForTarget(targetInfo.options.build, Object.assign(
         {},
         options,
         unknownOptions
