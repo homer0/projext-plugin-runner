@@ -9,17 +9,11 @@ const { provider } = require('jimple');
 class RunnerFile {
   /**
    * Class constructor.
-   * @param {Object}        info          The plugin `package.json` information, to use the plugin
-   *                                      version on the file.
-   * @param {PathUtils}     pathUtils     To build the paths to the file.
-   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.
+   * @param {Object}    info      The plugin `package.json` information, to use the plugin version
+   *                              on the file.
+   * @param {PathUtils} pathUtils To build the paths to the file.
    */
-  constructor(info, pathUtils, projextPlugin) {
-    /**
-     * A local reference for the `projextPlugin` service.
-     * @type {ProjextPlugin}
-     */
-    this.projextPlugin = projextPlugin;
+  constructor(info, pathUtils) {
     /**
      * The name of the runner file.
      * @type {string}
@@ -68,10 +62,11 @@ class RunnerFile {
    * @param {Target} target    The target information.
    * @param {string} version   The project version.
    * @param {string} directory The project distribution directory.
-   * @return {Target} The information of the target saved on the file.
+   * @return {?Target} If the target type was `node`, it will return the information saved on the
+   *                   file, otherwise, it will return `null`.
    */
   update(target, version, directory) {
-    let result;
+    let result = null;
     if (target.is.node) {
       const file = this.read();
       file.version = version;
@@ -128,16 +123,6 @@ class RunnerFile {
 
     return result;
   }
-  /**
-   * Validate the runner file.
-   * @throws {Error} If the runner file doesn't exist and projext is not present, which means the
-   *                 project was deployed to production without the runner file.
-   */
-  validate() {
-    if (!this.projextPlugin.isInstalled() && !this.exists()) {
-      throw new Error('The runner file doesn\'t exist and projext is not present');
-    }
-  }
 }
 /**
  * The service provider that once registered on the app container will set an instance of
@@ -152,8 +137,7 @@ class RunnerFile {
 const runnerFile = provider((app) => {
   app.set('runnerFile', () => new RunnerFile(
     app.get('info'),
-    app.get('pathUtils'),
-    app.get('projextPlugin')
+    app.get('pathUtils')
   ));
 });
 

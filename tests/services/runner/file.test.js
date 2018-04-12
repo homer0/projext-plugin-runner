@@ -26,7 +26,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn((rest) => rest),
     };
-    const projextPlugin = 'projextPlugin';
     let sut = null;
     const expectedFilename = 'projextrunner.json';
     const expectedFileTemplate = {
@@ -36,10 +35,9 @@ describe('services/runner:runnerFile', () => {
       targets: {},
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     // Then
     expect(sut).toBeInstanceOf(RunnerFile);
-    expect(sut.projextPlugin).toBe(projextPlugin);
     expect(sut.filename).toBe(expectedFilename);
     expect(sut.filepath).toBe(expectedFilename);
     expect(sut.fileTemplate).toEqual(expectedFileTemplate);
@@ -55,14 +53,13 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn((rest) => rest),
     };
-    const projextPlugin = 'projextPlugin';
     const newName = '.randomrunner';
     let sut = null;
     let defaultName = null;
     let nameAfterChange = null;
     const expectedDefaultFilename = 'projextrunner.json';
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     defaultName = sut.getFilename();
     sut.setFilename(newName);
     nameAfterChange = sut.getFilename();
@@ -81,11 +78,10 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     let sut = null;
     let result = null;
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.exists();
     // Then
     expect(result).toBeTrue();
@@ -103,7 +99,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const target = {
       name: 'backend',
       entry: {
@@ -135,7 +130,7 @@ describe('services/runner:runnerFile', () => {
       },
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
     expect(result).toEqual(expectedTargetInfo);
@@ -155,7 +150,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const target = {
       name: 'backend',
       output: {
@@ -189,7 +183,7 @@ describe('services/runner:runnerFile', () => {
       },
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
     expect(result).toEqual(expectedTargetInfo);
@@ -208,7 +202,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const target = {
       is: {
         node: false,
@@ -219,10 +212,10 @@ describe('services/runner:runnerFile', () => {
     let sut = null;
     let result = null;
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
-    expect(result).toBeUndefined();
+    expect(result).toBeNull();
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(0);
     expect(fs.writeJsonSync).toHaveBeenCalledTimes(0);
   });
@@ -237,7 +230,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const target = {
       name: 'backend',
       entry: {
@@ -272,7 +264,7 @@ describe('services/runner:runnerFile', () => {
       },
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
     expect(result).toEqual(expectedTargetInfo);
@@ -292,7 +284,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const directory = 'dist';
     const targetDirectory = 'backend';
     const target = {
@@ -328,7 +319,7 @@ describe('services/runner:runnerFile', () => {
       },
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.update(target, version, directory);
     // Then
     expect(result).toEqual(expectedTargetInfo);
@@ -350,11 +341,10 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     let sut = null;
     let result = null;
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.read();
     // Then
     expect(result).toBe(filecontents);
@@ -374,59 +364,16 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     let sut = null;
     let result = null;
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.read();
     // Then
     expect(result).toEqual(sut.fileTemplate);
     expect(fs.pathExistsSync).toHaveBeenCalledTimes(1);
     expect(fs.pathExistsSync).toHaveBeenCalledWith(filename);
     expect(fs.readJsonSync).toHaveBeenCalledTimes(0);
-  });
-
-  it('should throw an error if the file doesn\'t exists and projext is not present', () => {
-    // Given
-    fs.pathExistsSync.mockImplementationOnce(() => false);
-    const info = {
-      version: '25092015',
-    };
-    const filename = '.randomrunner';
-    const pathUtils = {
-      join: jest.fn(() => filename),
-    };
-    const asPlugin = false;
-    const projextPlugin = {
-      isInstalled: jest.fn(() => asPlugin),
-    };
-    let sut = null;
-    // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
-    // Then
-    expect(() => sut.validate())
-    .toThrow(/The runner file doesn't exist and projext is not present/i);
-  });
-
-  it('shouldn\'t throw an error if the file doesn\'t exists but projext is present', () => {
-    // Given
-    fs.pathExistsSync.mockImplementationOnce(() => false);
-    const info = {
-      version: '25092015',
-    };
-    const filename = '.randomrunner';
-    const pathUtils = {
-      join: jest.fn(() => filename),
-    };
-    const asPlugin = true;
-    const projextPlugin = {
-      isInstalled: jest.fn(() => asPlugin),
-    };
-    let sut = null;
-    // When/Then
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
-    sut.validate();
   });
 
   it('should update the app version on the file', () => {
@@ -441,7 +388,6 @@ describe('services/runner:runnerFile', () => {
     const pathUtils = {
       join: jest.fn(() => filename),
     };
-    const projextPlugin = 'projextPlugin';
     const version = 'latest';
     let sut = null;
     let result = null;
@@ -452,7 +398,7 @@ describe('services/runner:runnerFile', () => {
       targets: {},
     };
     // When
-    sut = new RunnerFile(info, pathUtils, projextPlugin);
+    sut = new RunnerFile(info, pathUtils);
     result = sut.updateVersion(version);
     // Then
     expect(result).toBe(writeResult);
@@ -484,6 +430,5 @@ describe('services/runner:runnerFile', () => {
     expect(serviceName).toBe('runnerFile');
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(RunnerFile);
-    expect(sut.projextPlugin).toBe('projextPlugin');
   });
 });
