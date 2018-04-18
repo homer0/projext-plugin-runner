@@ -3,7 +3,7 @@
     "cliName": "projext-runner",
     "description": "A projext plugin to run Node targets with a simple command no matter the environment.",
     "homepage": "https://homer0.github.io/projext-plugin-runner/",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "repository": "homer0/projext-plugin-runner",
     "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
     "license": "MIT",
