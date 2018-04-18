@@ -124,23 +124,32 @@ class ProjextPlugin {
     if (!this.isInstalled() || !this._instance) {
       throw new Error('You can\'t generate a build command if projext is not installed');
     }
-
+    // Get the environment variables to append to the command.
     const env = environmentVariables ? `${environmentVariables} ` : '';
+    // Get the service that will generate the build command.
+    const projextCLIBuildCommand = this.get('cliBuildCommand');
     /**
-     * We need to access the main `cli` service in order to get the program name, since we are
-     * accessing the build command without the CLI being triggered, so the command is not
-     * registered on the program.
+     * If the projext CLI was instantiated, the service will have the name of the program, as it
+     * gets set when the commands get registered; but if not, it means that we need to go to main
+     * CLI service and get it from there.
      */
-    const program = this.get('cli').name;
-    const command = this.get('cliBuildCommand').generate(Object.assign(
+    let program = '';
+    if (!projextCLIBuildCommand.cliName) {
+      const cliName = this.get('cli').name;
+      program = `${cliName} `;
+    }
+    // Generate the build command
+    const command = projextCLIBuildCommand.generate(Object.assign(
       {
         target: '',
         [this._pluginFlagName]: this.pluginName,
       },
       args
     )).trim();
-
-    return `${env}${program} ${command}`;
+    // Prepend the environment variables and the program name, if needed.
+    const result = `${env}${program}${command}`;
+    // Return the final command.
+    return result;
   }
   /**
    * Set the projext instance.
