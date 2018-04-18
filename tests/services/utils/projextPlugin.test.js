@@ -136,7 +136,8 @@ describe('services/utils:projextPlugin', () => {
       get: jest.fn((service) => instanceServices[service]),
     };
     const commands = ['Charito', 'Maru'];
-    const options = {};
+    const type = 'development';
+    const run = false;
     const unknownOptions = {};
     let sut = null;
     let listener = null;
@@ -145,7 +146,7 @@ describe('services/utils:projextPlugin', () => {
     sut = new ProjextPlugin(info, runnerFile);
     sut.registerPlugin(instance);
     [[, listener]] = events.once.mock.calls;
-    result = listener(commands, target, options, unknownOptions);
+    result = listener(commands, target, type, run, unknownOptions);
     // Then
     expect(result).toEqual(commands);
     expect(projectConfiguration.getConfig).toHaveBeenCalledTimes(1);
@@ -207,9 +208,8 @@ describe('services/utils:projextPlugin', () => {
       get: jest.fn((service) => instanceServices[service]),
     };
     const commands = ['Charito', 'Maru'];
-    const options = {
-      type: 'production',
-    };
+    const type = 'production';
+    const run = false;
     const unknownOptions = {
       plugin: info.name,
     };
@@ -224,7 +224,7 @@ describe('services/utils:projextPlugin', () => {
     sut = new ProjextPlugin(info, runnerFile);
     sut.registerPlugin(instance);
     [[, listener]] = events.once.mock.calls;
-    result = listener(commands, target, options, unknownOptions);
+    result = listener(commands, target, type, run, unknownOptions);
     // Then
     expect(result).toEqual(expectedCommands);
     expect(projectConfiguration.getConfig).toHaveBeenCalledTimes(1);
@@ -241,7 +241,10 @@ describe('services/utils:projextPlugin', () => {
         plugin: info.name,
         target: requiredTarget,
       },
-      options,
+      {
+        type,
+        run,
+      },
       unknownOptions
     ));
   });
@@ -294,9 +297,8 @@ describe('services/utils:projextPlugin', () => {
       get: jest.fn((service) => instanceServices[service]),
     };
     const commands = ['Charito', 'Maru'];
-    const options = {
-      type: 'production',
-    };
+    const type = 'production';
+    const run = false;
     const unknownOptions = {
       plugin: info.name,
     };
@@ -311,7 +313,7 @@ describe('services/utils:projextPlugin', () => {
     sut = new ProjextPlugin(info, runnerFile);
     sut.registerPlugin(instance);
     [[, listener]] = events.once.mock.calls;
-    result = listener(commands, target, options, unknownOptions);
+    result = listener(commands, target, type, run, unknownOptions);
     // Then
     expect(result).toEqual(expectedCommands);
     expect(projectConfiguration.getConfig).toHaveBeenCalledTimes(1);
@@ -329,7 +331,10 @@ describe('services/utils:projextPlugin', () => {
           plugin: info.name,
           target: name,
         },
-        options,
+        {
+          type,
+          run,
+        },
         unknownOptions
       ));
     });
