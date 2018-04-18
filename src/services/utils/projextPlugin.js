@@ -64,8 +64,8 @@ class ProjextPlugin {
   registerPlugin(instance) {
     this._setInstance(instance);
     const events = this.get('events');
-    events.once('build-target-commands-list', (commands, target, options, unknownOptions) => (
-      this._updateBuildCommands(commands, target, options, unknownOptions)
+    events.once('build-target-commands-list', (commands, target, type, run, unknownOptions) => (
+      this._updateBuildCommands(commands, target, { type, run }, unknownOptions)
     ));
 
     events.once('project-files-to-copy', (list) => this._updateCopyList(list));
