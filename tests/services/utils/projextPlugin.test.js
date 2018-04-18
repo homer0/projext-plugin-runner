@@ -279,18 +279,15 @@ describe('services/utils:projextPlugin', () => {
     const events = {
       once: jest.fn(),
     };
-    const cli = {
-      name: 'projext',
-    };
     const command = 'run projext run';
     const cliBuildCommand = {
+      cliName: 'projextFromCommand',
       generate: jest.fn((data) => `${command} ${data.target}`),
     };
     const instanceServices = {
       events,
       projectConfiguration,
       buildVersion,
-      cli,
       cliBuildCommand,
     };
     const instance = {
@@ -306,7 +303,7 @@ describe('services/utils:projextPlugin', () => {
     let listener = null;
     let result = null;
     const expectedCommands = [
-      ...target.options.build.map((name) => `${cli.name} ${command} ${name}`),
+      ...target.options.build.map((name) => `${command} ${name}`),
       ...commands,
     ];
     // When
