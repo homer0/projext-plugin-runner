@@ -1,5 +1,4 @@
 const Jimple = require('jimple');
-const appPackage = require('../../package.json');
 
 const {
   environmentUtils,
@@ -8,6 +7,8 @@ const {
   packageInfo,
   pathUtils,
 } = require('wootils/node/providers');
+
+const appPackage = require('../../package.json');
 
 const {
   cliWithName,
