@@ -122,7 +122,7 @@ it, so we can&apos;t include execptions in there.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>, projextPlugin: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span>)</span>
         </p>
       </div>
       <div>
@@ -224,6 +224,35 @@ the help interface.</p>
         
         
         <div data-ice="description"><p>Hide the command from the help interface.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html#instance-member-projextPlugin">projextPlugin</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A local reference for the <code>projextPlugin</code> service.</p>
 </div>
       </div>
     </td>
@@ -728,11 +757,11 @@ commands.</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(runnerFile: <span><a href="class/src/services/runner/file.js~RunnerFile.html">RunnerFile</a></span>, targets: <span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span>, projextPlugin: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber16">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber17">source</a></span></span>
     </span>
   </h3>
 
@@ -764,6 +793,13 @@ commands.</p>
       <td data-ice="type" class="code"><span><a href="class/src/services/runner/targets.js~Targets.html">Targets</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>To validate if a target exists or not.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">projextPlugin</td>
+      <td data-ice="type" class="code"><span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>To check if projext is present or not.</p>
 </td>
     </tr>
 </tbody>
@@ -803,7 +839,7 @@ commands.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber32">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber38">source</a></span></span>
     </span>
   </h3>
 
@@ -847,7 +883,7 @@ commands.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber38">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber44">source</a></span></span>
     </span>
   </h3>
 
@@ -892,7 +928,7 @@ the help interface.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber55">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber61">source</a></span></span>
     </span>
   </h3>
 
@@ -903,6 +939,50 @@ the help interface.</p>
 </div>
 
   <div data-ice="override"><h4>Override:</h4><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-hidden">CLICommand#hidden</a></span></div>
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-projextPlugin">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">projextPlugin</span><span class="code" data-ice="signature">: <span><a href="class/src/services/utils/projextPlugin.js~ProjextPlugin.html">ProjextPlugin</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber33">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>A local reference for the <code>projextPlugin</code> service.</p>
+</div>
+
+  
 
   <div data-ice="properties">
 </div>
@@ -936,7 +1016,7 @@ the help interface.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber22">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber23">source</a></span></span>
     </span>
   </h3>
 
@@ -980,7 +1060,7 @@ the help interface.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber27">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber28">source</a></span></span>
     </span>
   </h3>
 
@@ -1027,7 +1107,7 @@ the help interface.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/cli/cliSHValidate.js.html#lineNumber67">source</a></span></span>
     </span>
   </h3>
 
@@ -1092,7 +1172,7 @@ the help interface.</p>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>

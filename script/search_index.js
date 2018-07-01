@@ -606,6 +606,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/services/cli/clishvalidate.js~clishvalidatecommand#projextplugin",
+    "class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html#instance-member-projextPlugin",
+    "src/services/cli/cliSHValidate.js~CLISHValidateCommand#projextPlugin",
+    "member"
+  ],
+  [
     "src/services/cli/clishvalidate.js~clishvalidatecommand#runnerfile",
     "class/src/services/cli/cliSHValidate.js~CLISHValidateCommand.html#instance-member-runnerFile",
     "src/services/cli/cliSHValidate.js~CLISHValidateCommand#runnerFile",
@@ -666,12 +672,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/services/runner/file.js~runnerfile#projextplugin",
-    "class/src/services/runner/file.js~RunnerFile.html#instance-member-projextPlugin",
-    "src/services/runner/file.js~RunnerFile#projextPlugin",
-    "member"
-  ],
-  [
     "src/services/runner/file.js~runnerfile#read",
     "class/src/services/runner/file.js~RunnerFile.html#instance-method-read",
     "src/services/runner/file.js~RunnerFile#read",
@@ -693,12 +693,6 @@ window.esdocSearchIndex = [
     "src/services/runner/file.js~runnerfile#updateversion",
     "class/src/services/runner/file.js~RunnerFile.html#instance-method-updateVersion",
     "src/services/runner/file.js~RunnerFile#updateVersion",
-    "method"
-  ],
-  [
-    "src/services/runner/file.js~runnerfile#validate",
-    "class/src/services/runner/file.js~RunnerFile.html#instance-method-validate",
-    "src/services/runner/file.js~RunnerFile#validate",
     "method"
   ],
   [

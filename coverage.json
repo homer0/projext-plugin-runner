@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 103,
-  "actualCount": 103,
+  "expectCount": 102,
+  "actualCount": 102,
   "files": {
     "src/abstracts/cliCommand.js": {
       "expectCount": 16,
@@ -29,13 +29,13 @@
       "undocumentLines": []
     },
     "src/services/cli/cliSHValidate.js": {
-      "expectCount": 9,
-      "actualCount": 9,
+      "expectCount": 10,
+      "actualCount": 10,
       "undocumentLines": []
     },
     "src/services/runner/file.js": {
-      "expectCount": 14,
-      "actualCount": 14,
+      "expectCount": 12,
+      "actualCount": 12,
       "undocumentLines": []
     },
     "src/services/runner/runner.js": {
