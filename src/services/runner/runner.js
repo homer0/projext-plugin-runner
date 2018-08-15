@@ -39,6 +39,7 @@ class Runner {
    * @param {?string} targetName         The name of the target to run.
    * @param {boolean} production         In case projext is present, this flag forces the runner
    *                                     to build the target for production and run that build.
+   * @param {boolean} inspect            Whether or not to enable the Node inspector.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
    *                                     the latest information and then it will run this command,
@@ -46,12 +47,12 @@ class Runner {
    *                                     needs to execute it.
    * @return {string}
    */
-  getCommands(targetName, production, runAsPluginCommand) {
+  getCommands(targetName, production, inspect, runAsPluginCommand) {
     let commands;
     // If projext is present...
     if (this.projextPlugin.isInstalled()) {
       // ..get the commands to run with projext.
-      commands = this.getCommandsForProjext(targetName, production, runAsPluginCommand);
+      commands = this.getCommandsForProjext(targetName, production, inspect, runAsPluginCommand);
     } else {
       // ...otherwise, get the target information.
       const target = targetName ?
@@ -83,6 +84,7 @@ class Runner {
    * Get the list of comands to run a target with projext.
    * @param {?string} targetName         The name of the target to run.
    * @param {boolean} production         Forces projext to use the production build.
+   * @param {boolean} inspect            Whether or not to enable the Node inspector.
    * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run
    *                                     a build command in order to update the runner file with
    *                                     the latest information and then it will run this command,
@@ -90,7 +92,7 @@ class Runner {
    *                                     needs to execute it.
    * @return {Array}
    */
-  getCommandsForProjext(targetName, production, runAsPluginCommand) {
+  getCommandsForProjext(targetName, production, inspect, runAsPluginCommand) {
     // Define the list of commands to return.
     const commands = [];
     // Define the base arguments for the build command.
@@ -110,6 +112,7 @@ class Runner {
       commands.push(runAsPluginCommand);
     } else {
       args.run = true;
+      args.inspect = inspect;
       const variables = this.getEnvironmentVariables(this.runnerFile.read());
       commands.push(this.projextPlugin.getBuildCommand(args, variables));
     }

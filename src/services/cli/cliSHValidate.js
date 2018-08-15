@@ -49,6 +49,12 @@ class CLISHValidateCommand extends CLICommand {
       false
     );
     this.addOption(
+      'inspect',
+      '-i, --inspect',
+      'Enable the Node inspector',
+      false
+    );
+    this.addOption(
       'ready',
       '-r, --ready',
       'Private flag to indicate that a production build was made',
