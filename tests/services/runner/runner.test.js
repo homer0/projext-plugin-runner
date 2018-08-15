@@ -51,6 +51,7 @@ describe('services/runner:runner', () => {
       getTarget: jest.fn(() => target),
     };
     const production = true;
+    const inspect = false;
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
@@ -58,7 +59,7 @@ describe('services/runner:runner', () => {
     const expectedCommand = `${expectedVariables} node ${target.exec}`;
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(targetName, production, runAsPluginCommand);
+    result = sut.getCommands(targetName, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
@@ -93,6 +94,7 @@ describe('services/runner:runner', () => {
       getDefaultTarget: jest.fn(() => target),
     };
     const production = true;
+    const inspect = false;
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
@@ -100,7 +102,7 @@ describe('services/runner:runner', () => {
     const expectedCommand = `${expectedVariables} node ${target.exec}`;
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(null, production, runAsPluginCommand);
+    result = sut.getCommands(null, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getDefaultTarget).toHaveBeenCalledTimes(1);
@@ -136,6 +138,7 @@ describe('services/runner:runner', () => {
       getTarget: jest.fn(() => target),
     };
     const production = true;
+    const inspect = false;
     const runAsPluginCommand = '';
     let sut = null;
     let result = null;
@@ -143,7 +146,7 @@ describe('services/runner:runner', () => {
     const expectedCommand = `${expectedVariables} ${target.options.runWith} ${target.exec}`;
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(targetName, production, runAsPluginCommand);
+    result = sut.getCommands(targetName, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(1);
@@ -180,13 +183,14 @@ describe('services/runner:runner', () => {
       getTarget: jest.fn(() => target),
     };
     const production = false;
+    const inspect = false;
     const runAsPluginCommand = 'run-as-plugin';
     let sut = null;
     let result = null;
     const expectedVariables = `VERSION=${file.version}`;
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(targetName, production, runAsPluginCommand);
+    result = sut.getCommands(targetName, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(command);
     expect(targets.getTarget).toHaveBeenCalledTimes(0);
@@ -196,6 +200,7 @@ describe('services/runner:runner', () => {
         target: targetName,
         type: 'development',
         run: true,
+        inspect,
       },
       expectedVariables
     );
@@ -218,13 +223,14 @@ describe('services/runner:runner', () => {
     };
     const targets = 'targets';
     const production = false;
+    const inspect = true;
     const runAsPluginCommand = 'run-as-plugin';
     let sut = null;
     let result = null;
     const expectedVariables = `VERSION=${file.version}`;
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(null, production, runAsPluginCommand);
+    result = sut.getCommands(null, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(command);
     expect(projextPlugin.getBuildCommand).toHaveBeenCalledTimes(1);
@@ -233,6 +239,7 @@ describe('services/runner:runner', () => {
         target: '',
         type: 'development',
         run: true,
+        inspect,
       },
       expectedVariables
     );
@@ -258,6 +265,7 @@ describe('services/runner:runner', () => {
       getTarget: jest.fn(() => target),
     };
     const production = true;
+    const inspect = false;
     const runAsPluginCommand = 'run-as-plugin';
     let sut = null;
     let result = null;
@@ -267,7 +275,7 @@ describe('services/runner:runner', () => {
     ].join(';');
     // When
     sut = new Runner(pathUtils, projextPlugin, runnerFile, targets);
-    result = sut.getCommands(targetName, production, runAsPluginCommand);
+    result = sut.getCommands(targetName, production, inspect, runAsPluginCommand);
     // Then
     expect(result).toEqual(expectedCommand);
     expect(targets.getTarget).toHaveBeenCalledTimes(0);
