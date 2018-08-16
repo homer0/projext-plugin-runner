@@ -279,7 +279,7 @@ shell commands for it.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-method-getCommands">getCommands</a></span></span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-method-getCommands">getCommands</a></span></span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, inspect: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -337,7 +337,7 @@ shell commands for it.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-method-getCommandsForProjext">getCommandsForProjext</a></span></span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/services/runner/runner.js~Runner.html#instance-method-getCommandsForProjext">getCommandsForProjext</a></span></span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, inspect: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
         </p>
       </div>
       <div>
@@ -693,11 +693,11 @@ shell commands for it.</p>
     
     
     
-    <span class="code" data-ice="name">getCommands</span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">getCommands</span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, inspect: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber49">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -730,6 +730,13 @@ shell commands for it.</p>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>In case projext is present, this flag forces the runner
                                     to build the target for production and run that build.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">inspect</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Whether or not to enable the Node inspector.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -789,7 +796,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber124">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber127">source</a></span></span>
     </span>
   </h3>
 
@@ -858,11 +865,11 @@ shell commands for it.</p>
     
     
     
-    <span class="code" data-ice="name">getCommandsForProjext</span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
+    <span class="code" data-ice="name">getCommandsForProjext</span><span class="code" data-ice="signature">(targetName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, production: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, inspect: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, runAsPluginCommand: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber93">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber95">source</a></span></span>
     </span>
   </h3>
 
@@ -894,6 +901,13 @@ shell commands for it.</p>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>Forces projext to use the production build.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">inspect</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Whether or not to enable the Node inspector.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -953,7 +967,7 @@ shell commands for it.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber158">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber161">source</a></span></span>
     </span>
   </h3>
 
@@ -1027,7 +1041,7 @@ For now is just the version of the project.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber72">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/services/runner/runner.js.html#lineNumber73">source</a></span></span>
     </span>
   </h3>
 
