@@ -34,6 +34,12 @@ class CLISHRunCommand extends CLICommand {
       false
     );
     this.addOption(
+      'inspect',
+      '-i, --inspect',
+      'Enable the Node inspector',
+      false
+    );
+    this.addOption(
       'ready',
       '-r, --ready',
       'Private flag to indicate that a production build was made',
@@ -59,10 +65,11 @@ class CLISHRunCommand extends CLICommand {
    *                                     the runner file is up to date.
    *                                     This option basically says 'The production build is ready
    *                                     and the runner file is updated, now is ok to execute it'.
+   * @param {boolean} options.inspect    Whether or not to enable the Node inspector.
    */
   handle(target, command, options) {
     // Get the optins.
-    const { production, ready } = options;
+    const { inspect, production, ready } = options;
     // Define the commands variable that the method will output.
     let commands;
     /**
@@ -71,13 +78,13 @@ class CLISHRunCommand extends CLICommand {
      */
     if (ready) {
       // ...get the commands to execute the production build.
-      commands = this.runner.getPluginCommandsForProduction(target);
+      commands = this.runner.getPluginCommandsForProduction(target, inspect);
     } else {
       // ...otherwise, generate the command to run this for a second time.
       const targetArg = target ? `${target} ` : '';
       const runPluginProduction = `${this.cliName} ${targetArg}--production --ready`;
       // Get the list of commands from the runner service.
-      commands = this.runner.getCommands(target, production, runPluginProduction);
+      commands = this.runner.getCommands(target, production, inspect, runPluginProduction);
     }
     // Output the list of commands
     this.output(commands);

@@ -32,10 +32,16 @@ describe('services/cli:sh-validate', () => {
     expect(sut.projextPlugin).toBe(projextPlugin);
     expect(sut.command).not.toBeEmptyString();
     expect(sut.description).not.toBeEmptyString();
-    expect(sut.addOption).toHaveBeenCalledTimes(2);
+    expect(sut.addOption).toHaveBeenCalledTimes(3);
     expect(sut.addOption).toHaveBeenCalledWith(
       'production',
       '-p, --production',
+      expect.any(String),
+      false
+    );
+    expect(sut.addOption).toHaveBeenCalledWith(
+      'inspect',
+      '-i, --inspect',
       expect.any(String),
       false
     );

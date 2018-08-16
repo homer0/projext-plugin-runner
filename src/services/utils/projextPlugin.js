@@ -64,8 +64,8 @@ class ProjextPlugin {
   registerPlugin(instance) {
     this._setInstance(instance);
     const events = this.get('events');
-    events.once('build-target-commands-list', (commands, target, type, run, unknownOptions) => (
-      this._updateBuildCommands(commands, target, { type, run }, unknownOptions)
+    events.once('build-target-commands-list', (commands, params, unknownOptions) => (
+      this._updateBuildCommands(commands, params, unknownOptions)
     ));
 
     events.once('project-files-to-copy', (list) => this._updateCopyList(list));
@@ -102,10 +102,15 @@ class ProjextPlugin {
     const newArgs = Object.assign({}, args);
     delete newArgs.target;
     const result = list
-    .map((name) => this.getBuildCommand(Object.assign(
-      { target: name },
-      newArgs
-    ), environmentVariables));
+    .map((name) => (
+      this.getBuildCommand(
+        Object.assign(
+          { target: name },
+          newArgs
+        ),
+        environmentVariables
+      )
+    ));
 
     return result;
   }
@@ -203,29 +208,30 @@ class ProjextPlugin {
    * This method gets called when projext is creating the build commands for a target. It takes
    * care of updating the runner file with the target information and, if the target needs other
    * targes to be built first in order to run, injecting the commands for building those targets.
-   * @param {Array}         commands       The list of commands projext uses to build and run the
-   *                                       target.
-   * @param {ProjextTarget} target         The target information.
-   * @param {Object}        options        A dictionary with the options the original command
-   *                                       received.
-   * @param {string}        options.type   The required build type: `development` or `production`.
-   * @param {Object}        unknownOptions Like `options`, this is also a dictionary of options
-   *                                       the original command received, the difference is that
-   *                                       these ones are unknown by the command, as they were
-   *                                       probably injected by an event. In this case, the
-   *                                       method checks if the plugin option the
-   *                                       `getBuildCommand` method adds is present in order to
-   *                                       determine whether it should add the build commands for
-   *                                       the dependencies or not.
+   * @param {Array}                 commands       The list of commands projext uses to build and
+   *                                               run the target.
+   * @param {CLIBuildCommandParams} params         A dictionary with all the required information
+   *                                               the service needs to run the command: The
+   *                                               target information, the build type, whether or
+   *                                               not the target will be executed, etc.
+   * @param {Object}                unknownOptions Like `options`, this is also a dictionary of
+   *                                               options the original command received, the
+   *                                               difference is that these ones are unknown by
+   *                                               the command, as they were probably injected by
+   *                                               an event. In this case, the method checks if
+   *                                               the plugin option the `getBuildCommand` method
+   *                                               adds is present in order to determine whether
+   *                                               it should add the build commands for the
+   *                                               dependencies or not.
    * @return {Array} The updated list of commands.
    */
-  _updateBuildCommands(commands, target, options, unknownOptions) {
+  _updateBuildCommands(commands, params, unknownOptions) {
     // Get the distribution directory path.
     const distPath = this.get('projectConfiguration').getConfig().paths.build;
     // Get the project version.
     const version = this.get('buildVersion').getVersion();
     // Save the target information on the runner file and get it once it's parsed.
-    const targetInfo = this.runnerFile.update(target, version, distPath);
+    const targetInfo = this.runnerFile.update(params.target, version, distPath);
     // Define the list of commands that are going to be returned.
     let updatedCommands;
     /**
@@ -235,16 +241,19 @@ class ProjextPlugin {
      */
     if (
       unknownOptions[this._pluginFlagName] === this.pluginName &&
-      options.type === 'production' &&
+      params.type === 'production' &&
       targetInfo &&
       targetInfo.options.build
     ) {
       // Get the commands for the other targets.
-      const newCommands = this.getBuildCommandForTarget(targetInfo.options.build, Object.assign(
-        {},
-        options,
-        unknownOptions
-      ));
+      const newCommands = this.getBuildCommandForTarget(
+        targetInfo.options.build,
+        Object.assign(
+          {},
+          unknownOptions,
+          { type: params.type }
+        )
+      );
       // Push them first on the list of commands projext will run.
       updatedCommands = [
         ...newCommands,

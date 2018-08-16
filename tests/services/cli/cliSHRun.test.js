@@ -28,10 +28,16 @@ describe('services/cli:sh-run', () => {
     expect(sut.runner).toBe(runner);
     expect(sut.command).not.toBeEmptyString();
     expect(sut.description).not.toBeEmptyString();
-    expect(sut.addOption).toHaveBeenCalledTimes(2);
+    expect(sut.addOption).toHaveBeenCalledTimes(3);
     expect(sut.addOption).toHaveBeenCalledWith(
       'production',
       '-p, --production',
+      expect.any(String),
+      false
+    );
+    expect(sut.addOption).toHaveBeenCalledWith(
+      'inspect',
+      '-i, --inspect',
       expect.any(String),
       false
     );
@@ -52,16 +58,18 @@ describe('services/cli:sh-run', () => {
       getCommands: jest.fn(() => runCommand),
     };
     const production = false;
+    const inspect = false;
     const ready = false;
     let sut = null;
     // When
     sut = new CLISHRunCommand(runner);
-    sut.handle(target, null, { production, ready });
+    sut.handle(target, null, { production, inspect, ready });
     // Then
     expect(runner.getCommands).toHaveBeenCalledTimes(1);
     expect(runner.getCommands).toHaveBeenCalledWith(
       target,
       production,
+      inspect,
       `${CLICommandMock.cliName()} ${target} --production --ready`
     );
     expect(sut.output).toHaveBeenCalledTimes(1);
@@ -75,16 +83,18 @@ describe('services/cli:sh-run', () => {
       getCommands: jest.fn(() => runCommand),
     };
     const production = false;
+    const inspect = false;
     const ready = false;
     let sut = null;
     // When
     sut = new CLISHRunCommand(runner);
-    sut.handle(null, null, { production, ready });
+    sut.handle(null, null, { production, inspect, ready });
     // Then
     expect(runner.getCommands).toHaveBeenCalledTimes(1);
     expect(runner.getCommands).toHaveBeenCalledWith(
       null,
       production,
+      inspect,
       `${CLICommandMock.cliName()} --production --ready`
     );
     expect(sut.output).toHaveBeenCalledTimes(1);
@@ -99,14 +109,15 @@ describe('services/cli:sh-run', () => {
       getPluginCommandsForProduction: jest.fn(() => runCommand),
     };
     const production = false;
+    const inspect = false;
     const ready = true;
     let sut = null;
     // When
     sut = new CLISHRunCommand(runner);
-    sut.handle(target, null, { production, ready });
+    sut.handle(target, null, { production, inspect, ready });
     // Then
     expect(runner.getPluginCommandsForProduction).toHaveBeenCalledTimes(1);
-    expect(runner.getPluginCommandsForProduction).toHaveBeenCalledWith(target);
+    expect(runner.getPluginCommandsForProduction).toHaveBeenCalledWith(target, inspect);
     expect(sut.output).toHaveBeenCalledTimes(1);
     expect(sut.output).toHaveBeenCalledWith(runCommand);
   });
