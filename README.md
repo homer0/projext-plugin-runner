@@ -22,7 +22,7 @@ The idea behind this plugin-tool is that you don't have to hard code the instruc
 |--------------|---------------------------------------------------------------------------------------|
 | Package      | projext-plugin-runner                                                                 |
 | Description  | A projext plugin to run Node targets with a simple command no matter the environment. |
-| Node Version | >= v6.10.0                                                                            |
+| Node Version | >= v8.0.0                                                                            |
 
 ## Usage
 
