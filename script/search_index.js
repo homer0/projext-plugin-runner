@@ -390,10 +390,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/abstracts/clicommand.js~clicommand#_unknownoptions",
+    "class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-_unknownOptions",
+    "src/abstracts/cliCommand.js~CLICommand#_unknownOptions",
+    "member"
+  ],
+  [
     "src/abstracts/clicommand.js~clicommand#addoption",
     "class/src/abstracts/cliCommand.js~CLICommand.html#instance-method-addOption",
     "src/abstracts/cliCommand.js~CLICommand#addOption",
     "method"
+  ],
+  [
+    "src/abstracts/clicommand.js~clicommand#allowunknownoptions",
+    "class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-allowUnknownOptions",
+    "src/abstracts/cliCommand.js~CLICommand#allowUnknownOptions",
+    "member"
   ],
   [
     "src/abstracts/clicommand.js~clicommand#checkoptionsonparent",
@@ -423,6 +435,12 @@ window.esdocSearchIndex = [
     "src/abstracts/clicommand.js~clicommand#description",
     "class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-description",
     "src/abstracts/cliCommand.js~CLICommand#description",
+    "member"
+  ],
+  [
+    "src/abstracts/clicommand.js~clicommand#fulldescription",
+    "class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-fullDescription",
+    "src/abstracts/cliCommand.js~CLICommand#fullDescription",
     "member"
   ],
   [

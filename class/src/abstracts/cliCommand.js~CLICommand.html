@@ -60,13 +60,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import CLICommand from &apos;<span><a href="file/src/abstracts/cliCommand.js.html#lineNumber5">projext-plugin-runner/src/abstracts/cliCommand.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import CLICommand from &apos;<span><a href="file/src/abstracts/cliCommand.js.html#lineNumber6">projext-plugin-runner/src/abstracts/cliCommand.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
+  <span data-ice="version">| version 1.0</span>
   
-  
-  <span data-ice="source">| <span><a href="file/src/abstracts/cliCommand.js.html#lineNumber5">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/abstracts/cliCommand.js.html#lineNumber6">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -86,7 +86,7 @@
 
   
   
-  <div class="description" data-ice="description"><p>A helper class for creating commands for the CLI interface.</p>
+  <div class="description" data-ice="description"><p>A helper class for creating commands for the CLI.</p>
 </div>
   
 
@@ -142,6 +142,35 @@
   <tbody>
   
   <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-allowUnknownOptions">allowUnknownOptions</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Whether or not the command supports unknown options.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       
@@ -271,6 +300,36 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-fullDescription">fullDescription</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A more complete description of the command to show when the command help interface is
+invoked.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-hidden">hidden</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
         </p>
       </div>
@@ -366,6 +425,41 @@ commands.</p>
         
         
         <div data-ice="description"><p>Whether or not a sub program should be executed for this command.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/abstracts/cliCommand.js~CLICommand.html#instance-member-_unknownOptions">_unknownOptions</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>This dictionary will be completed when the command gets activated.</p>
 </div>
       </div>
     </td>
@@ -548,7 +642,7 @@ commands.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber11">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber12">source</a></span></span>
     </span>
   </h3>
 
@@ -596,6 +690,51 @@ commands.</p>
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-allowUnknownOptions">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">allowUnknownOptions</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber78">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Whether or not the command supports unknown options. If it does, it will be sent to the
+<code>onActivation</code> method as a parameter.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-checkOptionsOnParent">
     <span class="access" data-ice="access">public</span>
     
@@ -607,7 +746,7 @@ commands.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber44">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -652,7 +791,7 @@ the interface know that it can search for option values on a parent command, if 
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber64">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber72">source</a></span></span>
     </span>
   </h3>
 
@@ -697,7 +836,7 @@ is registered on the program.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber21">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber22">source</a></span></span>
     </span>
   </h3>
 
@@ -741,7 +880,7 @@ is registered on the program.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber26">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber27">source</a></span></span>
     </span>
   </h3>
 
@@ -749,6 +888,52 @@ is registered on the program.</p>
   
   
   <div data-ice="description"><p>A description of the command for the help interface.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-fullDescription">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">fullDescription</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber34">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>A more complete description of the command to show when the command help interface is
+invoked.
+If left empty, it won&apos;t be used.</p>
 </div>
 
   
@@ -785,7 +970,7 @@ is registered on the program.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber50">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber58">source</a></span></span>
     </span>
   </h3>
 
@@ -830,7 +1015,7 @@ commands.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber32">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber40">source</a></span></span>
     </span>
   </h3>
 
@@ -875,7 +1060,7 @@ the <code>addOption</code> method.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber38">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber46">source</a></span></span>
     </span>
   </h3>
 
@@ -920,7 +1105,7 @@ using the <code>addOption</code> method.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber58">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
@@ -931,6 +1116,54 @@ using the <code>addOption</code> method.</p>
 of <code>git</code>, where <code>git checkout [branch]</code> executes <code>git</code> as main program, and <code>checkout</code> as a
 sub program. If this is <code>true</code>, then a binary with the name of the command should be
 exported on the <code>package.json</code>.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Private Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_unknownOptions">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">_unknownOptions</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber85">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>This dictionary will be completed when the command gets activated. If the command supports
+unknown options (<code>allowUnknownOptions</code>), they&apos;ll be parsed and sent to the <code>handle</code> method
+as the last parameter.</p>
 </div>
 
   
@@ -970,7 +1203,7 @@ exported on the <code>package.json</code>.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber89">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber118">source</a></span></span>
     </span>
   </h3>
 
@@ -1074,7 +1307,7 @@ this.addOption(
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber156">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber193">source</a></span></span>
     </span>
   </h3>
 
@@ -1164,7 +1397,7 @@ this.generate({ target: &apos;moon&apos;, once: true });
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber221">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber270">source</a></span></span>
     </span>
   </h3>
 
@@ -1236,7 +1469,7 @@ handle(target, command, options) {
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber228">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber277">source</a></span></span>
     </span>
   </h3>
 
@@ -1297,7 +1530,7 @@ handle(target, command, options) {
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber106">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/abstracts/cliCommand.js.html#lineNumber135">source</a></span></span>
     </span>
   </h3>
 

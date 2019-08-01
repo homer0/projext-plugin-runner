@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/abstracts/cliCommand.js",
-    "content": "/**\n * A helper class for creating commands for the CLI interface.\n * @abstract\n */\nclass CLICommand {\n  /**\n   * Class constructor.\n   * @throws {TypeError} If instantiated directly.\n   * @abstract\n   */\n  constructor() {\n    if (new.target === CLICommand) {\n      throw new TypeError(\n        'CLICommand is an abstract class, it can\\'t be instantiated directly'\n      );\n    }\n    /**\n     * The CLI command instruction. For example `my-command [target]`.\n     * @type {string}\n     */\n    this.command = '';\n    /**\n     * A description of the command for the help interface.\n     * @type {string}\n     */\n    this.description = '';\n    /**\n     * A list with the name of the options the command supports. New options can be added using\n     * the `addOption` method.\n     * @type {Array}\n     */\n    this.options = [];\n    /**\n     * A dictionary of command options settings by their option name. New options can be added\n     * using the `addOption` method.\n     * @type {Object}\n     */\n    this.optionsByName = {};\n    /**\n     * This is a useful flag for when the command is ran as a result of another command. It lets\n     * the interface know that it can search for option values on a parent command, if there's one.\n     * @type {boolean}\n     */\n    this.checkOptionsOnParent = true;\n    /**\n     * Whether the command and its description should be shown on the CLI interface list of\n     * commands.\n     * @type {boolean}\n     */\n    this.hidden = false;\n    /**\n     * Whether or not a sub program should be executed for this command. Take for example the case\n     * of `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\n     * sub program. If this is `true`, then a binary with the name of the command should be\n     * exported on the `package.json`.\n     * @type {boolean}\n     */\n    this.subProgram = false;\n    /**\n     * This is the name of the program that runs the command. It will be added when the command\n     * is registered on the program.\n     * @type {string}\n     */\n    this.cliName = '';\n  }\n  /**\n   * Add a new option for the command.\n   * @example\n   * // To capture an option\n   * this.addOption(\n   *   'type',\n   *   '-t, --type [type]',\n   *   'The type of thingy you want to use?',\n   * );\n   *\n   * // As a simple flag\n   * this.addOption(\n   *   'ready',\n   *   '-r, --ready',\n   *   'Is it read?',\n   *   false\n   * );\n   *\n   * @param {string} name              The option name.\n   * @param {string} instruction       The option instruction, for example: `-t, --type [type]`.\n   * @param {string} [description='']  The option description.\n   * @param {string} [defaultValue=''] The option default value, in case is not used on execution.\n   */\n  addOption(name, instruction, description = '', defaultValue = '') {\n    this.optionsByName[name] = {\n      name,\n      instruction,\n      description,\n      defaultValue,\n    };\n\n    this.options.push(name);\n  }\n  /**\n   * Register this command on a CLI program.\n   * @param {Command} program  A Commander instance.\n   * @param {Object}  cli      The main CLI interface, just for the name.\n   * @param {string}  cli.name The CLI interface name.\n   * @see https://yarnpkg.com/en/package/commander\n   */\n  register(program, cli) {\n    // Get the name of the program\n    this.cliName = cli.name;\n    const options = {};\n    // If the command should be hidden...\n    if (this.hidden) {\n      // ...remove it from the help interface.\n      options.noHelp = true;\n    }\n\n    let command;\n    // If the command is a sub program...\n    if (this.subProgram) {\n      /**\n       * ...it gets added without the `.description` property. That's how Commander differentiates\n       * a main program command and a sub program command.\n       */\n      command = program.command(this.command, this.description, options);\n    } else {\n      // ...otherwise, it gets added as a sub command of the main program.\n      command = program\n      .command(this.command, '', options)\n      .description(this.description);\n    }\n    // Register all the command options.\n    this.options.forEach((name) => {\n      const option = this.optionsByName[name];\n      command = command.option(\n        option.instruction,\n        option.description\n      );\n    });\n    // Add the handler for when the command gets executed.\n    command.action(this._handle.bind(this));\n  }\n  /**\n   * Generate an instruction for this command.\n   * @example\n   * // Let's say this command is `destroy [target] [--once]`\n   *\n   * this.generate({ target: 'pluto' });\n   * // Will return `destroy pluto`\n   *\n   * this.generate({ target: 'moon', once: true });\n   * // Will return `destroy moon --once`\n   * @param  {Object} [args={}] A dictionary with the arguments and options for the command. If the\n   *                            command includes an argument on its `command` property, that\n   *                            argument is required.\n   * @return {string} The command instruction to run on the CLI interface.\n   */\n  generate(args = {}) {\n    let cmd = this.command;\n    const cmdOptions = [];\n    // Loop all the `args`...\n    Object.keys(args).forEach((name) => {\n      const value = args[name];\n      const asPlaceholder = `[${name}]`;\n      // Check if the current argument should be used on the command instruction...\n      if (cmd.includes(asPlaceholder)) {\n        // ...if so, replace it on the main command.\n        cmd = cmd.replace(asPlaceholder, value);\n      } else if (this.optionsByName[name]) {\n        // ...otherwise, check if there's an option with the same name as the argument.\n        const option = this.optionsByName[name];\n        /**\n         * Remove the shorthand version of the option instruction, if there's one. For example:\n         * `-t, --type [type]` -> `--type [type]`.\n         */\n        let instruction = option.instruction.split(',').pop().trim();\n        // If the option instruction includes the argument as a value (`[argument-name]`)...\n        if (instruction.includes(asPlaceholder)) {\n          // ...replace it on the option instruction.\n          instruction = instruction.replace(asPlaceholder, value);\n        } else if (value === false) {\n          /**\n           * ...but if the value is `false`, then we clear the instruction as it won't be included\n           * on the generated string.\n           */\n          instruction = '';\n        }\n\n        // If there's an option instruction...\n        if (instruction) {\n          // ...add it to the list.\n          cmdOptions.push(instruction);\n        }\n      }\n    });\n\n    let options = '';\n    // If after the loop, there are option instructions to add...\n    if (cmdOptions.length) {\n      // ...put them all together on a single string, separated by a space\n      options = ['', ...cmdOptions].join(' ');\n    }\n\n    // Return the complete command instruction\n    return `${this.cliName} ${cmd}${options}`;\n  }\n  /**\n   * Handle the command execution.\n   * This method will receive first the captured arguments, then the executed command information\n   * from Commander and finally, a dictionary with the options and their values.\n   * @example\n   * // Let's say the command is `run [target] [--production]`.\n   * // And now, it was executed with `run my-target`\n   * handle(target, command, options) {\n   *   console.log(target);\n   *   // Will output `my-target`\n   *   console.log(options.production)\n   *   // Will output `false`\n   * }\n   * @throws {Error} if not overwritten.\n   * @abstract\n   */\n  handle() {\n    throw new Error('This method must to be overwritten');\n  }\n  /**\n   * A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.\n   * @param {string} text The text to output.\n   */\n  output(text) {\n    // eslint-disable-next-line no-console\n    console.log(text);\n  }\n  /**\n   * This is the real method that receives the execution of the command and parses it in order to\n   * create the options dictionary that the `handle` method receives.\n   * @param {Array} args The list of arguments sent by Commander.\n   * @ignore\n   * @access protected\n   */\n  _handle(...args) {\n    // The actual command is always the last argument.\n    const command = args[args.length - 1];\n    const options = {};\n    // Loop all the known options the command can receive\n    Object.keys(this.optionsByName).forEach((name) => {\n      const option = this.optionsByName[name];\n      let value = '';\n      // If the option is on the command...\n      if (command[name]) {\n        // ...then that's the value that will be used.\n        value = command[name];\n      }\n\n      /**\n       * If no value was found yet, the flag to check on the parent is `true`, there's a parent\n       * command and it has an option with that name...\n       */\n      if (\n        !value &&\n        this.checkOptionsOnParent &&\n        command.parent &&\n        command.parent[name]\n      ) {\n        // ...then that's the value that will be used.\n        value = command.parent[name];\n      }\n      // If no value was found and there's a default value registered for the option...\n      if (!value && typeof option.defaultValue !== 'undefined') {\n        // ...then that's the value that will be used.\n        value = option.defaultValue;\n      }\n\n      // Set the option on the dictionary with the value found.\n      options[name] = value;\n    });\n\n    // Copy the arguments list.\n    const newArgs = args.slice();\n    // Add the new options dictionary at the end.\n    newArgs.push(options);\n    // Call the abstract method that handles the execution.\n    this.handle(...newArgs);\n  }\n}\n\nmodule.exports = CLICommand;\n",
+    "content": "/**\n * A helper class for creating commands for the CLI.\n * @abstract\n * @version 1.0\n */\nclass CLICommand {\n  /**\n   * Class constructor.\n   * @throws {TypeError} If instantiated directly.\n   * @abstract\n   */\n  constructor() {\n    if (new.target === CLICommand) {\n      throw new TypeError(\n        'CLICommand is an abstract class, it can\\'t be instantiated directly'\n      );\n    }\n    /**\n     * The CLI command instruction. For example `my-command [target]`.\n     * @type {string}\n     */\n    this.command = '';\n    /**\n     * A description of the command for the help interface.\n     * @type {string}\n     */\n    this.description = '';\n    /**\n     * A more complete description of the command to show when the command help interface is\n     * invoked.\n     * If left empty, it won't be used.\n     * @type {string}\n     */\n    this.fullDescription = '';\n    /**\n     * A list with the name of the options the command supports. New options can be added using\n     * the `addOption` method.\n     * @type {Array}\n     */\n    this.options = [];\n    /**\n     * A dictionary of command options settings by their option name. New options can be added\n     * using the `addOption` method.\n     * @type {Object}\n     */\n    this.optionsByName = {};\n    /**\n     * This is a useful flag for when the command is ran as a result of another command. It lets\n     * the interface know that it can search for option values on a parent command, if there's one.\n     * @type {boolean}\n     */\n    this.checkOptionsOnParent = true;\n    /**\n     * Whether the command and its description should be shown on the CLI interface list of\n     * commands.\n     * @type {boolean}\n     */\n    this.hidden = false;\n    /**\n     * Whether or not a sub program should be executed for this command. Take for example the case\n     * of `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\n     * sub program. If this is `true`, then a binary with the name of the command should be\n     * exported on the `package.json`.\n     * @type {boolean}\n     */\n    this.subProgram = false;\n    /**\n     * This is the name of the program that runs the command. It will be added when the command\n     * is registered on the program.\n     * @type {string}\n     */\n    this.cliName = '';\n    /**\n     * Whether or not the command supports unknown options. If it does, it will be sent to the\n     * `onActivation` method as a parameter.\n     * @type {Boolean}\n     */\n    this.allowUnknownOptions = false;\n    /**\n     * This dictionary will be completed when the command gets activated. If the command supports\n     * unknown options (`allowUnknownOptions`), they'll be parsed and sent to the `handle` method\n     * as the last parameter.\n     * @type {Object}\n     */\n    this._unknownOptions = {};\n    /**\n     * Once registered on the program, this property will hold a reference to the real command\n     * the program generates.\n     * @type {?Command}\n     * @ignore\n     * @access protected\n     */\n    this._command = null;\n  }\n  /**\n   * Add a new option for the command.\n   * @example\n   * // To capture an option\n   * this.addOption(\n   *   'type',\n   *   '-t, --type [type]',\n   *   'The type of thingy you want to use?',\n   * );\n   *\n   * // As a simple flag\n   * this.addOption(\n   *   'ready',\n   *   '-r, --ready',\n   *   'Is it read?',\n   *   false\n   * );\n   *\n   * @param {string} name              The option name.\n   * @param {string} instruction       The option instruction, for example: `-t, --type [type]`.\n   * @param {string} [description='']  The option description.\n   * @param {string} [defaultValue=''] The option default value, in case is not used on execution.\n   */\n  addOption(name, instruction, description = '', defaultValue = '') {\n    this.optionsByName[name] = {\n      name,\n      instruction,\n      description,\n      defaultValue,\n    };\n\n    this.options.push(name);\n  }\n  /**\n   * Register this command on a CLI program.\n   * @param {Command} program  A Commander instance.\n   * @param {Object}  cli      The main CLI interface, just for the name.\n   * @param {string}  cli.name The CLI interface name.\n   * @see https://yarnpkg.com/en/package/commander\n   */\n  register(program, cli) {\n    // Get the real name of the command.\n    const commandName = this.command.replace(/\\[\\w+\\]/g, '').trim();\n    // Set a listener on the program in order to detect when it gets executed.\n    program.on(`command:${commandName}`, (args, unknown) => this._onActivation(args, unknown));\n    // Get the name of the program\n    this.cliName = cli.name;\n    const options = {};\n    // If the command should be hidden...\n    if (this.hidden) {\n      // ...remove it from the help interface.\n      options.noHelp = true;\n    }\n\n    let command;\n    // If the command is a sub program...\n    if (this.subProgram) {\n      /**\n       * ...it gets added without the `.description` property. That's how Commander differentiates\n       * a main program command and a sub program command.\n       */\n      command = program.command(this.command, this.description, options);\n    } else {\n      // ...otherwise, it gets added as a sub command of the main program.\n      command = program\n      .command(this.command, '', options)\n      .description(this.description);\n    }\n    // Register all the command options.\n    this.options.forEach((name) => {\n      const option = this.optionsByName[name];\n      command = command.option(\n        option.instruction,\n        option.description\n      );\n    });\n    // Add the handler for when the command gets executed.\n    command.action(this._handle.bind(this));\n    // Enable unknown options if the command supports it\n    command.allowUnknownOption(this.allowUnknownOptions);\n    // Save the reference\n    this._command = command;\n  }\n  /**\n   * Generate an instruction for this command.\n   * @example\n   * // Let's say this command is `destroy [target] [--once]`\n   *\n   * this.generate({ target: 'pluto' });\n   * // Will return `destroy pluto`\n   *\n   * this.generate({ target: 'moon', once: true });\n   * // Will return `destroy moon --once`\n   * @param  {Object} [args={}] A dictionary with the arguments and options for the command. If the\n   *                            command includes an argument on its `command` property, that\n   *                            argument is required.\n   * @return {string} The command instruction to run on the CLI interface.\n   */\n  generate(args = {}) {\n    let cmd = this.command;\n    const cmdOptions = [];\n    // Loop all the `args`...\n    Object.keys(args).forEach((name) => {\n      const value = args[name];\n      const asPlaceholder = `[${name}]`;\n      // Check if the current argument should be used on the command instruction...\n      if (cmd.includes(asPlaceholder)) {\n        // ...if so, replace it on the main command.\n        cmd = cmd.replace(asPlaceholder, value);\n      } else if (this.optionsByName[name]) {\n        // ...otherwise, check if there's an option with the same name as the argument.\n        const option = this.optionsByName[name];\n        /**\n         * Remove the shorthand version of the option instruction, if there's one. For example:\n         * `-t, --type [type]` -> `--type [type]`.\n         */\n        let instruction = option.instruction.split(',').pop().trim();\n        // If the option instruction includes the argument as a value (`[argument-name]`)...\n        if (instruction.includes(asPlaceholder)) {\n          // ...replace it on the option instruction.\n          instruction = instruction.replace(asPlaceholder, value);\n        } else if (value === false) {\n          /**\n           * ...but if the value is `false`, then we clear the instruction as it won't be included\n           * on the generated string.\n           */\n          instruction = '';\n        }\n\n        // If there's an option instruction...\n        if (instruction) {\n          // ...add it to the list.\n          cmdOptions.push(instruction);\n        }\n      } else if (this.allowUnknownOptions) {\n        /**\n         * Finally, if is not on the command options and the command supports unknown options,\n         * just add it.\n         */\n        let instruction = `--${name}`;\n        // If the option is not a flag, add its value.\n        if (value !== true) {\n          instruction += ` ${value}`;\n        }\n        // Push it to the list\n        cmdOptions.push(instruction);\n      }\n    });\n\n    let options = '';\n    // If after the loop, there are option instructions to add...\n    if (cmdOptions.length) {\n      // ...put them all together on a single string, separated by a space\n      options = ['', ...cmdOptions].join(' ');\n    }\n\n    // Return the complete command instruction\n    return `${this.cliName} ${cmd}${options}`;\n  }\n  /**\n   * Handle the command execution.\n   * This method will receive first the captured arguments, then the executed command information\n   * from Commander and finally, a dictionary with the options and their values.\n   * @example\n   * // Let's say the command is `run [target] [--production]`.\n   * // And now, it was executed with `run my-target`\n   * handle(target, command, options) {\n   *   console.log(target);\n   *   // Will output `my-target`\n   *   console.log(options.production)\n   *   // Will output `false`\n   * }\n   * @throws {Error} if not overwritten.\n   * @abstract\n   */\n  handle() {\n    throw new Error('This method must to be overwritten');\n  }\n  /**\n   * A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.\n   * @param {string} text The text to output.\n   */\n  output(text) {\n    // eslint-disable-next-line no-console\n    console.log(text);\n  }\n  /**\n   * This is the real method that receives the execution of the command and parses it in order to\n   * create the options dictionary that the `handle` method receives.\n   * @param {Array} args The list of arguments sent by Commander.\n   * @ignore\n   * @access protected\n   */\n  _handle(...args) {\n    // The actual command is always the last argument.\n    const command = args[args.length - 1];\n    const options = {};\n    // Loop all the known options the command can receive\n    Object.keys(this.optionsByName).forEach((name) => {\n      const option = this.optionsByName[name];\n      let value = '';\n      // If the option is on the command...\n      if (command[name]) {\n        // ...then that's the value that will be used.\n        value = command[name];\n      }\n\n      /**\n       * If no value was found yet, the flag to check on the parent is `true`, there's a parent\n       * command and it has an option with that name...\n       */\n      if (\n        !value &&\n        this.checkOptionsOnParent &&\n        command.parent &&\n        command.parent[name]\n      ) {\n        // ...then that's the value that will be used.\n        value = command.parent[name];\n      }\n      // If no value was found and there's a default value registered for the option...\n      if (!value && typeof option.defaultValue !== 'undefined') {\n        // ...then that's the value that will be used.\n        value = option.defaultValue;\n      }\n\n      // Set the option on the dictionary with the value found.\n      options[name] = value;\n    });\n\n    // Copy the arguments list.\n    const newArgs = args.slice();\n    // Add the new options dictionary.\n    newArgs.push(options);\n    // If the method supports unknown options, add them as the last argument.\n    if (this.allowUnknownOptions) {\n      newArgs.push(this._unknownOptions);\n    }\n    // Call the abstract method that handles the execution.\n    this.handle(...newArgs);\n  }\n  /**\n   * This method gets called by the program when the command is executed and it takes care of\n   * switching the descriptions, if needed, and parsing the unknown options, if supported.\n   * @param {Array} args        The list of known arguments the command received.\n   * @param {Array} unknownArgs The list of unknown arguments the command received.\n   * @ignore\n   * @protected\n   */\n  _onActivation(args, unknownArgs) {\n    // Switch the descriptions.\n    this._updateDescription();\n    // If unknown options are allowed, parsed them and save them on the local property.\n    if (this.allowUnknownOptions && unknownArgs && unknownArgs.length) {\n      this._unknownOptions = this._parseArgs(unknownArgs);\n    }\n  }\n  /**\n   * This method gets called when the command is executed on the program and before reaching the\n   * handle method. It checks if the command has a different description for when it gets\n   * executed, and if needed, it switches it on the program.\n   * @ignore\n   * @access protected\n   */\n  _updateDescription() {\n    // If the command reference is available and there's a full description...\n    if (this.fullDescription) {\n      // ...normalize it by adding the indentation the program uses to show descriptions and help.\n      const normalizedDescription = this.fullDescription.replace(/\\n/g, '\\n  ');\n      // Change the command description.\n      this._command.description(normalizedDescription);\n    }\n  }\n  /**\n   * This method parses a list of CLI arguments into a dicitionary.\n   * @example\n   * const args = [\n   *   '--include=something',\n   *   '-i',\n   *   'somes',\n   *   '--exclude',\n   *   '--type',\n   *   'building',\n   *   '-x=y',\n   * ];\n   * console.log(this._parseArgs(args));\n   * // Will output `{include: 'something', i: 'somes', exclude: true, type: 'building', x: 'y'}`\n   * @param {Array} args A list of arguments.\n   * @return {Object}\n   * @ignore\n   * @access protected\n   */\n  _parseArgs(args) {\n    // Use Commander to normalize the arguments list.\n    const list = this._command.normalize(args);\n    // Define the dictionary to return.\n    const parsed = {};\n    /**\n     * Define the regex that will validate if an argument is an _\"option header\"_ (`--[something]`)\n     * or a value.\n     */\n    const headerRegex = /^-(?:-)?/;\n    /**\n     * Every time the loop finds a header, it will be set on this variable, so the next time a value\n     * is found, it can be assigned to that header on the return dictionary.\n     */\n    let currentHeader;\n    /**\n     * The commander `normalize` method transforms `-x=y` into `['-x', '-=', '-y']`. On the first\n     * iteration, `-x` will be marked as a header, on the following iteration, the loop will check\n     * for `-=`, ignore it and mark this variable as `true` so on the final iteration, despite the\n     * fact that the value starts `-`, the method should remove the `-` and save it as a value for\n     * `-x`.\n     */\n    let nextValue = false;\n    // Loop the list...\n    list.forEach((item) => {\n      // Check whether the current item is a header or not.\n      const isHeader = item.match(headerRegex);\n      // If it is a header...\n      if (isHeader) {\n        // ...and the flag for short instructions is `true`...\n        if (nextValue) {\n          // ...remove the leading `-` and save it as a value for the current header.\n          parsed[currentHeader] = item.substr(1);\n          // Reset the flags.\n          currentHeader = null;\n          nextValue = false;\n        } else if (currentHeader && item === '-=') {\n          /**\n           * If there's a header and the current argument is `-=`, set the flag for short\n           * instructions to `true`.\n           */\n          nextValue = true;\n        } else if (currentHeader) {\n          /**\n           * If this is another header, it means that the argument is a flag, so save the current\n           * header as `true` and change the current header to the current item.\n           */\n          parsed[currentHeader] = true;\n          currentHeader = item.replace(headerRegex, '');\n        } else {\n          // Set the current header to the current item.\n          currentHeader = item.replace(headerRegex, '');\n        }\n      } else if (currentHeader) {\n        /**\n         * If there's a header, this means the current item is a value, so set it to the current\n         * header and reset the variable.\n         */\n        parsed[currentHeader] = item;\n        currentHeader = null;\n      }\n    });\n    // Return the parsed object.\n    return parsed;\n  }\n}\n\nmodule.exports = CLICommand;\n",
     "static": true,
     "longname": "/Users/homer0/CODE/node/projext/projext-plugin-runner/src/abstracts/cliCommand.js",
     "access": "public",
@@ -585,8 +585,9 @@
     "export": true,
     "importPath": "projext-plugin-runner/src/abstracts/cliCommand.js",
     "importStyle": "CLICommand",
-    "description": "A helper class for creating commands for the CLI interface.",
-    "lineNumber": 5,
+    "description": "A helper class for creating commands for the CLI.",
+    "lineNumber": 6,
+    "version": "1.0",
     "abstract": true,
     "interface": false
   },
@@ -601,7 +602,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#constructor",
     "access": "public",
     "description": "Class constructor.",
-    "lineNumber": 11,
+    "lineNumber": 12,
     "abstract": true,
     "throws": [
       {
@@ -621,7 +622,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#command",
     "access": "public",
     "description": "The CLI command instruction. For example `my-command [target]`.",
-    "lineNumber": 21,
+    "lineNumber": 22,
     "type": {
       "nullable": null,
       "types": [
@@ -640,7 +641,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#description",
     "access": "public",
     "description": "A description of the command for the help interface.",
-    "lineNumber": 26,
+    "lineNumber": 27,
     "type": {
       "nullable": null,
       "types": [
@@ -653,13 +654,32 @@
   {
     "__docId__": 53,
     "kind": "member",
+    "name": "fullDescription",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#fullDescription",
+    "access": "public",
+    "description": "A more complete description of the command to show when the command help interface is\ninvoked.\nIf left empty, it won't be used.",
+    "lineNumber": 34,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "member",
     "name": "options",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
     "static": false,
     "longname": "src/abstracts/cliCommand.js~CLICommand#options",
     "access": "public",
     "description": "A list with the name of the options the command supports. New options can be added using\nthe `addOption` method.",
-    "lineNumber": 32,
+    "lineNumber": 40,
     "type": {
       "nullable": null,
       "types": [
@@ -670,7 +690,7 @@
     }
   },
   {
-    "__docId__": 54,
+    "__docId__": 55,
     "kind": "member",
     "name": "optionsByName",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -678,7 +698,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#optionsByName",
     "access": "public",
     "description": "A dictionary of command options settings by their option name. New options can be added\nusing the `addOption` method.",
-    "lineNumber": 38,
+    "lineNumber": 46,
     "type": {
       "nullable": null,
       "types": [
@@ -689,7 +709,7 @@
     }
   },
   {
-    "__docId__": 55,
+    "__docId__": 56,
     "kind": "member",
     "name": "checkOptionsOnParent",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -697,26 +717,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#checkOptionsOnParent",
     "access": "public",
     "description": "This is a useful flag for when the command is ran as a result of another command. It lets\nthe interface know that it can search for option values on a parent command, if there's one.",
-    "lineNumber": 44,
-    "type": {
-      "nullable": null,
-      "types": [
-        "boolean"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 56,
-    "kind": "member",
-    "name": "hidden",
-    "memberof": "src/abstracts/cliCommand.js~CLICommand",
-    "static": false,
-    "longname": "src/abstracts/cliCommand.js~CLICommand#hidden",
-    "access": "public",
-    "description": "Whether the command and its description should be shown on the CLI interface list of\ncommands.",
-    "lineNumber": 50,
+    "lineNumber": 52,
     "type": {
       "nullable": null,
       "types": [
@@ -729,12 +730,12 @@
   {
     "__docId__": 57,
     "kind": "member",
-    "name": "subProgram",
+    "name": "hidden",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
     "static": false,
-    "longname": "src/abstracts/cliCommand.js~CLICommand#subProgram",
+    "longname": "src/abstracts/cliCommand.js~CLICommand#hidden",
     "access": "public",
-    "description": "Whether or not a sub program should be executed for this command. Take for example the case\nof `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\nsub program. If this is `true`, then a binary with the name of the command should be\nexported on the `package.json`.",
+    "description": "Whether the command and its description should be shown on the CLI interface list of\ncommands.",
     "lineNumber": 58,
     "type": {
       "nullable": null,
@@ -748,13 +749,32 @@
   {
     "__docId__": 58,
     "kind": "member",
+    "name": "subProgram",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#subProgram",
+    "access": "public",
+    "description": "Whether or not a sub program should be executed for this command. Take for example the case\nof `git`, where `git checkout [branch]` executes `git` as main program, and `checkout` as a\nsub program. If this is `true`, then a binary with the name of the command should be\nexported on the `package.json`.",
+    "lineNumber": 66,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "member",
     "name": "cliName",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
     "static": false,
     "longname": "src/abstracts/cliCommand.js~CLICommand#cliName",
     "access": "public",
     "description": "This is the name of the program that runs the command. It will be added when the command\nis registered on the program.",
-    "lineNumber": 64,
+    "lineNumber": 72,
     "type": {
       "nullable": null,
       "types": [
@@ -765,7 +785,65 @@
     }
   },
   {
-    "__docId__": 59,
+    "__docId__": 60,
+    "kind": "member",
+    "name": "allowUnknownOptions",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#allowUnknownOptions",
+    "access": "public",
+    "description": "Whether or not the command supports unknown options. If it does, it will be sent to the\n`onActivation` method as a parameter.",
+    "lineNumber": 78,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 61,
+    "kind": "member",
+    "name": "_unknownOptions",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_unknownOptions",
+    "access": "private",
+    "description": "This dictionary will be completed when the command gets activated. If the command supports\nunknown options (`allowUnknownOptions`), they'll be parsed and sent to the `handle` method\nas the last parameter.",
+    "lineNumber": 85,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 62,
+    "kind": "member",
+    "name": "_command",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_command",
+    "access": "protected",
+    "description": "Once registered on the program, this property will hold a reference to the real command\nthe program generates.",
+    "lineNumber": 93,
+    "ignore": true,
+    "type": {
+      "nullable": true,
+      "types": [
+        "Command"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 63,
     "kind": "method",
     "name": "addOption",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -778,7 +856,7 @@
     "examples": [
       "// To capture an option\nthis.addOption(\n  'type',\n  '-t, --type [type]',\n  'The type of thingy you want to use?',\n);\n\n// As a simple flag\nthis.addOption(\n  'ready',\n  '-r, --ready',\n  'Is it read?',\n  false\n);"
     ],
-    "lineNumber": 89,
+    "lineNumber": 118,
     "params": [
       {
         "nullable": null,
@@ -828,7 +906,7 @@
     "return": null
   },
   {
-    "__docId__": 60,
+    "__docId__": 64,
     "kind": "method",
     "name": "register",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -841,7 +919,7 @@
     "see": [
       "https://yarnpkg.com/en/package/commander"
     ],
-    "lineNumber": 106,
+    "lineNumber": 135,
     "params": [
       {
         "nullable": null,
@@ -877,7 +955,7 @@
     "return": null
   },
   {
-    "__docId__": 62,
+    "__docId__": 67,
     "kind": "method",
     "name": "generate",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -890,7 +968,7 @@
     "examples": [
       "// Let's say this command is `destroy [target] [--once]`\n\nthis.generate({ target: 'pluto' });\n// Will return `destroy pluto`\n\nthis.generate({ target: 'moon', once: true });\n// Will return `destroy moon --once`"
     ],
-    "lineNumber": 156,
+    "lineNumber": 193,
     "params": [
       {
         "nullable": null,
@@ -915,7 +993,7 @@
     }
   },
   {
-    "__docId__": 63,
+    "__docId__": 68,
     "kind": "method",
     "name": "handle",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -928,7 +1006,7 @@
     "examples": [
       "// Let's say the command is `run [target] [--production]`.\n// And now, it was executed with `run my-target`\nhandle(target, command, options) {\n  console.log(target);\n  // Will output `my-target`\n  console.log(options.production)\n  // Will output `false`\n}"
     ],
-    "lineNumber": 221,
+    "lineNumber": 270,
     "abstract": true,
     "throws": [
       {
@@ -942,7 +1020,7 @@
     "return": null
   },
   {
-    "__docId__": 64,
+    "__docId__": 69,
     "kind": "method",
     "name": "output",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -952,7 +1030,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#output",
     "access": "public",
     "description": "A simple wrapper for a `console.log`. Outputs a variable to the CLI interface.",
-    "lineNumber": 228,
+    "lineNumber": 277,
     "params": [
       {
         "nullable": null,
@@ -968,7 +1046,7 @@
     "return": null
   },
   {
-    "__docId__": 65,
+    "__docId__": 70,
     "kind": "method",
     "name": "_handle",
     "memberof": "src/abstracts/cliCommand.js~CLICommand",
@@ -978,7 +1056,7 @@
     "longname": "src/abstracts/cliCommand.js~CLICommand#_handle",
     "access": "protected",
     "description": "This is the real method that receives the execution of the command and parses it in order to\ncreate the options dictionary that the `handle` method receives.",
-    "lineNumber": 239,
+    "lineNumber": 288,
     "ignore": true,
     "params": [
       {
@@ -995,7 +1073,97 @@
     "return": null
   },
   {
-    "__docId__": 66,
+    "__docId__": 71,
+    "kind": "method",
+    "name": "_onActivation",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_onActivation",
+    "access": "protected",
+    "description": "This method gets called by the program when the command is executed and it takes care of\nswitching the descriptions, if needed, and parsing the unknown options, if supported.",
+    "lineNumber": 344,
+    "ignore": true,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "args",
+        "description": "The list of known arguments the command received."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "unknownArgs",
+        "description": "The list of unknown arguments the command received."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 73,
+    "kind": "method",
+    "name": "_updateDescription",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_updateDescription",
+    "access": "protected",
+    "description": "This method gets called when the command is executed on the program and before reaching the\nhandle method. It checks if the command has a different description for when it gets\nexecuted, and if needed, it switches it on the program.",
+    "lineNumber": 359,
+    "ignore": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "_parseArgs",
+    "memberof": "src/abstracts/cliCommand.js~CLICommand",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/abstracts/cliCommand.js~CLICommand#_parseArgs",
+    "access": "protected",
+    "description": "This method parses a list of CLI arguments into a dicitionary.",
+    "examples": [
+      "const args = [\n  '--include=something',\n  '-i',\n  'somes',\n  '--exclude',\n  '--type',\n  'building',\n  '-x=y',\n];\nconsole.log(this._parseArgs(args));\n// Will output `{include: 'something', i: 'somes', exclude: true, type: 'building', x: 'y'}`"
+    ],
+    "lineNumber": 387,
+    "ignore": true,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "args",
+        "description": "A list of arguments."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 75,
     "kind": "file",
     "name": "src/app/index.js",
     "content": "const Jimple = require('jimple');\n\nconst {\n  environmentUtils,\n  errorHandler,\n  appLogger,\n  packageInfo,\n  pathUtils,\n} = require('wootils/node/providers');\n\nconst appPackage = require('../../package.json');\n\nconst {\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n} = require('../services/cli');\n\nconst {\n  runnerFile,\n  runner,\n  targets,\n} = require('../services/runner');\n\nconst { projextPlugin } = require('../services/utils');\n/**\n * This is the plugin own dependency injection cotainer. Different from most of the other plugins,\n * this one is a little bit more complex as it is prepare to run with and without projext present.\n * @extends {Jimple}\n */\nclass ProjextRunner extends Jimple {\n  /**\n   * Registers all the known services and add an error handler.\n   * @ignore\n   */\n  constructor() {\n    super();\n\n    this.set('info', () => appPackage);\n\n    this.register(environmentUtils);\n    this.register(errorHandler);\n    this.register(appLogger);\n    this.register(packageInfo);\n    this.register(pathUtils);\n\n    this.register(cliWithName(appPackage.cliName));\n    this.register(cliSHRunCommand);\n    this.register(cliSHValidateCommand);\n\n    this.register(runnerFile);\n    this.register(runner);\n    this.register(targets);\n\n    this.register(projextPlugin);\n\n    this._addErrorHandler();\n  }\n  /**\n   * This is called when projext is present and tries to load the plugin. It will call the service\n   * that handles all interaction with projext and that will take care of registering the necessary\n   * events to maintain the runner file updated.\n   * @param {Projext} projext The projext main container.\n   */\n  plugin(projext) {\n    this.get('projextPlugin').registerPlugin(projext);\n  }\n  /**\n   * Starts the plugin CLI interface.\n   */\n  cli() {\n    this.get('cli').start([\n      this.get('cliSHRunCommand'),\n      this.get('cliSHValidateCommand'),\n    ]);\n  }\n  /**\n   * Makes the `errorHandler` service listen for any uncaught exceptions the plugin may throw.\n   * @ignore\n   * @access protected\n   */\n  _addErrorHandler() {\n    this.get('errorHandler').listen();\n  }\n}\n\nmodule.exports = { ProjextRunner };\n",
@@ -1006,7 +1174,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 67,
+    "__docId__": 76,
     "kind": "class",
     "name": "ProjextRunner",
     "memberof": "src/app/index.js",
@@ -1024,7 +1192,7 @@
     ]
   },
   {
-    "__docId__": 68,
+    "__docId__": 77,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/app/index.js~ProjextRunner",
@@ -1038,7 +1206,7 @@
     "ignore": true
   },
   {
-    "__docId__": 69,
+    "__docId__": 78,
     "kind": "method",
     "name": "plugin",
     "memberof": "src/app/index.js~ProjextRunner",
@@ -1064,7 +1232,7 @@
     "return": null
   },
   {
-    "__docId__": 70,
+    "__docId__": 79,
     "kind": "method",
     "name": "cli",
     "memberof": "src/app/index.js~ProjextRunner",
@@ -1079,7 +1247,7 @@
     "return": null
   },
   {
-    "__docId__": 71,
+    "__docId__": 80,
     "kind": "method",
     "name": "_addErrorHandler",
     "memberof": "src/app/index.js~ProjextRunner",
@@ -1095,7 +1263,7 @@
     "return": null
   },
   {
-    "__docId__": 72,
+    "__docId__": 81,
     "kind": "file",
     "name": "src/index.js",
     "content": "const runner = require('../index');\n/**\n * This is the method called by projext when loading the plugin and it takes care of calling\n * the instance of the runner and using it to register on projext.\n * @param {Projext} app The projext main container.\n * @ignore\n */\nconst loadPlugin = (app) => runner.plugin(app);\n\nmodule.exports = loadPlugin;\n",
@@ -1106,7 +1274,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 73,
+    "__docId__": 82,
     "kind": "function",
     "name": "loadPlugin",
     "memberof": "src/index.js",
@@ -1136,7 +1304,7 @@
     "return": null
   },
   {
-    "__docId__": 74,
+    "__docId__": 83,
     "kind": "file",
     "name": "src/services/cli/cli.js",
     "content": "const commander = require('commander');\nconst { provider } = require('jimple');\n/**\n * The main CLI program interface where all the commands are registered and that works as a bridge\n * between the app and `commander`.\n */\nclass CLI {\n  /**\n   * Class constructor.\n   * @param {Object} info      This app `package.json` information.\n   * @param {string} [name=''] The name of the program. If not specified, it will use the one on\n   *                           `info` object.\n   */\n  constructor(info, name = '') {\n    /**\n     * This app `package.json` information.\n     * @type {Object}\n     */\n    this.info = info;\n    /**\n     * The name of the CLI program.\n     * @type {string}\n     */\n    this.name = name || this.info.name;\n  }\n  /**\n   * Start the interface with a list of commands.\n   * @param {Array<CLICommand>} commands A list of commands to register.\n   */\n  start(commands) {\n    // eslint-disable-next-line no-underscore-dangle\n    commander._name = this.name;\n    // Set the version and the description of the program.\n    commander.version(this.info.version, '-v, --version');\n    commander.description(this.info.description);\n    // Loop all the commands and register them.\n    commands.forEach((command) => {\n      command.register(commander, this);\n    });\n    // Tell commander to parse the arguments.\n    commander.parse(process.argv);\n  }\n}\n/**\n * Generates a `Provider` with an already defined name for the program.\n * @example\n * // Generate the provider\n * const provider = cliWithName('my-program');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @param {string} name The name of the program.\n * @return {Provider}\n */\nconst cliWithName = (name) => provider((app) => {\n  app.set('cli', () => new CLI(\n    app.get('info'),\n    name\n  ));\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLI` as the `cli` service.\n * @example\n * // Register it on the container\n * container.register(cli);\n * // Getting access to the service instance\n * const cli = container.get('cli');\n * @type {Provider}\n */\nconst cli = cliWithName();\n\nmodule.exports = {\n  CLI,\n  cliWithName,\n  cli,\n};\n",
@@ -1147,7 +1315,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 75,
+    "__docId__": 84,
     "kind": "class",
     "name": "CLI",
     "memberof": "src/services/cli/cli.js",
@@ -1162,7 +1330,7 @@
     "interface": false
   },
   {
-    "__docId__": 76,
+    "__docId__": 85,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/cli/cli.js~CLI",
@@ -1199,7 +1367,7 @@
     ]
   },
   {
-    "__docId__": 77,
+    "__docId__": 86,
     "kind": "member",
     "name": "info",
     "memberof": "src/services/cli/cli.js~CLI",
@@ -1218,7 +1386,7 @@
     }
   },
   {
-    "__docId__": 78,
+    "__docId__": 87,
     "kind": "member",
     "name": "name",
     "memberof": "src/services/cli/cli.js~CLI",
@@ -1237,7 +1405,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 88,
     "kind": "method",
     "name": "start",
     "memberof": "src/services/cli/cli.js~CLI",
@@ -1263,7 +1431,7 @@
     "return": null
   },
   {
-    "__docId__": 80,
+    "__docId__": 89,
     "kind": "function",
     "name": "cliWithName",
     "memberof": "src/services/cli/cli.js",
@@ -1302,7 +1470,7 @@
     }
   },
   {
-    "__docId__": 81,
+    "__docId__": 90,
     "kind": "variable",
     "name": "cli",
     "memberof": "src/services/cli/cli.js",
@@ -1327,7 +1495,7 @@
     }
   },
   {
-    "__docId__": 82,
+    "__docId__": 91,
     "kind": "file",
     "name": "src/services/cli/cliSHRun.js",
     "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is private command the shell script executes in order to get a list of commands to run.\n * @extends {CLICommand}\n */\nclass CLISHRunCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {Runner} runner The service tha provides the commands to run.\n   */\n  constructor(runner) {\n    super();\n    /**\n     * A local reference for the `runner` service.\n     * @type {Runner}\n     */\n    this.runner = runner;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-run [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Get the commands for the shell program to execute';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'inspect',\n      '-i, --inspect',\n      'Enable the Node inspector',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and outputs the list of commands to run.\n   * @param {?string} target             The name of the target to run.\n   * @param {Command} command            The executed command (sent by `commander`).\n   * @param {Object}  options            The command options.\n   * @param {string}  options.production If the user wants to run a production build, even with\n   *                                     projext preset.\n   * @param {boolean} options.ready      If the user used the `production` option, then the list\n   *                                     of commands will be: one to build the target for\n   *                                     production and one to run this command again, because if\n   *                                     a build is going to happen, there's no way to be sure\n   *                                     the runner file is up to date.\n   *                                     This option basically says 'The production build is ready\n   *                                     and the runner file is updated, now is ok to execute it'.\n   * @param {boolean} options.inspect    Whether or not to enable the Node inspector.\n   */\n  handle(target, command, options) {\n    // Get the optins.\n    const { inspect, production, ready } = options;\n    // Define the commands variable that the method will output.\n    let commands;\n    /**\n     * If this is the second time the command is executed, with the intention of running a\n     * production build...\n     */\n    if (ready) {\n      // ...get the commands to execute the production build.\n      commands = this.runner.getPluginCommandsForProduction(target, inspect);\n    } else {\n      // ...otherwise, generate the command to run this for a second time.\n      const targetArg = target ? `${target} ` : '';\n      const runPluginProduction = `${this.cliName} ${targetArg}--production --ready`;\n      // Get the list of commands from the runner service.\n      commands = this.runner.getCommands(target, production, inspect, runPluginProduction);\n    }\n    // Output the list of commands\n    this.output(commands);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHRunCommand` as the `cliSHRunCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHRunCommand);\n * // Getting access to the service instance\n * const cliSHRunCommand = container.get('cliSHRunCommand');\n * @type {Provider}\n */\nconst cliSHRunCommand = provider((app) => {\n  app.set('cliSHRunCommand', () => new CLISHRunCommand(\n    app.get('runner')\n  ));\n});\n\nmodule.exports = {\n  CLISHRunCommand,\n  cliSHRunCommand,\n};\n",
@@ -1338,7 +1506,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 83,
+    "__docId__": 92,
     "kind": "class",
     "name": "CLISHRunCommand",
     "memberof": "src/services/cli/cliSHRun.js",
@@ -1356,7 +1524,7 @@
     ]
   },
   {
-    "__docId__": 84,
+    "__docId__": 93,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1381,7 +1549,7 @@
     ]
   },
   {
-    "__docId__": 85,
+    "__docId__": 94,
     "kind": "member",
     "name": "runner",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1400,7 +1568,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 95,
     "kind": "member",
     "name": "command",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1419,7 +1587,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 96,
     "kind": "member",
     "name": "description",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1438,7 +1606,7 @@
     }
   },
   {
-    "__docId__": 88,
+    "__docId__": 97,
     "kind": "member",
     "name": "hidden",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1457,7 +1625,7 @@
     }
   },
   {
-    "__docId__": 89,
+    "__docId__": 98,
     "kind": "method",
     "name": "handle",
     "memberof": "src/services/cli/cliSHRun.js~CLISHRunCommand",
@@ -1533,7 +1701,7 @@
     "return": null
   },
   {
-    "__docId__": 90,
+    "__docId__": 99,
     "kind": "variable",
     "name": "cliSHRunCommand",
     "memberof": "src/services/cli/cliSHRun.js",
@@ -1558,7 +1726,7 @@
     }
   },
   {
-    "__docId__": 91,
+    "__docId__": 100,
     "kind": "file",
     "name": "src/services/cli/cliSHValidate.js",
     "content": "const { provider } = require('jimple');\nconst CLICommand = require('../../abstracts/cliCommand');\n/**\n * This is a private command the shell script executes before running the run command in order to\n * validate the arguments and throw any necessary error. The reason we do this in two separated\n * commands is that the shell script takes all the output of the run command and tries to execute\n * it, so we can't include execptions in there.\n * @extends {CLICommand}\n */\nclass CLISHValidateCommand extends CLICommand {\n  /**\n   * Class constructor.\n   * @param {RunnerFile}    runnerFile    To validate if the file exists or not.\n   * @param {Targets}       targets       To validate if a target exists or not.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.\n   */\n  constructor(runnerFile, targets, projextPlugin) {\n    super();\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * The instruction needed to trigger the command.\n     * @type {string}\n     */\n    this.command = 'sh-validate [target]';\n    /**\n     * A description of the command, just to follow the interface as the command won't show up on\n     * the help interface.\n     * @type {string}\n     */\n    this.description = 'Validate the arguments before the shelll executes the task';\n    this.addOption(\n      'production',\n      '-p, --production',\n      'Force the runner to use a production build even if projext is present',\n      false\n    );\n    this.addOption(\n      'inspect',\n      '-i, --inspect',\n      'Enable the Node inspector',\n      false\n    );\n    this.addOption(\n      'ready',\n      '-r, --ready',\n      'Private flag to indicate that a production build was made',\n      false\n    );\n    /**\n     * Hide the command from the help interface.\n     * @type {Boolean}\n     */\n    this.hidden = true;\n  }\n  /**\n   * Handle the execution of the command and validate all the arguments.\n   * @param {?string} target The name of the target.\n   */\n  handle(target) {\n    // First, let's detect if the runner file exists.\n    const exists = this.runnerFile.exists();\n    // If projext is not present and the file doesn't exist, there's nothing the plugin can do.\n    if (!this.projextPlugin.isInstalled() && !exists) {\n      throw new Error('The runner file doesn\\'t exist and projext is not present');\n    }\n    /**\n     * Then, if the runner file exists, validate the target, otherwise, we'll assume this is\n     * running with projext present and the file is going to be generated on build.\n     */\n    return !exists || this.targets.validate(target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `CLISHValidateCommand` as the `cliSHValidateCommand` service.\n * @example\n * // Register it on the container\n * container.register(cliSHValidateCommand);\n * // Getting access to the service instance\n * const cliSHValidateCommand = container.get('cliSHValidateCommand');\n * @type {Provider}\n */\nconst cliSHValidateCommand = provider((app) => {\n  app.set('cliSHValidateCommand', () => new CLISHValidateCommand(\n    app.get('runnerFile'),\n    app.get('targets'),\n    app.get('projextPlugin')\n  ));\n});\n\nmodule.exports = {\n  CLISHValidateCommand,\n  cliSHValidateCommand,\n};\n",
@@ -1569,7 +1737,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 92,
+    "__docId__": 101,
     "kind": "class",
     "name": "CLISHValidateCommand",
     "memberof": "src/services/cli/cliSHValidate.js",
@@ -1587,7 +1755,7 @@
     ]
   },
   {
-    "__docId__": 93,
+    "__docId__": 102,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1632,7 +1800,7 @@
     ]
   },
   {
-    "__docId__": 94,
+    "__docId__": 103,
     "kind": "member",
     "name": "runnerFile",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1651,7 +1819,7 @@
     }
   },
   {
-    "__docId__": 95,
+    "__docId__": 104,
     "kind": "member",
     "name": "targets",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1670,7 +1838,7 @@
     }
   },
   {
-    "__docId__": 96,
+    "__docId__": 105,
     "kind": "member",
     "name": "projextPlugin",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1689,7 +1857,7 @@
     }
   },
   {
-    "__docId__": 97,
+    "__docId__": 106,
     "kind": "member",
     "name": "command",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1708,7 +1876,7 @@
     }
   },
   {
-    "__docId__": 98,
+    "__docId__": 107,
     "kind": "member",
     "name": "description",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1727,7 +1895,7 @@
     }
   },
   {
-    "__docId__": 99,
+    "__docId__": 108,
     "kind": "member",
     "name": "hidden",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1746,7 +1914,7 @@
     }
   },
   {
-    "__docId__": 100,
+    "__docId__": 109,
     "kind": "method",
     "name": "handle",
     "memberof": "src/services/cli/cliSHValidate.js~CLISHValidateCommand",
@@ -1776,7 +1944,7 @@
     }
   },
   {
-    "__docId__": 101,
+    "__docId__": 110,
     "kind": "variable",
     "name": "cliSHValidateCommand",
     "memberof": "src/services/cli/cliSHValidate.js",
@@ -1801,7 +1969,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 111,
     "kind": "file",
     "name": "src/services/cli/index.js",
     "content": "const { cli, cliWithName } = require('./cli');\nconst { cliSHRunCommand } = require('./cliSHRun');\nconst { cliSHValidateCommand } = require('./cliSHValidate');\n\nmodule.exports = {\n  cli,\n  cliWithName,\n  cliSHRunCommand,\n  cliSHValidateCommand,\n};\n",
@@ -1812,7 +1980,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 103,
+    "__docId__": 112,
     "kind": "file",
     "name": "src/services/runner/file.js",
     "content": "const path = require('path');\nconst extend = require('extend');\nconst fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of creating, validating and updating the runner file this plugin\n * uses to store the information about the builded targets and how to execute them.\n */\nclass RunnerFile {\n  /**\n   * Class constructor.\n   * @param {Object}    info      The plugin `package.json` information, to use the plugin version\n   *                              on the file.\n   * @param {PathUtils} pathUtils To build the paths to the file.\n   */\n  constructor(info, pathUtils) {\n    /**\n     * The name of the runner file.\n     * @type {string}\n     */\n    this.filename = 'projextrunner.json';\n    /**\n     * The path to the runner file.\n     * @type {string}\n     */\n    this.filepath = pathUtils.join(this.filename);\n    /**\n     * The file default template.\n     * @type {RunnerFileContents}\n     */\n    this.fileTemplate = {\n      runnerVersion: info.version,\n      version: 'development',\n      directory: '',\n      targets: {},\n    };\n  }\n  /**\n   * Set the name of the runner file.\n   * @param {string} newName The new name.\n   * @todo Update the `filepath`\n   */\n  setFilename(newName) {\n    this.filename = newName;\n  }\n  /**\n   * Get the name of the runner file.\n   * @return {string}\n   */\n  getFilename() {\n    return this.filename;\n  }\n  /**\n   * Checks whether the file exists or not.\n   * @return {boolean}\n   */\n  exists() {\n    return fs.pathExistsSync(this.filepath);\n  }\n  /**\n   * Updates the runner file with a new build information.\n   * @param {Target} target    The target information.\n   * @param {string} version   The project version.\n   * @param {string} directory The project distribution directory.\n   * @return {?Target} If the target type was `node`, it will return the information saved on the\n   *                   file, otherwise, it will return `null`.\n   */\n  update(target, version, directory) {\n    let result = null;\n    if (target.is.node) {\n      const file = this.read();\n      file.version = version;\n      file.directory = directory;\n\n      let targetPath = '';\n      const { build } = target.folders;\n      if (build === directory) {\n        targetPath = './';\n      } else {\n        // +1 to replace the leading `/`\n        targetPath = build.substr(directory.length + 1);\n      }\n\n      const targetExec = target.bundle ?\n        target.output.production.js :\n        target.entry.production;\n      const targetExecPath = path.join(targetPath, targetExec);\n\n      result = {\n        name: target.name,\n        path: targetExecPath,\n        options: target.runnerOptions || {},\n      };\n\n      file.targets[target.name] = result;\n\n      fs.writeJsonSync(this.filepath, file);\n    }\n\n    return result;\n  }\n  /**\n   * Updates the runner file with a new version of the project.\n   * @param {string} version The project version.\n   */\n  updateVersion(version) {\n    const file = this.read();\n    file.version = version;\n    return fs.writeJsonSync(this.filepath, file);\n  }\n  /**\n   * Read the contents of the runner file. If the file doesn't exist, it will create it with\n   * the default template (`this.fileTemplate`).\n   * @return {RunnerFileContents}\n   */\n  read() {\n    let result;\n    if (this.exists()) {\n      result = fs.readJsonSync(this.filepath);\n    } else {\n      result = extend(true, {}, this.fileTemplate);\n    }\n\n    return result;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `RunnerFile` as the `runnerFile` service.\n * @example\n * // Register it on the container\n * container.register(runnerFile);\n * // Getting access to the service instance\n * const runnerFile = container.get('runnerFile');\n * @type {Provider}\n */\nconst runnerFile = provider((app) => {\n  app.set('runnerFile', () => new RunnerFile(\n    app.get('info'),\n    app.get('pathUtils')\n  ));\n});\n\nmodule.exports = {\n  RunnerFile,\n  runnerFile,\n};\n",
@@ -1823,7 +1991,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 104,
+    "__docId__": 113,
     "kind": "class",
     "name": "RunnerFile",
     "memberof": "src/services/runner/file.js",
@@ -1838,7 +2006,7 @@
     "interface": false
   },
   {
-    "__docId__": 105,
+    "__docId__": 114,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1873,7 +2041,7 @@
     ]
   },
   {
-    "__docId__": 106,
+    "__docId__": 115,
     "kind": "member",
     "name": "filename",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1892,7 +2060,7 @@
     }
   },
   {
-    "__docId__": 107,
+    "__docId__": 116,
     "kind": "member",
     "name": "filepath",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1911,7 +2079,7 @@
     }
   },
   {
-    "__docId__": 108,
+    "__docId__": 117,
     "kind": "member",
     "name": "fileTemplate",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1930,7 +2098,7 @@
     }
   },
   {
-    "__docId__": 109,
+    "__docId__": 118,
     "kind": "method",
     "name": "setFilename",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1959,7 +2127,7 @@
     "return": null
   },
   {
-    "__docId__": 111,
+    "__docId__": 120,
     "kind": "method",
     "name": "getFilename",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -1981,7 +2149,7 @@
     "params": []
   },
   {
-    "__docId__": 112,
+    "__docId__": 121,
     "kind": "method",
     "name": "exists",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -2003,7 +2171,7 @@
     "params": []
   },
   {
-    "__docId__": 113,
+    "__docId__": 122,
     "kind": "method",
     "name": "update",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -2056,7 +2224,7 @@
     }
   },
   {
-    "__docId__": 114,
+    "__docId__": 123,
     "kind": "method",
     "name": "updateVersion",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -2086,7 +2254,7 @@
     }
   },
   {
-    "__docId__": 115,
+    "__docId__": 124,
     "kind": "method",
     "name": "read",
     "memberof": "src/services/runner/file.js~RunnerFile",
@@ -2108,7 +2276,7 @@
     "params": []
   },
   {
-    "__docId__": 116,
+    "__docId__": 125,
     "kind": "variable",
     "name": "runnerFile",
     "memberof": "src/services/runner/file.js",
@@ -2133,7 +2301,7 @@
     }
   },
   {
-    "__docId__": 117,
+    "__docId__": 126,
     "kind": "file",
     "name": "src/services/runner/index.js",
     "content": "const { runnerFile } = require('./file');\nconst { runner } = require('./runner');\nconst { targets } = require('./targets');\n\nmodule.exports = {\n  runnerFile,\n  runner,\n  targets,\n};\n",
@@ -2144,7 +2312,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 118,
+    "__docId__": 127,
     "kind": "file",
     "name": "src/services/runner/runner.js",
     "content": "const { provider } = require('jimple');\n/**\n * This service is the one that knows how to run a target, so it's in charge of generating the\n * shell commands for it.\n */\nclass Runner {\n  /**\n   * Class constructor.\n   * @param {PathUtils}     pathUtils     To create the path for the targets executables.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not and to generated\n   *                                      the targets build commands.\n   * @param {RunnerFile}    runnerFile    To read the required information to run targets.\n   * @param {Targets}       targets       To get the targets information.\n   */\n  constructor(pathUtils, projextPlugin, runnerFile, targets) {\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * A local reference for the `targets` service.\n     * @type {Targets}\n     */\n    this.targets = targets;\n  }\n  /**\n   * Get the shell execution commands for running a target.\n   * @param {?string} targetName         The name of the target to run.\n   * @param {boolean} production         In case projext is present, this flag forces the runner\n   *                                     to build the target for production and run that build.\n   * @param {boolean} inspect            Whether or not to enable the Node inspector.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {string}\n   */\n  getCommands(targetName, production, inspect, runAsPluginCommand) {\n    let commands;\n    // If projext is present...\n    if (this.projextPlugin.isInstalled()) {\n      // ..get the commands to run with projext.\n      commands = this.getCommandsForProjext(targetName, production, inspect, runAsPluginCommand);\n    } else {\n      // ...otherwise, get the target information.\n      const target = targetName ?\n        this.targets.getTarget(targetName) :\n        this.targets.getDefaultTarget();\n      // Get the commands to run on a production environment.\n      commands = this.getCommandsForProduction(target);\n    }\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the commands to run a target production build. This needs to be called after a build is\n   * made.\n   * @param {?string} targetName The name of the target to run.\n   * @return {string}\n   */\n  getPluginCommandsForProduction(targetName) {\n    // Get the target information.\n    const target = targetName ?\n      this.targets.getTarget(targetName) :\n      this.targets.getDefaultTarget();\n    // Get the commands to run without projext.\n    const commands = this.getCommandsForProduction(target);\n    // Push all the commands in to a single string.\n    return commands.join(';');\n  }\n  /**\n   * Get the list of comands to run a target with projext.\n   * @param {?string} targetName         The name of the target to run.\n   * @param {boolean} production         Forces projext to use the production build.\n   * @param {boolean} inspect            Whether or not to enable the Node inspector.\n   * @param {string}  runAsPluginCommand In case `production` is `true`, the plugin will first run\n   *                                     a build command in order to update the runner file with\n   *                                     the latest information and then it will run this command,\n   *                                     to inform the plugin that the build is ready and that just\n   *                                     needs to execute it.\n   * @return {Array}\n   */\n  getCommandsForProjext(targetName, production, inspect, runAsPluginCommand) {\n    // Define the list of commands to return.\n    const commands = [];\n    // Define the base arguments for the build command.\n    const args = {\n      // The target can be empty in case the intended target is the default one.\n      target: targetName || '',\n      type: 'development',\n      run: false,\n    };\n    // If the target needs to use the production build...\n    if (production) {\n      // ...set the `type` argument to production.\n      args.type = 'production';\n      // Push the command to create a production build.\n      commands.push(this.projextPlugin.getBuildCommand(args));\n      // Push the command to run the plugin again.\n      commands.push(runAsPluginCommand);\n    } else {\n      args.run = true;\n      args.inspect = inspect;\n      const variables = this.getEnvironmentVariables(this.runnerFile.read());\n      commands.push(this.projextPlugin.getBuildCommand(args, variables));\n    }\n\n    return commands;\n  }\n  /**\n   * Get the list of commands to run a target without projext present.\n   * @param {Target} target The target information.\n   * @return {Array}\n   */\n  getCommandsForProduction(target) {\n    // Get the information from the runner file.\n    const runnerFileContents = this.runnerFile.read();\n    // Get the environment variables.\n    const variables = this.getEnvironmentVariables(runnerFileContents);\n    // Get the executable it needs to use to run the target.\n    const runWith = target.options.runWith || 'node';\n    let execPath;\n    // If projext is present...\n    if (this.projextPlugin.isInstalled()) {\n      /**\n       * ...this means the user is running a production build, so set the execution file from\n       * inside the project distribution directory.\n       */\n      execPath = this.pathUtils.join(\n        runnerFileContents.directory,\n        target.path\n      );\n    } else {\n      // ...otherwise, just set the execution file that is on the target information.\n      execPath = target.exec;\n    }\n    // Create the command.\n    const command = `${variables} ${runWith} ${execPath}`;\n    // Return the list of commands.\n    return [command];\n  }\n  /**\n   * Get a set of environment variables that will be sent to the executables.\n   * For now is just the version of the project.\n   * @param {RunnerFileContents} runnerFileContents The contents of the runner file.\n   * @return {string}\n   * @todo Refactor this. The variables should be configurable.\n   */\n  getEnvironmentVariables(runnerFileContents) {\n    const names = {\n      version: 'VERSION',\n    };\n\n    return Object.keys(names)\n    .map((name) => `${names[name]}=${runnerFileContents[name]}`)\n    .join(' ');\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Runner` as the `runner` service.\n * @example\n * // Register it on the container\n * container.register(runner);\n * // Getting access to the service instance\n * const runner = container.get('runner');\n * @type {Provider}\n */\nconst runner = provider((app) => {\n  app.set('runner', () => new Runner(\n    app.get('pathUtils'),\n    app.get('projextPlugin'),\n    app.get('runnerFile'),\n    app.get('targets')\n  ));\n});\n\nmodule.exports = {\n  Runner,\n  runner,\n};\n",
@@ -2155,7 +2323,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 119,
+    "__docId__": 128,
     "kind": "class",
     "name": "Runner",
     "memberof": "src/services/runner/runner.js",
@@ -2170,7 +2338,7 @@
     "interface": false
   },
   {
-    "__docId__": 120,
+    "__docId__": 129,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2225,7 +2393,7 @@
     ]
   },
   {
-    "__docId__": 121,
+    "__docId__": 130,
     "kind": "member",
     "name": "pathUtils",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2244,7 +2412,7 @@
     }
   },
   {
-    "__docId__": 122,
+    "__docId__": 131,
     "kind": "member",
     "name": "projextPlugin",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2263,7 +2431,7 @@
     }
   },
   {
-    "__docId__": 123,
+    "__docId__": 132,
     "kind": "member",
     "name": "runnerFile",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2282,7 +2450,7 @@
     }
   },
   {
-    "__docId__": 124,
+    "__docId__": 133,
     "kind": "member",
     "name": "targets",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2301,7 +2469,7 @@
     }
   },
   {
-    "__docId__": 125,
+    "__docId__": 134,
     "kind": "method",
     "name": "getCommands",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2364,7 +2532,7 @@
     }
   },
   {
-    "__docId__": 126,
+    "__docId__": 135,
     "kind": "method",
     "name": "getPluginCommandsForProduction",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2397,7 +2565,7 @@
     }
   },
   {
-    "__docId__": 127,
+    "__docId__": 136,
     "kind": "method",
     "name": "getCommandsForProjext",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2460,7 +2628,7 @@
     }
   },
   {
-    "__docId__": 128,
+    "__docId__": 137,
     "kind": "method",
     "name": "getCommandsForProduction",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2493,7 +2661,7 @@
     }
   },
   {
-    "__docId__": 129,
+    "__docId__": 138,
     "kind": "method",
     "name": "getEnvironmentVariables",
     "memberof": "src/services/runner/runner.js~Runner",
@@ -2529,7 +2697,7 @@
     }
   },
   {
-    "__docId__": 130,
+    "__docId__": 139,
     "kind": "variable",
     "name": "runner",
     "memberof": "src/services/runner/runner.js",
@@ -2554,7 +2722,7 @@
     }
   },
   {
-    "__docId__": 131,
+    "__docId__": 140,
     "kind": "file",
     "name": "src/services/runner/targets.js",
     "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * This service is in charge of providing and validating the targets stored on the runner file.\n */\nclass Targets {\n  /**\n   * Class constructor.\n   * @param {Object}        packageInfo   The project's `package.json`, necessary to get the\n   *                                      project's name and use it as the name of the default\n   *                                      target.\n   * @param {PathUtils}     pathUtils     To create the targets exeuction paths.\n   * @param {ProjextPlugin} projextPlugin To check if projext is present or not.\n   * @param {RunnerFile}    runnerFile    To get the targets information.\n   */\n  constructor(packageInfo, pathUtils, projextPlugin, runnerFile) {\n    /**\n     * The information of the project's `package.json`.\n     * @type {Object}\n     */\n    this.packageInfo = packageInfo;\n    /**\n     * A local reference for the `pathUtils` service.\n     * @type {PathUtils}\n     */\n    this.pathUtils = pathUtils;\n    /**\n     * A local reference for the `projextPlugin` service.\n     * @type {ProjextPlugin}\n     */\n    this.projextPlugin = projextPlugin;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n  }\n  /**\n   * Get a target information by its name.\n   * @param {string} name The target name.\n   * @return {Target}\n   * @throws {Error} If the target information is not on the runner file.\n   */\n  getTarget(name) {\n    const target = this.runnerFile.read().targets[name];\n    if (!target) {\n      throw new Error(\n        'The target information is not on the runner file, you first ned to build it'\n      );\n    }\n\n    return this._normalizeTarget(target);\n  }\n  /**\n   * Returns the target with the name of project (specified on the `package.json`) and if there's\n   * no target with that name, then the first one, using a list of the targets name on alphabetical\n   * order.\n   * @return {Target}\n   * @throws {Error} If the project has no targets\n   */\n  getDefaultTarget() {\n    const { targets } = this.runnerFile.read();\n    const names = Object.keys(targets).sort();\n    let target;\n    if (names.length) {\n      const { name: projectName } = this.packageInfo;\n      target = targets[projectName] || targets[names[0]];\n    } else {\n      throw new Error('The project doesn\\'t have any targets or none has been built yet');\n    }\n\n    return this._normalizeTarget(target);\n  }\n  /**\n   * Validate a target information.\n   * @param  {?string} name The target name.\n   * @return {boolean}\n   * @throws {Error} If the runner file doesn't exist.\n   * @throws {Error} If the target executable doesn't exist.\n   */\n  validate(name) {\n    // Only validate the target if the plugin is on a production environment.\n    if (!this.projextPlugin.isInstalled()) {\n      // Check if the runner file exists.\n      if (!this.runnerFile.exists()) {\n        throw new Error('The runner file doesn\\'t exist, you first need to build a target');\n      }\n\n      const target = name ? this.getTarget(name) : this.getDefaultTarget();\n      // Check if the target executable exists.\n      if (!fs.pathExistsSync(target.exec)) {\n        throw new Error(`The target executable doesn't exist: ${target.exec}`);\n      }\n    }\n\n    return true;\n  }\n  /**\n   * Add the execution path (`exec`) to a {@link Target}.\n   * @param {Target} target The target for which the execution path will be generated for.\n   * @return {Target}\n   */\n  _normalizeTarget(target) {\n    return Object.assign({\n      exec: this.pathUtils.join(target.path),\n    }, target);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Targets` as the `targets` service.\n * @example\n * // Register it on the container\n * container.register(targets);\n * // Getting access to the service instance\n * const targets = container.get('targets');\n * @type {Provider}\n */\nconst targets = provider((app) => {\n  app.set('targets', () => new Targets(\n    app.get('packageInfo'),\n    app.get('pathUtils'),\n    app.get('projextPlugin'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  Targets,\n  targets,\n};\n",
@@ -2565,7 +2733,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 132,
+    "__docId__": 141,
     "kind": "class",
     "name": "Targets",
     "memberof": "src/services/runner/targets.js",
@@ -2580,7 +2748,7 @@
     "interface": false
   },
   {
-    "__docId__": 133,
+    "__docId__": 142,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2635,7 +2803,7 @@
     ]
   },
   {
-    "__docId__": 134,
+    "__docId__": 143,
     "kind": "member",
     "name": "packageInfo",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2654,7 +2822,7 @@
     }
   },
   {
-    "__docId__": 135,
+    "__docId__": 144,
     "kind": "member",
     "name": "pathUtils",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2673,7 +2841,7 @@
     }
   },
   {
-    "__docId__": 136,
+    "__docId__": 145,
     "kind": "member",
     "name": "projextPlugin",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2692,7 +2860,7 @@
     }
   },
   {
-    "__docId__": 137,
+    "__docId__": 146,
     "kind": "member",
     "name": "runnerFile",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2711,7 +2879,7 @@
     }
   },
   {
-    "__docId__": 138,
+    "__docId__": 147,
     "kind": "method",
     "name": "getTarget",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2752,7 +2920,7 @@
     ]
   },
   {
-    "__docId__": 139,
+    "__docId__": 148,
     "kind": "method",
     "name": "getDefaultTarget",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2782,7 +2950,7 @@
     "params": []
   },
   {
-    "__docId__": 140,
+    "__docId__": 149,
     "kind": "method",
     "name": "validate",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2829,7 +2997,7 @@
     ]
   },
   {
-    "__docId__": 141,
+    "__docId__": 150,
     "kind": "method",
     "name": "_normalizeTarget",
     "memberof": "src/services/runner/targets.js~Targets",
@@ -2862,7 +3030,7 @@
     }
   },
   {
-    "__docId__": 142,
+    "__docId__": 151,
     "kind": "variable",
     "name": "targets",
     "memberof": "src/services/runner/targets.js",
@@ -2887,7 +3055,7 @@
     }
   },
   {
-    "__docId__": 143,
+    "__docId__": 152,
     "kind": "file",
     "name": "src/services/utils/index.js",
     "content": "const { projextPlugin } = require('./projextPlugin');\n\nmodule.exports = {\n  projextPlugin,\n};\n",
@@ -2898,7 +3066,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 144,
+    "__docId__": 153,
     "kind": "file",
     "name": "src/services/utils/projextPlugin.js",
     "content": "const { provider } = require('jimple');\n/**\n * This service handles all interaction between the plugin and projext. It takes care of validating\n * if projext is installed, registering the necessary events and generating the build commands for\n * when the plugin is used on a development environment.\n */\nclass ProjextPlugin {\n  /**\n   * Class constructor.\n   * @param {Object}     info       The plugin's `package.json`. The service uses it to get the\n   *                                name and send it on the build commands as the `--plugin` flag.\n   * @param {RunnerFile} runnerFile To be able to update the runner file when a target is built.\n   */\n  constructor(info, runnerFile) {\n    /**\n     * The name of the plugin as it's defined on the `package.json`. It's used on the generated\n     * build command(s) as the `--plugin` option. The flag is verified by the plugin in order to\n     * building dependencies (other targets) when a target is running on a development\n     * environment.\n     * @type {string}\n     */\n    this.pluginName = info.name;\n    /**\n     * A local reference for the `runnerFile` service.\n     * @type {RunnerFile}\n     */\n    this.runnerFile = runnerFile;\n    /**\n     * The name of the option flag the service will add on the build commands.\n     * @type {string}\n     */\n    this._pluginFlagName = 'plugin';\n    /**\n     * Whether or not projext is installed on the current environment.\n     * @type {boolean}\n     * @ignore\n     * @access protected\n     */\n    this._installed = this._detectInstallation();\n    /**\n     * When running along side projext, when the plugin gets registered, this property will hold a\n     * reference to the projext instance.\n     * @type {?Projext}\n     * @ignore\n     * @access protected\n     */\n    this._instance = null;\n  }\n  /**\n   * Check whether projext is installed or not.\n   * @return {boolean}\n   */\n  isInstalled() {\n    return this._installed;\n  }\n  /**\n   * Register all the necessary events for the plugin to work:\n   * - Update the target information on the runner file when the target build command is generated.\n   * - Add the runner file to the list of files projext copies.\n   * - Update the runner file version when the revision file is created.\n   *\n   * @param {Projext} instance The projext instance that is registering the plugin.\n   */\n  registerPlugin(instance) {\n    this._setInstance(instance);\n    const events = this.get('events');\n    events.once('build-target-commands-list', (commands, params, unknownOptions) => (\n      this._updateBuildCommands(commands, params, unknownOptions)\n    ));\n\n    events.once('project-files-to-copy', (list) => this._updateCopyList(list));\n    events.once('revision-file-created', (version) => this._updateFileVersion(version));\n  }\n  /**\n   * Get a service from projext.\n   * @param {string} service The service name.\n   * @return {*}\n   * @throws {Error} If the plugin hasn't been registered.\n   */\n  get(service) {\n    if (!this._instance) {\n      throw new Error('You can\\'t access projext services if the plugin is not installed');\n    }\n\n    return this._instance.get(service);\n  }\n  /**\n   * Generate a projext build command for one or more targets.\n   * @param {string|Array} target                    A target name or a list of them.\n   * @param {Object}       [args={}]                 A dictionary of arguments and their values to\n   *                                                 send on the command. If this dictionary\n   *                                                 contains a `target` key, it will be ignored\n   *                                                 and removed, since it's the one used to send\n   *                                                 the target name this method uses as parameter.\n   * @param {string}       [environmentVariables=''] Environment variables to prefix the command\n   *                                                 with. For example: `NODE_ENV=production`.\n   * @return {Array} No matter if you used a single (`string`) target or a list (`Array`), it will\n   *                 always return a list (`Array`) of commands.\n   */\n  getBuildCommandForTarget(target, args = {}, environmentVariables = '') {\n    const list = Array.isArray(target) ? target : [target];\n    const newArgs = Object.assign({}, args);\n    delete newArgs.target;\n    const result = list\n    .map((name) => (\n      this.getBuildCommand(\n        Object.assign(\n          { target: name },\n          newArgs\n        ),\n        environmentVariables\n      )\n    ));\n\n    return result;\n  }\n  /**\n   * Generate a projext build command. If not overwritten by the `args` parameter, this method\n   * sends an empty `target` and a `plugin` argument with the value of the `pluginName` property.\n   * @param {Object} args                      A dictionary of arguments and their values to send\n   *                                           on the command.\n   * @param {string} [environmentVariables=''] Environment variables to prefix the command with.\n   *                                           For example: `NODE_ENV=production`\n   * @return {string}\n   * @throws {Error} If projext is not installed and/or it couldn't access is instance.\n   */\n  getBuildCommand(args, environmentVariables = '') {\n    this._loadInstalledInstanceIfNeeded();\n    if (!this.isInstalled() || !this._instance) {\n      throw new Error('You can\\'t generate a build command if projext is not installed');\n    }\n    // Get the environment variables to append to the command.\n    const env = environmentVariables ? `${environmentVariables} ` : '';\n    // Get the service that will generate the build command.\n    const projextCLIBuildCommand = this.get('cliBuildCommand');\n    /**\n     * If the projext CLI was instantiated, the service will have the name of the program, as it\n     * gets set when the commands get registered; but if not, it means that we need to go to main\n     * CLI service and get it from there.\n     */\n    let program = '';\n    if (!projextCLIBuildCommand.cliName) {\n      const cliName = this.get('cli').name;\n      program = `${cliName} `;\n    }\n    // Generate the build command\n    const command = projextCLIBuildCommand.generate(Object.assign(\n      {\n        target: '',\n        [this._pluginFlagName]: this.pluginName,\n      },\n      args\n    )).trim();\n    // Prepend the environment variables and the program name, if needed.\n    const result = `${env}${program}${command}`;\n    // Return the final command.\n    return result;\n  }\n  /**\n   * Set the projext instance.\n   * @param {Projext} instance The projext instance accessed either from registering the plugin or\n   *                           by requiring the module directly.\n   */\n  _setInstance(instance) {\n    this._instance = instance;\n  }\n  /**\n   * Get an instance of projext by requiring the module.\n   * @return {?Projext} If something is wrong with the module or projext is not installed, it will\n   *                    return `null`.\n   */\n  _getInstalledInstance() {\n    let instance;\n    try {\n      // eslint-disable-next-line global-require\n      instance = require('projext/index');\n    } catch (ignore) {\n      instance = null;\n    }\n\n    return instance;\n  }\n  /**\n   * If projext is installed but the plugin wasn't registerd (probably because the plugin was\n   * executed from its own CLI), this method will try to set the instance by requiring the module.\n   */\n  _loadInstalledInstanceIfNeeded() {\n    if (this.isInstalled() && !this._instance) {\n      this._setInstance(this._getInstalledInstance());\n    }\n  }\n  /**\n   * Detect whether or not projext is installed on the current environment.\n   * @return {boolean}\n   */\n  _detectInstallation() {\n    let installed = true;\n    try {\n      // eslint-disable-next-line global-require\n      require('projext');\n    } catch (ignore) {\n      installed = false;\n    }\n\n    return installed;\n  }\n  /**\n   * This method gets called when projext is creating the build commands for a target. It takes\n   * care of updating the runner file with the target information and, if the target needs other\n   * targes to be built first in order to run, injecting the commands for building those targets.\n   * @param {Array}                 commands       The list of commands projext uses to build and\n   *                                               run the target.\n   * @param {CLIBuildCommandParams} params         A dictionary with all the required information\n   *                                               the service needs to run the command: The\n   *                                               target information, the build type, whether or\n   *                                               not the target will be executed, etc.\n   * @param {Object}                unknownOptions Like `options`, this is also a dictionary of\n   *                                               options the original command received, the\n   *                                               difference is that these ones are unknown by\n   *                                               the command, as they were probably injected by\n   *                                               an event. In this case, the method checks if\n   *                                               the plugin option the `getBuildCommand` method\n   *                                               adds is present in order to determine whether\n   *                                               it should add the build commands for the\n   *                                               dependencies or not.\n   * @return {Array} The updated list of commands.\n   */\n  _updateBuildCommands(commands, params, unknownOptions) {\n    // Get the distribution directory path.\n    const distPath = this.get('projectConfiguration').getConfig().paths.build;\n    // Get the project version.\n    const version = this.get('buildVersion').getVersion();\n    // Save the target information on the runner file and get it once it's parsed.\n    const targetInfo = this.runnerFile.update(params.target, version, distPath);\n    // Define the list of commands that are going to be returned.\n    let updatedCommands;\n    /**\n     * If the build command was ran from the plugin, the target type is `node` (a browser target\n     * wouldn't return anything from `runnerFile.update`) and it needs other targets to be built\n     * before running...\n     */\n    if (\n      unknownOptions[this._pluginFlagName] === this.pluginName &&\n      params.type === 'production' &&\n      targetInfo &&\n      targetInfo.options.build\n    ) {\n      // Get the commands for the other targets.\n      const newCommands = this.getBuildCommandForTarget(\n        targetInfo.options.build,\n        Object.assign(\n          {},\n          unknownOptions,\n          { type: params.type }\n        )\n      );\n      // Push them first on the list of commands projext will run.\n      updatedCommands = [\n        ...newCommands,\n        ...commands,\n      ];\n    } else {\n      // ...otherwise, keep the list as it was received.\n      updatedCommands = commands;\n    }\n\n    // Return the list of commands for projext to run.\n    return updatedCommands;\n  }\n  /**\n   * This method gets called when projext is copying the project files to the distribution\n   * directory. It just adds the runner file to the list and returns it.\n   * @param {Array} list The list of files projext is going to copy.\n   * @return {Array} An updated list of files, with the runner file on it.\n   */\n  _updateCopyList(list) {\n    return [\n      ...list,\n      this.runnerFile.getFilename(),\n    ];\n  }\n  /**\n   * This method gets called when projext is generating a revision file and it takes care of\n   * updating the runner file with the generated version.\n   * @param {string} version The new version for the revision file.\n   */\n  _updateFileVersion(version) {\n    this.runnerFile.updateVersion(version);\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `ProjextPlugin` as the `projextPlugin` service.\n * @example\n * // Register it on the container\n * container.register(projextPlugin);\n * // Getting access to the service instance\n * const projextPlugin = container.get('projextPlugin');\n * @type {Provider}\n */\nconst projextPlugin = provider((app) => {\n  app.set('projextPlugin', () => new ProjextPlugin(\n    app.get('info'),\n    app.get('runnerFile')\n  ));\n});\n\nmodule.exports = {\n  ProjextPlugin,\n  projextPlugin,\n};\n",
@@ -2909,7 +3077,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 145,
+    "__docId__": 154,
     "kind": "class",
     "name": "ProjextPlugin",
     "memberof": "src/services/utils/projextPlugin.js",
@@ -2924,7 +3092,7 @@
     "interface": false
   },
   {
-    "__docId__": 146,
+    "__docId__": 155,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -2959,7 +3127,7 @@
     ]
   },
   {
-    "__docId__": 147,
+    "__docId__": 156,
     "kind": "member",
     "name": "pluginName",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -2978,7 +3146,7 @@
     }
   },
   {
-    "__docId__": 148,
+    "__docId__": 157,
     "kind": "member",
     "name": "runnerFile",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -2997,7 +3165,7 @@
     }
   },
   {
-    "__docId__": 149,
+    "__docId__": 158,
     "kind": "member",
     "name": "_pluginFlagName",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3016,7 +3184,7 @@
     }
   },
   {
-    "__docId__": 150,
+    "__docId__": 159,
     "kind": "member",
     "name": "_installed",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3036,7 +3204,7 @@
     }
   },
   {
-    "__docId__": 151,
+    "__docId__": 160,
     "kind": "member",
     "name": "_instance",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3056,7 +3224,7 @@
     }
   },
   {
-    "__docId__": 152,
+    "__docId__": 161,
     "kind": "method",
     "name": "isInstalled",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3078,7 +3246,7 @@
     "params": []
   },
   {
-    "__docId__": 153,
+    "__docId__": 162,
     "kind": "method",
     "name": "registerPlugin",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3104,7 +3272,7 @@
     "return": null
   },
   {
-    "__docId__": 154,
+    "__docId__": 163,
     "kind": "method",
     "name": "get",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3145,7 +3313,7 @@
     ]
   },
   {
-    "__docId__": 155,
+    "__docId__": 164,
     "kind": "method",
     "name": "getBuildCommandForTarget",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3203,7 +3371,7 @@
     }
   },
   {
-    "__docId__": 156,
+    "__docId__": 165,
     "kind": "method",
     "name": "getBuildCommand",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3256,7 +3424,7 @@
     ]
   },
   {
-    "__docId__": 157,
+    "__docId__": 166,
     "kind": "method",
     "name": "_setInstance",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3282,7 +3450,7 @@
     "return": null
   },
   {
-    "__docId__": 159,
+    "__docId__": 168,
     "kind": "method",
     "name": "_getInstalledInstance",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3304,7 +3472,7 @@
     "params": []
   },
   {
-    "__docId__": 160,
+    "__docId__": 169,
     "kind": "method",
     "name": "_loadInstalledInstanceIfNeeded",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3319,7 +3487,7 @@
     "return": null
   },
   {
-    "__docId__": 161,
+    "__docId__": 170,
     "kind": "method",
     "name": "_detectInstallation",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3341,7 +3509,7 @@
     "params": []
   },
   {
-    "__docId__": 162,
+    "__docId__": 171,
     "kind": "method",
     "name": "_updateBuildCommands",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3394,7 +3562,7 @@
     }
   },
   {
-    "__docId__": 163,
+    "__docId__": 172,
     "kind": "method",
     "name": "_updateCopyList",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3427,7 +3595,7 @@
     }
   },
   {
-    "__docId__": 164,
+    "__docId__": 173,
     "kind": "method",
     "name": "_updateFileVersion",
     "memberof": "src/services/utils/projextPlugin.js~ProjextPlugin",
@@ -3453,7 +3621,7 @@
     "return": null
   },
   {
-    "__docId__": 165,
+    "__docId__": 174,
     "kind": "variable",
     "name": "projextPlugin",
     "memberof": "src/services/utils/projextPlugin.js",
@@ -3478,7 +3646,7 @@
     }
   },
   {
-    "__docId__": 166,
+    "__docId__": 175,
     "kind": "file",
     "name": "src/typedef.js",
     "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @external {Projext}\n * https://homer0.github.io/projext/class/src/app/index.js~Projext.html\n */\n\n/**\n * @external {ProjextTarget}\n * https://homer0.github.io/projext/typedef/index.html#static-typedef-Target\n */\n\n/**\n * @external {Command}\n * https://tj.github.io/commander.js/#Command\n */\n\n/**\n * @external {PathUtils}\n * https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html\n */\n\n/**\n * @typedef {Object} Target\n * @property {string} name\n * The target name.\n * @property {string} path\n * The path to the target execution file.\n * @property {boolean} node\n * Whether the target type is `node` or not.\n * @property {Object} options\n * The options to customize the target that will be taken from the projext target `runnerOptions`\n * setting.\n * @property {?string} exec\n * The absolute path to the executable file. This is generated on runtime when the file is loaded,\n * not before.\n */\n\n/**\n * @typedef {Object} RunnerFileContents\n * @property {string} runnerVersion\n * The version of the plugin that generated the file.\n * @property {string} version\n * The project version.\n * @property {string} diretory\n * The project distribution directory.\n * @property {Object} targets\n * A dictionary with the {@link Target}s information.\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
@@ -3489,7 +3657,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 167,
+    "__docId__": 176,
     "kind": "external",
     "name": "Jimple",
     "externalLink": "https://yarnpkg.com/en/package/jimple",
@@ -3500,7 +3668,7 @@
     "description": ""
   },
   {
-    "__docId__": 168,
+    "__docId__": 177,
     "kind": "external",
     "name": "Projext",
     "externalLink": "https://homer0.github.io/projext/class/src/app/index.js~Projext.html",
@@ -3511,7 +3679,7 @@
     "description": ""
   },
   {
-    "__docId__": 169,
+    "__docId__": 178,
     "kind": "external",
     "name": "ProjextTarget",
     "externalLink": "https://homer0.github.io/projext/typedef/index.html#static-typedef-Target",
@@ -3522,7 +3690,7 @@
     "description": ""
   },
   {
-    "__docId__": 170,
+    "__docId__": 179,
     "kind": "external",
     "name": "Command",
     "externalLink": "https://tj.github.io/commander.js/#Command",
@@ -3533,7 +3701,7 @@
     "description": ""
   },
   {
-    "__docId__": 171,
+    "__docId__": 180,
     "kind": "external",
     "name": "PathUtils",
     "externalLink": "https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html",
@@ -3544,7 +3712,7 @@
     "description": ""
   },
   {
-    "__docId__": 172,
+    "__docId__": 181,
     "kind": "typedef",
     "name": "Target",
     "memberof": "src/typedef.js",
@@ -3613,7 +3781,7 @@
     }
   },
   {
-    "__docId__": 173,
+    "__docId__": 182,
     "kind": "typedef",
     "name": "RunnerFileContents",
     "memberof": "src/typedef.js",
@@ -3672,7 +3840,7 @@
     }
   },
   {
-    "__docId__": 174,
+    "__docId__": 183,
     "kind": "typedef",
     "name": "ProviderRegisterMethod",
     "memberof": "src/typedef.js",
@@ -3701,7 +3869,7 @@
     }
   },
   {
-    "__docId__": 175,
+    "__docId__": 184,
     "kind": "typedef",
     "name": "Provider",
     "memberof": "src/typedef.js",
@@ -3731,7 +3899,7 @@
   },
   {
     "kind": "index",
-    "content": "# projext runner\n\n[![Travis](https://img.shields.io/travis/homer0/projext-plugin-runner.svg?style=flat-square)](https://travis-ci.org/homer0/projext-plugin-runner)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/projext-plugin-runner.svg?style=flat-square)](https://coveralls.io/github/homer0/projext-plugin-runner?branch=master)\n[![David](https://img.shields.io/david/homer0/projext-plugin-runner.svg?style=flat-square)](https://david-dm.org/homer0/projext-plugin-runner)\n[![David](https://img.shields.io/david/dev/homer0/projext-plugin-runner.svg?style=flat-square)](https://david-dm.org/homer0/projext-plugin-runner)\n\nA projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | projext-plugin-runner                                                                 |\n| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v6.10.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nprojext-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customization\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\n- `build`: A list (`Array`) of targets names that need to be built before running the target on a development environment (with projext present) but with a production build (with code ready for deployment).\n- `runWith`: The name (`string`) of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// projext.runner.js\n\n// Get the main class\nconst { ProjextRunner } = require('projext-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new ProjextRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `yarn run hooks`        | Install the GIT repository hooks.   |\n| `yarn test`             | Run the project unit tests.         |\n| `yarn run lint`         | Lint the modified files.            |\n| `yarn run lint:full`    | Lint the project code.              |\n| `yarn run docs`         | Generate the project documentation. |\n| `yarn run todo`         | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
+    "content": "# projext runner\n\n[![Travis](https://img.shields.io/travis/homer0/projext-plugin-runner.svg?style=flat-square)](https://travis-ci.org/homer0/projext-plugin-runner)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/projext-plugin-runner.svg?style=flat-square)](https://coveralls.io/github/homer0/projext-plugin-runner?branch=master)\n[![David](https://img.shields.io/david/homer0/projext-plugin-runner.svg?style=flat-square)](https://david-dm.org/homer0/projext-plugin-runner)\n[![David](https://img.shields.io/david/dev/homer0/projext-plugin-runner.svg?style=flat-square)](https://david-dm.org/homer0/projext-plugin-runner)\n\nA projext plugin to run Node targets with a simple command no matter the environment, even if projext is not installed.\n\n## Introduction\n\nThis is part plugin and part stand alone tool:\n\n- When projext present, it assumes that is on a development environment and every time a file is builded, it will write an information file.\n- If projext is not present, it assumes that is on a production environment, and it will use the file generated while on development to run the targets.\n\nThe idea behind this plugin-tool is that you don't have to hard code the instruction to run a target when projext is not present; and you can install on a production environment since it doesn't depend on any of the other projext tools.\n\n## Information\n\n| -            | -                                                                                     |\n|--------------|---------------------------------------------------------------------------------------|\n| Package      | projext-plugin-runner                                                                 |\n| Description  | A projext plugin to run Node targets with a simple command no matter the environment. |\n| Node Version | >= v8.0.0                                                                            |\n\n## Usage\n\n### Runner file\n\nThe most important thing you need to remember is that this plugin-tool depends on a file with the information of the targets: The runner file.\n\nThe runner file is called `projextrunner.json` and it's created when you build your targets, on your project root directory. You should probably add it to your `.gitignore`.\n\nIf the feature to copy project files is enabled, the file will be automatically copied to the distribution directory when the files are copied; otherwise, you'll have to copy it manually before moving the distribution directory to the production environment (deploying).\n\n### CLI\n\nTo run the targets, the runner provides you with a CLI tool:\n\n```bash\nprojext-runner [target] [--production]\n```\n\n- `target`: The name of the target you intend to run.\n- `--production`: This forces the runner to build the target for production and run that even if projext is present. If the option is not specified, it will check if projext is present to determine whether it is a development or production environment.\n\nWhen on a development environment, this command will basically call `projext run`, unless `--production` is used; If it is on a production environment, it will use the information of the runner file to execute the file.\n\n### Customization\n\nOn your project configuration targets settings, you can add a `runnerOptions` object setting that the runner will pick and that can be used to modify the way the target is executed.\n\n- `build`: A list (`Array`) of targets names that need to be built before running the target on a development environment (with projext present) but with a production build (with code ready for deployment).\n- `runWith`: The name (`string`) of the executable the runner will use to run the target. By default is `node`, but you can changed to something like [`nodemon`](https://yarnpkg.com/en/package/nodemon).\n\n### Extending/overwriting the services\n\nLike projext, the this plugin-tool is built using [Jimple](https://yarnpkg.com/en/package/jimple), a port of [Pimple Dependency Injection container](https://github.com/silexphp/Pimple/) for Node, and EVERYTHING is registered on a container. You can simple set your own version of a service with the same name in order to overwrite it.\n\n> If you haven't tried [Jimple](https://github.com/fjorgemota/jimple), give it a try, it's excellent for organizing your app dependencies and services.\n\nThe way you get access to the container is by creating a file called `projext.runner.js` on your project root directory, there you'll create your own instance of the runner, register your custom/overwrite services and export it:\n\n```js\n// projext.runner.js\n\n// Get the main class\nconst { ProjextRunner } = require('projext-plugin-runner/src/app');\n\n// Create a new instance\nconst myRunner = new ProjextRunner();\n\n// Overwrite a service\nmyRunner.set('targets', () => myCustomTargetsManager);\n\n// Export your custom version\nmodule.exports = myRunner;\n```\n\n> You have to require it from `/src/app` because projext doesn't **yet** support a named export to load a plugin, and the main export is meant to be a function used by projext to register the plugin.\n\n## Development\n\n### NPM/Yarn Tasks\n\n| Task                    | Description                         |\n|-------------------------|-------------------------------------|\n| `yarn test`             | Run the project unit tests.         |\n| `yarn run lint`         | Lint the modified files.            |\n| `yarn run lint:full`    | Lint the project code.              |\n| `yarn run docs`         | Generate the project documentation. |\n| `yarn run todo`         | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
     "longname": "/Users/homer0/CODE/node/projext/projext-plugin-runner/README.md",
     "name": "./README.md",
     "static": true,
@@ -3739,7 +3907,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n    \"name\": \"projext-plugin-runner\",\n    \"cliName\": \"projext-runner\",\n    \"description\": \"A projext plugin to run Node targets with a simple command no matter the environment.\",\n    \"homepage\": \"https://homer0.github.io/projext-plugin-runner/\",\n    \"version\": \"6.0.0\",\n    \"repository\": \"homer0/projext-plugin-runner\",\n    \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n    \"license\": \"MIT\",\n    \"dependencies\": {\n      \"jimple\": \"1.5.0\",\n      \"fs-extra\": \"7.0.0\",\n      \"extend\": \"3.0.2\",\n      \"commander\": \"2.17.1\",\n      \"wootils\": \"^1.3.2\"\n    },\n    \"devDependencies\": {\n      \"eslint\": \"4.19.1\",\n      \"eslint-config-airbnb-base\": \"13.1.0\",\n      \"eslint-plugin-import\": \"2.14.0\",\n      \"eslint-plugin-node\": \"7.0.1\",\n      \"babel-preset-env\": \"1.7.0\",\n      \"jest-ex\": \"5.0.0\",\n      \"jest-cli\": \"23.5.0\",\n      \"jasmine-expect\": \"3.8.3\",\n      \"esdoc\": \"1.1.0\",\n      \"esdoc-standard-plugin\": \"1.0.0\",\n      \"esdoc-node\": \"1.0.3\",\n      \"leasot\": \"6.3.0\",\n      \"coveralls\": \"3.0.2\"\n    },\n    \"engine-strict\": true,\n    \"engines\": {\n      \"node\": \">=6.0.0\",\n      \"npm\": \">=3.0.0\"\n    },\n    \"main\": \"src/index.js\",\n    \"bin\": {\n      \"projext-runner\": \"./src/bin/projext-runner\",\n      \"projext-runner-cli\": \"./src/bin/projext-runner-cli\"\n    },\n    \"scripts\": {\n      \"hooks\": \"./utils/hooks/install\",\n      \"test\": \"./utils/scripts/test\",\n      \"lint\": \"./utils/scripts/lint\",\n      \"lint:full\": \"./utils/scripts/lint-full\",\n      \"docs\": \"./utils/scripts/docs\",\n      \"todo\": \"./utils/scripts/todo\"\n    }\n}\n",
+    "content": "{\n  \"name\": \"projext-plugin-runner\",\n  \"cliName\": \"projext-runner\",\n  \"description\": \"A projext plugin to run Node targets with a simple command no matter the environment.\",\n  \"homepage\": \"https://homer0.github.io/projext-plugin-runner/\",\n  \"version\": \"8.0.0\",\n  \"repository\": \"homer0/projext-plugin-runner\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"^1.5.0\",\n    \"fs-extra\": \"^8.1.0\",\n    \"extend\": \"^3.0.2\",\n    \"commander\": \"^2.20.0\",\n    \"wootils\": \"^2.6.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"^5.16.0\",\n    \"eslint-config-airbnb-base\": \"^13.2.0\",\n    \"eslint-plugin-import\": \"^2.18.2\",\n    \"eslint-plugin-node\": \"^9.1.0\",\n    \"@babel/core\": \"7.5.5\",\n    \"@babel/preset-env\": \"7.5.5\",\n    \"@babel/plugin-transform-runtime\": \"7.5.5\",\n    \"jest-ex\": \"^6.1.1\",\n    \"jest-cli\": \"^24.8.0\",\n    \"jasmine-expect\": \"^4.0.3\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"esdoc-node\": \"^1.0.4\",\n    \"leasot\": \"^8.0.0\",\n    \"coveralls\": \"^3.0.5\",\n    \"husky\": \"^3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.10.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"bin\": {\n    \"projext-runner\": \"./src/bin/projext-runner\",\n    \"projext-runner-cli\": \"./src/bin/projext-runner-cli\"\n  },\n  \"husky\": {\n    \"hooks\": {\n      \"pre-commit\": \"./utils/hooks/pre-commit\",\n      \"post-merge\": \"./utils/hooks/post-merge\"\n    }\n  },\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
     "longname": "/Users/homer0/CODE/node/projext/projext-plugin-runner/package.json",
     "name": "package.json",
     "static": true,
