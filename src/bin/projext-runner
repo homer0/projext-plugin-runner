@@ -45,7 +45,7 @@ if [ "$isSHTask" = true ] && [ "$disableSHTasks" = false ]; then
     # command that returns the list.
     projextRunnerCLIStartTaskLog "Validating the command"
     eval "projext-runner-cli sh-validate $*"
-    projextRunnerCLICompleteTaskLog "Command validated"
+    projextRunnerCLISuccessLog "Command validated"
     # Capture the commands that need to run
     projextRunnerCLIStartTaskLog "Loading instructions for target"
     command=$(eval "projext-runner-cli sh-run $*")
