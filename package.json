@@ -42,6 +42,12 @@
     "projext-runner": "./src/bin/projext-runner",
     "projext-runner-cli": "./src/bin/projext-runner-cli"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./utils/hooks/pre-commit",
+      "post-merge": "./utils/hooks/post-merge"
+    }
+  },
   "scripts": {
     "hooks": "./utils/hooks/install",
     "test": "./utils/scripts/test",
