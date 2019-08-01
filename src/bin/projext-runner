@@ -1,4 +1,28 @@
 #!/bin/sh -e
+
+# Logs an information message (dark gray)
+projextRunnerCLIInfoLog() {
+  echo "\033[90m[projext-runner] $1\033[39m"
+}
+
+# Logs a success message (green)
+projextRunnerCLISuccessLog() {
+  echo "\033[32m[projext-runner] $*\033[39m"
+}
+
+# Logs a message that indicates a task is starting (yellow)
+projextRunnerCLIStartTaskLog() {
+  echo "\033[33m[projext-runner] $1\033[39m"
+}
+
+# Logs a message that indicates a task was completed (green), and replaces the last logged
+# message
+projextRunnerCLICompleteTaskLog() {
+  echo "\033[2A";
+  printf "\033[0K\r\033[32m[projext-runner] %s\033[39m" "$*"
+  echo ""
+}
+
 # If this flag gets to be true, the execution will be handled by the Node CLI
 disableSHTasks=false
 # Determine whether the task is a private helper task or not
@@ -16,13 +40,19 @@ fi
 
 # If the task is a shell task that needs commands...
 if [ "$isSHTask" = true ] && [ "$disableSHTasks" = false ]; then
+    projextRunnerCLISuccessLog "Runner started"
     # ...execute a validation command to avoid any error being thrown on the
     # command that returns the list.
+    projextRunnerCLIStartTaskLog "Validating the command"
     eval "projext-runner-cli sh-validate $*"
+    projextRunnerCLISuccessLog "Command validated"
     # Capture the commands that need to run
+    projextRunnerCLIStartTaskLog "Loading instructions for target"
     command=$(eval "projext-runner-cli sh-run $*")
     # If there are commands to run...
     if [ "$command" != "" ]; then
+      projextRunnerCLICompleteTaskLog "Target instructions loaded"
+      projextRunnerCLIInfoLog "Executing the target"
       # ...execute them
       # echo "> $command"
       eval "$command"
