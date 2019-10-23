@@ -172,7 +172,7 @@ class ProjextPlugin {
   _getInstalledInstance() {
     let instance;
     try {
-      // eslint-disable-next-line global-require
+      // eslint-disable-next-line global-require, node/no-missing-require, import/no-unresolved
       instance = require('projext/index');
     } catch (ignore) {
       instance = null;
@@ -196,7 +196,7 @@ class ProjextPlugin {
   _detectInstallation() {
     let installed = true;
     try {
-      // eslint-disable-next-line global-require
+      // eslint-disable-next-line global-require, node/no-missing-require, import/no-unresolved
       require('projext');
     } catch (ignore) {
       installed = false;
